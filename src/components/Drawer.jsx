@@ -53,7 +53,7 @@ export default function Drawer( { lang }) {
           <a className="pr-40 text-cyan-300 hover:text-cyan-500 transition-colors" href="https://xondamirmadaliyev79@gmail.com">xondamirmadaliyev79@gmail.com</a>
 
           <h2 className="text-start text-lg mt-5">Phone</h2>
-          <p className="text-cyan-300 hover:text-cyan-500 transition-colors text-start mt-1">📞 +998 99 123 45 67</p>
+          <p className="text-cyan-300 hover:text-cyan-500 transition-colors text-start mt-1">📞 +998 93 560 75 63</p>
         </div>
       </div>
     </div>
