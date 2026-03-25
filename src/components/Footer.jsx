@@ -2,23 +2,23 @@ export default function Footer({ lang }) {
   const t = {
     EN: {
       text: "All rights reserved",
-      made: "Made with ❤️",
+      made: "Made with Leslie❤️",
     },
     UZ: {
       text: "Barcha huquqlar himoyalangan",
-      made: "❤️ bilan yaratilgan",
+      made: "❤️Lesli bilan yaratilgan",
     },
     RU: {
       text: "Все права защищены",
-      made: "Сделано с ❤️",
+      made: "Сделано с Леслие❤️",
     },
     DE: {
       text: "Alle Rechte vorbehalten",
-      made: "Mit ❤️ gemacht",
+      made: "Mit ❤️Leslie gemacht",
     },
     TR: {
       text: "Tüm hakları saklıdır",
-      made: "❤️ ile yapıldı",
+      made: "❤️Leslie ile yapıldı",
     },
   };
 
@@ -32,7 +32,7 @@ export default function Footer({ lang }) {
        <a href="https://xondamirmadaliyev79@gmail.com" className="link link-hover hover:text-secondary transition-all">Contact</a>
       </div>
 
-      <p className="mt-3 text-sm opacity-60">
+      <p className="mt-3 opacity-60">
         {t[lang].made}
       </p>
 
