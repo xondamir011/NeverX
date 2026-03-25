@@ -21,23 +21,21 @@ export default function App() {
   };
 
   useEffect(() => {
-    const fetchMovies = async () => {
-      setLoading(true);
-      try {
-        const res = await fetch(
-          `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=${langMap[lang]}`
-        );
-        const data = await res.json();
-        setMovies(data.results || []);
-      } catch (err) {
-        console.log(err);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchMovies = async () => {
+    setLoading(true);
+    try {
+      const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=${langMap[lang]}`);
+      const data = await res.json();
+      setMovies(data.results || []);
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchMovies();
-  }, [lang]);
+  fetchMovies();
+}, [lang]);
 
   const searchMovie = async () => {
     if (!query.trim()) return;
@@ -74,7 +72,7 @@ export default function App() {
 
       <Navbar setLang={setLang} lang={lang} />
 
-      <Search query={query} setQuery={setQuery} onSearch={searchMovie} placeholder={t[lang].search}/>
+      <Search query={query} setQuery={setQuery} onSearch={searchMovie} currentLang={lang} placeholder={t[lang].search}/>
 
       {loading && (
         <div className="flex justify-center mt-10">

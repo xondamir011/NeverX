@@ -22,9 +22,16 @@ export default function Footer({ lang }) {
     },
   };
 
+  const titles = {
+    EN: "🎬 Movies",
+    UZ: "🎬 Filmlar",
+    RU: "🎬 Фильмы",
+    DE: "🎬 Filme",
+    TR: "🎬 Filmler",
+  };
   return (
     <footer className="bg-base-200 text-base-content mt-10 p-6 text-center">
-      <p className="text-lg font-semibold mr-5 mb-5">🎬 Movie App</p>
+      <p className="text-lg font-semibold mr-5 mb-5">{titles[lang] || titles.EN}</p>
 
       <div className="flex justify-center gap-12 mt-3 mr-5 mb-3">
         <a href="https://t.me/mars_it_school" className="link link-hover hover:text-info transition-all">Telegram</a>

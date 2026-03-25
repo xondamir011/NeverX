@@ -13,6 +13,14 @@ export default function Navbar({ setLang, lang }) {
     { code: "TR", label: "Türkçe", flag: "tr" },
   ];
 
+  const titles = {
+    EN: "🎬 Movies",
+    UZ: "🎬 Filmlar",
+    RU: "🎬 Фильмы",
+    DE: "🎬 Filme",
+    TR: "🎬 Filmler",
+ };
+
   useEffect(() => {
     const handleClick = (e) => {
       if (langRef.current && !langRef.current.contains(e.target)) {
@@ -28,9 +36,9 @@ export default function Navbar({ setLang, lang }) {
   return (
     <div className="flex justify-between items-center p-4 bg-base-200 sticky top-0 z-30">
     
-      <Drawer />
+      <Drawer lang={lang} />
 
-     <h2 className="md:ml-30 text-xl flex-col">🎬Movies</h2>
+     <h2 className="md:ml-30 text-xl flex-col">{titles[lang] || titles.EN}</h2>
       <div className="flex gap-4 items-center">
 
 

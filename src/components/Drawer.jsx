@@ -1,7 +1,30 @@
 import { useState } from "react";
 
-export default function Drawer() {
+export default function Drawer( { lang }) {
   const [open, setOpen] = useState(false);
+
+ const t = {
+  EN: {
+    name: "KXondamir Madaliyev",
+    role: "Frontend Dev | Mobile Graphics",
+  },
+  UZ: {
+    name: "Xondamir Madaliyev",
+    role: "Frontend dasturchi | Mobilograf",
+  },
+  RU: {
+    name: "Хондамир Мадалиев",
+    role: "Фронтенд разработчик | Мобильная графика",
+  },
+  DE: {
+    name: "Xondamir Madaliyev",
+    role: "Frontend Entwickler | Mobile Grafik",
+  },
+  TR: {
+    name: "Xöndâmir Mâdâlíyev",
+    role: "Fröntend Gelíştírící | Möbíl Grâfík",
+  },
+ };
 
   return (
     <div className="z-20">
@@ -17,8 +40,8 @@ export default function Drawer() {
 
         <div className="text-center mt-5">
           <img src="https://i.pravatar.cc/150" className="w-24 h-24 rounded-full mx-auto border-2 border-cyan-400"/>
-          <h2 className="mt-3 text-2xl mb-5">Xondamir Madaliyev</h2>
-          <p className="text-cyan-300 text-lg shadow-sm shadow-cyan-500 mb-12">Frontend Dev | Mobile Graphics</p>
+          <h2 className="mt-3 text-2xl mb-5">{t[lang]?.name || t.EN.name}</h2>
+          <p className="text-cyan-300 text-lg shadow-sm shadow-cyan-500 mb-12">{t[lang]?.role || t.EN.role}</p>
 
           <h2 className="text-lg text-start">Telegram</h2>
           <a className="pr-40 text-cyan-300 hover:text-cyan-500 transition-colors" href="https://t.me/xondamir_mi">@xondamir_mi</a>
