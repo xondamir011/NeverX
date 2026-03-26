@@ -14,9 +14,9 @@ export default function Search({ query, setQuery, onSearch, placeholder, current
   const filters = filterLabels[currentLang] || filterLabels.UZ;
 
   const handleFilterClick = (filter) => {
-    setActiveFilter(filter);       
-    setQuery(filter);              
-    onSearch(filter);      
+    setActiveFilter(filter.value);       
+    setQuery("");              
+    onSearch("", filter.value);      
   };
 
    useEffect(() => {
@@ -26,7 +26,7 @@ export default function Search({ query, setQuery, onSearch, placeholder, current
       }
     }, 500)
      return () => clearTimeout(timeout);
-   }, [query, activeFilter, onSearch])
+   }, [query])
 
 
   return (

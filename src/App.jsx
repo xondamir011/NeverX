@@ -42,9 +42,7 @@ export default function App() {
 
     setLoading(true);
     try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&language=${langMap[lang]}`
-      );
+      const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${query}&language=${langMap[lang]}`);
       const data = await res.json();
       setMovies(data.results || []);
     } catch (err) {
@@ -75,7 +73,7 @@ export default function App() {
       <Search query={query} setQuery={setQuery} onSearch={searchMovie} currentLang={lang} placeholder={t[lang].search}/>
 
       {loading && (
-        <div className="flex justify-center mt-10">
+        <div className="flex-1 justify-center mt-10">
           <span className="loading loading-spinner loading-2xl"></span>
         </div>
       )}
