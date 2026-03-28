@@ -4,7 +4,7 @@ import { auth, googleProvider, githubProvider } from "../firebase";
 import { signInWithPopup, signInWithRedirect, getRedirectResult } from "firebase/auth";
 import { FcGoogle } from "react-icons/fc"; 
 import { FaGithub } from "react-icons/fa";  
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 
 export default function Login() {
   const {setUser, login } = useAuth(); 
@@ -14,23 +14,24 @@ export default function Login() {
 
   // 🔹 Google redirect result (mobil uchun)
   useEffect(() => {
-    // getRedirectResult(auth)
-    //   .then((result) => {
-    //     if (result && result.user) {
-    //       const currentUser = {
-    //         name: result.user.displayName,
-    //         email: result.user.email,
-    //         avatar: result.user.photoURL,
-    //       };
-    //       setUser(currentUser);
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result && result.user) {
+          const currentUser = {
+            name: result.user.displayName,
+            email: result.user.email,
+            avatar: result.user.photoURL,
+          };
+          setUser(currentUser);
           alert(`Hello, ${currentUser.name}`);
           navigate("/"); // asosiy sahifaga o‘tadi
-      //   }
-      // })
-      // .catch((error) => {
-      //   console.error("Redirect login error:", error);
-      // });
+        }
+      })
+      .catch((error) => {
+        console.error("Redirect login error:", error);
+      });
   }, [setUser, navigate]);
+
 
   // 🔐 Email/Password login
   const handleEmailLogin = async () => {
@@ -46,26 +47,26 @@ export default function Login() {
 
   // 🌍 Google login (desktop va mobil uchun)
   const handleGoogleLogin = async () => {
-    // try {
-    //   // Mobilda redirect, desktopda popup ishlaydi
-    //   if (/Mobi|Android/i.test(navigator.userAgent)) {
-    //     await signInWithRedirect(auth, googleProvider);
-    //   } else {
-    //     const result = await signInWithPopup(auth, googleProvider);
-    //     const currentUser = {
-    //       name: result.user.displayName,
-    //       email: result.user.email,
-    //       avatar: result.user.photoURL,
-    //     };
-    //     setUser(currentUser);
-    //     alert(`Hello, ${currentUser.name}`);
+    try {
+      // Mobilda redirect, desktopda popup ishlaydi
+      if (/Mobi|Android/i.test(navigator.userAgent)) {
+        await signInWithRedirect(auth, googleProvider);
+      } else {
+        const result = await signInWithPopup(auth, googleProvider);
+        const currentUser = {
+          name: result.user.displayName,
+          email: result.user.email,
+          avatar: result.user.photoURL,
+        };
+        setUser(currentUser);
+        alert(`Hello, ${currentUser.name}`);
         alert("Mobile: Redirecting to main page (Google login disabled temporarily)");
         navigate("/");
-    //   }
-    // } catch (error) {
-    //   console.error("Google login error:", error);
-    //   alert("Error: " + error.message);
-    // }
+      }
+    } catch (error) {
+      console.error("Google login error:", error);
+      alert("Error: " + error.message);
+    }
   };
 
   // 🐱‍💻 GitHub login
@@ -127,6 +128,10 @@ export default function Login() {
         <FaGithub size={20} />
         <span>Login with GitHub</span>
       </button>
+
+      <Link to="/" className="text-blue-500 hover:underline">
+         Don't have an account? Sign up
+      </Link>
     </div>
   );
 }

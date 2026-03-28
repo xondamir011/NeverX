@@ -6,7 +6,6 @@ import Navbar from "./components/Navbar";
 import MovieCard from "./components/MovieCard";
 import Search from "./components/Search";
 import Footer from "./components/Footer";
-import Login from "./components/Login";
 
 export default function App() {
   const [user, setUser] = useState(null);
@@ -33,7 +32,6 @@ export default function App() {
   }, []);
 
   useEffect(() => {
-    if (!user) return;
     const fetchMovies = async () => {
       setLoading(true);
       try {
@@ -88,9 +86,6 @@ const searchMovie = async (queryText = "", filter = "") => {
     DE: { search: "Suchen...", no: "Keine Filme gefunden" },
     TR: { search: "Ara...", no: "Film bulunamadı" },
   };
-
-  // agar foydalanuvchi login qilmagan bo'lsa
-  if (!user) return <Login />;
 
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
