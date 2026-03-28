@@ -1,16 +1,38 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext";
 import { auth, googleProvider, githubProvider } from "../firebase";
-import { signInWithPopup, fetchSignInMethodsForEmail } from "firebase/auth";
-import { FcGoogle } from "react-icons/fc"; // Google icon
-import { FaGithub } from "react-icons/fa";  // GitHub icon
+import { 
+  signInWithPopup, 
+  signInWithRedirect, 
+  getRedirectResult 
+} from "firebase/auth"; // ✅ getRedirectResult import qilindi
+import { FcGoogle } from "react-icons/fc"; 
+import { FaGithub } from "react-icons/fa";  
 
 export default function Login() {
   const { setUser, login } = useAuth(); 
   const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState(""); 
 
-  // Email/Password login
+  useEffect(() => {
+    // Redirect login natijasini tekshirish (mobil uchun)
+    getRedirectResult(auth)
+      .then((result) => {
+        if (result) {
+          const userData = {
+            name: result.user.displayName,
+            email: result.user.email,
+            avatar: result.user.photoURL,
+          };
+          setUser(userData);
+          alert(`Hello, ${userData.name}`);
+        }
+      })
+      .catch((error) => {
+        console.error("Redirect login error:", error);
+      });
+  }, []);
+
   const handleEmailLogin = async () => {
     try {
       await login(email, password);
@@ -21,30 +43,29 @@ export default function Login() {
     }
   };
 
-  // Google login
- const handleGoogleLogin = () => {
-  signInWithRedirect(auth, googleProvider);
-};
+  const handleGoogleLogin = () => {
+    // Desktop: popup, mobil: redirect
+    if (window.innerWidth < 768) {
+      // mobil qurilma
+      signInWithRedirect(auth, googleProvider);
+    } else {
+      signInWithPopup(auth, googleProvider)
+        .then((result) => {
+          const userData = {
+            name: result.user.displayName,
+            email: result.user.email,
+            avatar: result.user.photoURL,
+          };
+          setUser(userData);
+          alert(`Hello, ${userData.name}`);
+        })
+        .catch((error) => {
+          console.error("Google login error:", error);
+          alert("Error: " + error.message);
+        });
+    }
+  };
 
- useEffect(() => {
-  getRedirectResult(auth)
-    .then((result) => {
-      if (result) {
-        const userData = {
-          name: result.user.displayName,
-          email: result.user.email,
-          avatar: result.user.photoURL,
-        };
-        setUser(userData);
-        alert(`Hello, ${userData.name}`);
-      }
-    })
-    .catch((error) => {
-      console.error("Redirect login error:", error);
-    });
-}, []);
-
-  // GitHub login
   const handleGithubLogin = async () => {
     try {
       const result = await signInWithPopup(auth, githubProvider);
@@ -56,17 +77,8 @@ export default function Login() {
       setUser(currentUser);
       alert(`Hello, ${currentUser.name}`);
     } catch (error) {
-      if (error.code === "auth/account-exists-with-different-credential") {
-        const email = error.customData?.email || "";
-        const pendingCred = error.credential;
-        const methods = await fetchSignInMethodsForEmail(auth, email);
-        alert(`This email is already registered with: ${methods.join(", ")}. Please use the same method.`);
-        console.log("Pending credential:", pendingCred);
-        console.log("Existing providers:", methods);
-      } else {
-        console.error("GitHub login error:", error);
-        alert("Error: " + error.message);
-      }
+      console.error("GitHub login error:", error);
+      alert("Error: " + error.message);
     }
   };
 
