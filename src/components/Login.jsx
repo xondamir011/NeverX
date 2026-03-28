@@ -22,44 +22,27 @@ export default function Login() {
   };
 
   // Google login
-  const handleGoogleLogin = async () => {
-  try {
-    const result = await signInWithPopup(auth, googleProvider);
-    const currentUser = {
-      name: result.user.displayName,
-      email: result.user.email,
-      avatar: result.user.photoURL,
-    };
-    setUser(currentUser);
-    alert(`Hello, ${currentUser.name}`);
-  } catch (error) {
-    if (error.code === "auth/account-exists-with-different-credential") {
-      const pendingCred = GoogleAuthProvider.credentialFromError(error);
-      const email = error.customData?.email;
-
-      // Qaysi provider bilan ro‘yxatdan o‘tganini olish
-      const methods = await fetchSignInMethodsForEmail(auth, email);
-      alert(`This email is already registered with: ${methods.join(", ")}.`);
-
-      if (methods.includes("password")) {
-        // Email/Password bilan mavjud bo‘lsa, foydalanuvchidan parol so‘rash
-        const password = prompt("Please enter your password to link your Google account:");
-        const userCredential = await signInWithEmailAndPassword(auth, email, password);
-
-        // Keyin Google credential ni linking qilish
-        await linkWithCredential(userCredential.user, pendingCred);
-        setUser({
-          name: userCredential.user.displayName,
-          email: userCredential.user.email,
-          avatar: userCredential.user.photoURL,
-        });
-        alert("Accounts linked successfully!");
-      }
-    } else {
-      alert(error.message);
-    }
-  }
+ const handleGoogleLogin = () => {
+  signInWithRedirect(auth, googleProvider);
 };
+
+ useEffect(() => {
+  getRedirectResult(auth)
+    .then((result) => {
+      if (result) {
+        const userData = {
+          name: result.user.displayName,
+          email: result.user.email,
+          avatar: result.user.photoURL,
+        };
+        setUser(userData);
+        alert(`Hello, ${userData.name}`);
+      }
+    })
+    .catch((error) => {
+      console.error("Redirect login error:", error);
+    });
+}, []);
 
   // GitHub login
   const handleGithubLogin = async () => {
