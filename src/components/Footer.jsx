@@ -40,11 +40,11 @@ export default function Footer({ lang }) {
       </div>
 
       <p className="mt-3 opacity-60">
-        {t[lang].made}
+        {t[lang?.toUpperCase()]?.made || "Made with Leslie ❤️"}
       </p>
 
       <p className="opacity-70 mt-3">
-        © {new Date().getFullYear()} — {t[lang].text}
+        © {new Date().getFullYear()} — {t[lang?.toUpperCase()]?.text}
       </p>
 
     </footer>
