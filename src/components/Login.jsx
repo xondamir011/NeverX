@@ -1,70 +1,133 @@
 import { useState } from "react";
+import { useAuth } from "../context/AuthContext";
 import { auth, googleProvider, githubProvider } from "../firebase";
-import { signInWithEmailAndPassword, signInWithPopup } from "firebase/auth";
+import { signInWithPopup, fetchSignInMethodsForEmail } from "firebase/auth";
+import { FcGoogle } from "react-icons/fc"; // Google icon
+import { FaGithub } from "react-icons/fa";  // GitHub icon
 
-const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+export default function Login() {
+  const { setUser, login } = useAuth(); 
+  const [email, setEmail] = useState(""); 
+  const [password, setPassword] = useState(""); 
 
+  // Email/Password login
   const handleEmailLogin = async () => {
     try {
-      await signInWithEmailAndPassword(auth, email, password);
-      alert("Logged in!");
-    } catch (err) {
-      alert(err.message);
+      await login(email, password);
+      alert(`Logged in as ${email}`);
+    } catch (error) {
+      console.error("Email login error:", error);
+      alert("Error: " + error.message);
     }
   };
 
+  // Google login
   const handleGoogleLogin = async () => {
-    try {
-      await signInWithPopup(auth, googleProvider);
-      alert("Logged in with Google!");
-    } catch (err) {
-      alert(err.message);
-    }
-  };
+  try {
+    const result = await signInWithPopup(auth, googleProvider);
+    const currentUser = {
+      name: result.user.displayName,
+      email: result.user.email,
+      avatar: result.user.photoURL,
+    };
+    setUser(currentUser);
+    alert(`Hello, ${currentUser.name}`);
+  } catch (error) {
+    if (error.code === "auth/account-exists-with-different-credential") {
+      const pendingCred = GoogleAuthProvider.credentialFromError(error);
+      const email = error.customData?.email;
 
+      // Qaysi provider bilan ro‘yxatdan o‘tganini olish
+      const methods = await fetchSignInMethodsForEmail(auth, email);
+      alert(`This email is already registered with: ${methods.join(", ")}.`);
+
+      if (methods.includes("password")) {
+        // Email/Password bilan mavjud bo‘lsa, foydalanuvchidan parol so‘rash
+        const password = prompt("Please enter your password to link your Google account:");
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+        // Keyin Google credential ni linking qilish
+        await linkWithCredential(userCredential.user, pendingCred);
+        setUser({
+          name: userCredential.user.displayName,
+          email: userCredential.user.email,
+          avatar: userCredential.user.photoURL,
+        });
+        alert("Accounts linked successfully!");
+      }
+    } else {
+      alert(error.message);
+    }
+  }
+};
+
+  // GitHub login
   const handleGithubLogin = async () => {
     try {
-      await signInWithPopup(auth, githubProvider);
-      alert("Logged in with GitHub!");
-    } catch (err) {
-      alert(err.message);
+      const result = await signInWithPopup(auth, githubProvider);
+      const currentUser = {
+        name: result.user.displayName,
+        email: result.user.email,
+        avatar: result.user.photoURL,
+      };
+      setUser(currentUser);
+      alert(`Hello, ${currentUser.name}`);
+    } catch (error) {
+      if (error.code === "auth/account-exists-with-different-credential") {
+        const email = error.customData?.email || "";
+        const pendingCred = error.credential;
+        const methods = await fetchSignInMethodsForEmail(auth, email);
+        alert(`This email is already registered with: ${methods.join(", ")}. Please use the same method.`);
+        console.log("Pending credential:", pendingCred);
+        console.log("Existing providers:", methods);
+      } else {
+        console.error("GitHub login error:", error);
+        alert("Error: " + error.message);
+      }
     }
   };
 
   return (
-    <div className="max-w-sm mx-auto p-6 bg-gray-800 text-white rounded mt-36">
-      <h2 className="text-2xl mb-4 text-center">Login</h2>
+    <div className="max-w-sm mx-auto p-6 bg-gray-900 text-white rounded-xl mt-40 shadow-lg">
+      <h2 className="text-2xl mb-4 text-center font-bold">Login</h2>
 
-      <input
-        type="email"
+      {/* Email/Password inputs */}
+      <input type="email"
         placeholder="Email"
         value={email}
         onChange={e => setEmail(e.target.value)}
-        className="w-full p-2 mb-2 rounded text-black"
-      />
-      <input
-        type="password"
+        className="w-full input input-primary p-2 mb-3 rounded"/>
+
+      <input type="password"
         placeholder="Password"
         value={password}
         onChange={e => setPassword(e.target.value)}
-        className="w-full p-2 mb-4 rounded text-black"
-      />
-      <button onClick={handleEmailLogin} className="w-full mb-2 bg-purple-500 p-2 rounded">
+        className="w-full input input-primary p-2 mb-4 rounded"/>
+
+      <button onClick={handleEmailLogin}
+        className="w-full mb-4 bg-primary p-2 cursor-pointer transition-all rounded hover:bg-secondary">
         Login
       </button>
 
-      <hr className="my-4 border-gray-600" />
+      <div className="flex items-center justify-center gap-2 mb-2">
+        <hr className="flex-1 border-gray-600" />
+        <span className="text-gray-400 text-sm">OR</span>
+        <hr className="flex-1 border-gray-600" />
+      </div>
 
-      <button onClick={handleGoogleLogin} className="w-full mb-2 bg-red-500 p-2 rounded">
-        Login with Google
+      {/* Google login */}
+      <button onClick={handleGoogleLogin}
+        className="w-full mb-2 flex items-center justify-center gap-3 cursor-pointer bg-gray-700 p-2 rounded hover:bg-gray-800 transition">
+        <FcGoogle size={20} />
+        <span>Login with Google</span>
       </button>
-      <button onClick={handleGithubLogin} className="w-full bg-gray-700 p-2 rounded">
-        Login with GitHub
+
+      {/* GitHub login */}
+      <button onClick={handleGithubLogin}
+        className="w-full flex items-center justify-center gap-3 cursor-pointer bg-gray-700 p-2 rounded hover:bg-gray-800 transition">
+        <FaGithub size={20} />
+        <span>Login with GitHub</span>
       </button>
     </div>
   );
-};
-
-export default Login;
+}
