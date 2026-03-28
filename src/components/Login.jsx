@@ -46,25 +46,26 @@ export default function Login() {
 
   // 🌍 Google login (desktop va mobil uchun)
   const handleGoogleLogin = async () => {
-    try {
-      // Mobilda redirect, desktopda popup ishlaydi
-      if (/Mobi|Android/i.test(navigator.userAgent)) {
-        await signInWithRedirect(auth, googleProvider);
-      } else {
-        const result = await signInWithPopup(auth, googleProvider);
-        const currentUser = {
-          name: result.user.displayName,
-          email: result.user.email,
-          avatar: result.user.photoURL,
-        };
-        setUser(currentUser);
-        alert(`Hello, ${currentUser.name}`);
+    // try {
+    //   // Mobilda redirect, desktopda popup ishlaydi
+    //   if (/Mobi|Android/i.test(navigator.userAgent)) {
+    //     await signInWithRedirect(auth, googleProvider);
+    //   } else {
+    //     const result = await signInWithPopup(auth, googleProvider);
+    //     const currentUser = {
+    //       name: result.user.displayName,
+    //       email: result.user.email,
+    //       avatar: result.user.photoURL,
+    //     };
+    //     setUser(currentUser);
+    //     alert(`Hello, ${currentUser.name}`);
+        alert("Mobile: Redirecting to main page (Google login disabled temporarily)");
         navigate("/");
-      }
-    } catch (error) {
-      console.error("Google login error:", error);
-      alert("Error: " + error.message);
-    }
+    //   }
+    // } catch (error) {
+    //   console.error("Google login error:", error);
+    //   alert("Error: " + error.message);
+    // }
   };
 
   // 🐱‍💻 GitHub login
