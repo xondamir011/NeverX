@@ -7,29 +7,29 @@ import { FaGithub } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const { setUser, login } = useAuth(); 
+  const {setUser, login } = useAuth(); 
   const [email, setEmail] = useState(""); 
   const [password, setPassword] = useState(""); 
   const navigate = useNavigate();
 
   // 🔹 Google redirect result (mobil uchun)
   useEffect(() => {
-    getRedirectResult(auth)
-      .then((result) => {
-        if (result && result.user) {
-          const currentUser = {
-            name: result.user.displayName,
-            email: result.user.email,
-            avatar: result.user.photoURL,
-          };
-          setUser(currentUser);
+    // getRedirectResult(auth)
+    //   .then((result) => {
+    //     if (result && result.user) {
+    //       const currentUser = {
+    //         name: result.user.displayName,
+    //         email: result.user.email,
+    //         avatar: result.user.photoURL,
+    //       };
+    //       setUser(currentUser);
           alert(`Hello, ${currentUser.name}`);
           navigate("/"); // asosiy sahifaga o‘tadi
-        }
-      })
-      .catch((error) => {
-        console.error("Redirect login error:", error);
-      });
+      //   }
+      // })
+      // .catch((error) => {
+      //   console.error("Redirect login error:", error);
+      // });
   }, [setUser, navigate]);
 
   // 🔐 Email/Password login
