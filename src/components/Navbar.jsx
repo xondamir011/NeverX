@@ -149,14 +149,13 @@ export default function Navbar({
   //   </div>
 
 
-
 return (
   <div className="sticky top-0 z-30 bg-base-200 p-3">
 
     <div className="flex items-center justify-between flex-nowrap gap-2">
 
       {/* LEFT: Drawer (always left) */}
-      <div className="flex items-center gap-2 flex-shrink-0">
+      <div className="flex items-center gap-3">
         <Drawer lang={lang} />
       </div>
 
@@ -200,35 +199,25 @@ return (
         {/* LANG */}
         <div ref={langRef} className="relative">
 
-          <button
-            onClick={() => setLangOpen(!langOpen)}
-            className="btn btn-xs sm:btn-sm btn-primary rounded-3xl flex items-center gap-1"
-          >
-            <img
-              src={`https://flagcdn.com/w40/${
-                languages.find((l) => l.code === lang)?.flag
-              }.png`}
-              className="w-5 h-3 sm:w-6 sm:h-4"
-            />
+          <button onClick={() => setLangOpen(!langOpen)}
+            className="btn btn-xs sm:btn-sm btn-primary rounded-3xl flex items-center gap-1">
+            <img src={`https://flagcdn.com/w40/${languages.find((l) => l.code === lang)?.flag}.png`}
+              className="w-5 h-3 sm:w-6 sm:h-4"/>
             <span className="hidden sm:inline">{lang}</span>
           </button>
 
           {langOpen && (
-            <div className="absolute right-0 mt-3 bg-base-200 p-2 rounded-xl shadow z-50">
+            <div className="absolute right-0 mt-3 bg-base-200 p-3 pr-5 rounded-xl shadow z-50">
               {languages.map((l) => (
-                <div
-                  key={l.code}
+                <div key={l.code}
                   onClick={() => {
                     setLang(l.code);
                     localStorage.setItem("lang", l.code);
                     setLangOpen(false);
                   }}
-                  className="flex gap-2 p-2 hover:bg-base-300 rounded cursor-pointer"
-                >
-                  <img
-                    src={`https://flagcdn.com/w40/${l.flag}.png`}
-                    className="w-5 h-4"
-                  />
+                  className="flex gap-2 p-3 hover:bg-base-300 rounded cursor-pointer">
+                  <img src={`https://flagcdn.com/w40/${l.flag}.png`}
+                    className="w-5 h-4"/>
                   <span>{l.label}</span>
                 </div>
               ))}
@@ -241,37 +230,29 @@ return (
           <div className="flex items-center gap-1 sm:gap-2">
 
             {user.photoURL ? (
-              <img
-                src={user.photoURL}
-                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border"
-              />
+              <img src={user.photoURL}
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border"/>
             ) : (
               <FaUserCircle className="w-8 h-8 sm:w-10 sm:h-10 text-gray-500" />
             )}
 
-            <span className="hidden sm:block text-sm font-semibold max-w-[100px] truncate">
+            <span className="hidden sm:block text-sm font-semibold truncate">
               {user.displayName || user.email}
             </span>
 
-            <button
-              onClick={handleLogout}
-              className="btn btn-xs sm:btn-sm btn-error"
-            >
+            <button onClick={handleLogout}
+              className="btn btn-xs sm:btn-sm btn-error">
               <LogOut size={14} />
             </button>
 
           </div>
         ) : (
-          <button
-            onClick={() => navigate("/login")}
-            className="btn btn-xs sm:btn-sm btn-primary"
-          >
+          <button onClick={() => navigate("/login")}
+            className="btn btn-xs sm:btn-sm btn-primary">
             Login
           </button>
         )}
-
       </div>
-
     </div>
   </div>
 );
