@@ -5,7 +5,7 @@ export default function Drawer( { lang }) {
 
  const t = {
   EN: {
-    name: "KXondamir Madaliyev",
+    name: "KXONDAMIR MADALIYEV",
     role: "Frontend Dev | Mobile Graphics",
   },
   UZ: {
@@ -51,9 +51,9 @@ export default function Drawer( { lang }) {
 
           <h2 className="text-start text-lg mt-5">Email</h2>
           <a className="pr-40 text-cyan-300 hover:text-cyan-500 transition-colors" href="https://xondamirmadaliyev79@gmail.com">xondamirmadaliyev79@gmail.com</a>
-
-          <h2 className="text-start text-lg mt-5">Phone</h2>
-          <p className="text-cyan-300 hover:text-cyan-500 transition-colors text-start mt-1">📞 +998 93 560 75 63</p>
+        
+          <h2 className="text-start text-lg mt-5 mb-1">Phone:</h2>
+          <a href="tel:+998935607563" className="text-cyan-300 hover:text-cyan-500 pr-22 transition-colors text-start">📞 +998 93 560 75 63</a>  
         </div>
       </div>
     </div>
