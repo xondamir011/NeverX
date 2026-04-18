@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
 import { onAuthStateChanged } from "firebase/auth";
 import { auth } from "./firebase/config";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Login from "./auth/Login";
 import Register from "./auth/Register";
@@ -166,6 +168,7 @@ export default function App() {
 
       {/* FOOTER */}
       <Footer lang={lang} />
+      <ToastContainer position="top-right" autoClose={2000} theme="dark" />
     </div>
   );
 }

@@ -8,6 +8,7 @@ import {
 
 import { useState } from "react";
 import { FaGoogle, FaGithub } from "react-icons/fa";
+import { toast } from "react-toastify";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -16,20 +17,34 @@ export default function Login() {
   const login = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      toast.success("Muvaffaqiyatli kirdingiz ✅")
     } catch (err) {
-      alert(err.message);
+      toast.error("Login yoki parol noto‘g‘ri ❌");
     }
   };
 
   const googleLogin = async () => {
+    try {
     const provider = new GoogleAuthProvider();
     await signInWithPopup(auth, provider);
-  };
+    toast.success("Google orqali kirdingiz ✅");
 
-  const githubLogin = async () => {
+   } catch (err) {
+    toast.error("Google login xatolik ❌");
+   }
+ };
+
+const githubLogin = async () => {
+  try {
     const provider = new GithubAuthProvider();
     await signInWithPopup(auth, provider);
-  };
+
+    toast.success("GitHub orqali kirdingiz ✅");
+
+  } catch (err) {
+    toast.error("GitHub login xatolik ❌");
+  }
+};
 
   return (
     <div className="h-screen flex items-center justify-center bg-slate-900">

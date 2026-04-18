@@ -2,20 +2,26 @@ import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../firebase/config";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const register = async () => {
-    try {
-      await createUserWithEmailAndPassword(auth, email, password);
-      navigate("/"); // 🔥 login bo‘lgandan keyin home
-    } catch (err) {
-      alert(err.message);
-    }
-  };
+ const register = async () => {
+  try {
+    await createUserWithEmailAndPassword(auth, email, password);
+
+    toast.success("Ro‘yxatdan o‘tildi ✅");
+
+    navigate("/");
+
+  } catch (err) {
+    toast.error(err.message);
+  }
+};
 
   return (
     <div className="h-screen flex items-center justify-center">
@@ -47,6 +53,7 @@ export default function Register() {
           Already have account? Login
         </p>
 
+       <ToastContainer position="top-right" autoClose={2000} theme="dark"/>
       </div>
     </div>
   );
