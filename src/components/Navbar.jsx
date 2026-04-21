@@ -66,7 +66,7 @@ return (
         <div className="dropdown">
           <div tabIndex={0}
             role="button"
-            className="btn btn-xs sm:btn-sm btn-secondary rounded-3xl">
+            className="btn btn-xs sm:btn-sm btn-secondary ml-5 rounded-3xl">
             Theme
           </div>
 
@@ -89,17 +89,14 @@ return (
             ))}
           </ul>
         </div>
-
       </div>
 
       {/* RIGHT: USER + LANG */}
       <div className="flex items-center gap-2">
-
-        {/* LANG */}
         <div ref={langRef} className="relative">
 
           <button onClick={() => setLangOpen(!langOpen)}
-            className="btn btn-xs sm:btn-sm btn-primary rounded-3xl flex items-center gap-1">
+            className="btn btn-xs sm:btn-sm btn-primary rounded-3xl mr-5 flex items-center gap-1">
             <img src={`https://flagcdn.com/w40/${languages.find((l) => l.code === lang)?.flag}.png`}
               className="w-5 h-3 sm:w-6 sm:h-4"/>
             <span className="hidden sm:inline">{lang}</span>
@@ -126,7 +123,7 @@ return (
 
         {/* USER */}
         {user ? (
-          <div className="flex items-center gap-1 sm:gap-2">
+          <div className="flex items-center sm:gap-2">
 
             {user.photoURL ? (
               <img src={user.photoURL}
@@ -139,12 +136,12 @@ return (
               <FaUserCircle className="w-8 h-8 sm:w-10 sm:h-10 text-gray-500" />
             )}
 
-            <span className="hidden sm:block text-sm font-semibold truncate">
+            <span className="hidden sm:block text-sm mr-5 font-semibold truncate">
               {user.displayName || user.email}
             </span>
 
             <button onClick={handleLogout}
-              className="btn btn-xs sm:btn-sm btn-error">
+              className="btn btn-xs ml-3 sm:btn-sm btn-error">
               <LogOut size={14} />
             </button>
 
