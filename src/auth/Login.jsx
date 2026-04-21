@@ -15,9 +15,14 @@ export default function Login() {
   const [password, setPassword] = useState("");
 
   const login = async () => {
+    if (!email || !password) {
+      toast.error("Email va password kiriting ❌");
+      return;
+    }
+
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      toast.success("Muvaffaqiyatli kirdingiz ✅")
+      toast.success("Muvaffaqiyatli kirdingiz ✅");
     } catch (err) {
       toast.error("Login yoki parol noto‘g‘ri ❌");
     }
@@ -25,9 +30,12 @@ export default function Login() {
 
   const googleLogin = async () => {
     try {
-    const provider = new GoogleAuthProvider();
-    await signInWithPopup(auth, provider);
-    toast.success("Google orqali kirdingiz ✅");
+     const provider = new GoogleAuthProvider();
+     provider.setCustomParameters({
+      prompt: "select_account"
+     });
+     const result = await signInWithPopup(auth, provider);
+     toast.success("Google orqali kirdingiz ✅");
 
    } catch (err) {
     toast.error("Google login xatolik ❌");
@@ -37,18 +45,17 @@ export default function Login() {
 const githubLogin = async () => {
   try {
     const provider = new GithubAuthProvider();
-    await signInWithPopup(auth, provider);
-
+    const result = await signInWithPopup(auth, provider);
     toast.success("GitHub orqali kirdingiz ✅");
-
+    
   } catch (err) {
     toast.error("GitHub login xatolik ❌");
   }
 };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-slate-900">
-      <div className="w-100 bg-slate-800 p-6 rounded-2xl shadow-xl text-white">
+    <div className="min-h-screen flex items-center justify-center bg-slate-900">
+      <div className="w-115 max-w-sm md:max-w-md lg:max-w-lg bg-slate-800 p-6 rounded-2xl shadow-xl text-white">
 
         <h2 className="text-2xl font-bold text-center mb-6">
           Welcome Back 👋

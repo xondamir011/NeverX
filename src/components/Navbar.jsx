@@ -24,7 +24,7 @@ export default function Navbar({
 
   const languages = [
     { code: "EN", label: "English", flag: "us" },
-    { code: "UZ", label: "O'zbek", flag: "uz" },
+    { code: "UZ", label: "O'zbek", flag: "uzb" },
     { code: "RU", label: "Русский", flag: "ru" },
     { code: "DE", label: "Deutsch", flag: "de" },
     { code: "TR", label: "Türkçe", flag: "tr" },
@@ -48,7 +48,7 @@ export default function Navbar({
     document.addEventListener("click", handleClick);
     return () => document.removeEventListener("click", handleClick);
   }, []);
-   
+
 return (
   <div className="sticky top-0 z-30 bg-base-200 p-3">
 
@@ -130,7 +130,11 @@ return (
 
             {user.photoURL ? (
               <img src={user.photoURL}
-                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border"/>
+                className="w-8 h-8 sm:w-10 sm:h-10 rounded-full border"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/img1.png";
+                }}/>
             ) : (
               <FaUserCircle className="w-8 h-8 sm:w-10 sm:h-10 text-gray-500" />
             )}
