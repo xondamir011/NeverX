@@ -6,13 +6,7 @@ import { LogOut } from "react-feather";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/config";
 
-export default function Navbar({
-  user,
-  setLang,
-  lang,
-  theme,
-  setTheme
-}) {
+export default function Navbar({ user, setLang, lang, theme, setTheme }) {
   const [langOpen, setLangOpen] = useState(false);
   const langRef = useRef(null);
   const navigate = useNavigate();
@@ -63,20 +57,20 @@ return (
          <span className="hidden sm:inline text-lg">🎬</span> {titles[lang]?.replace("🎬", "") || "Movies"}
         </h2>
 
-        <div className="dropdown">
+         <div className="dropdown">
           <div tabIndex={0}
             role="button"
-            className="btn btn-sm btn-secondary pr-3 rounded-3xl">
+            className="btn btn-sm btn-secondary rounded-3xl">
             Theme
           </div>
 
-          <ul className="dropdown-content bg-base-300 rounded-box z-50 md:w-40 sm:w-28 p-3 m-2 mr-3 shadow">
+          <ul className="dropdown-content bg-base-300 mt-2 rounded-box z-50 md:w-40 sm:w-28 p-3 m-2 mr-3 shadow">
             {["dark", "valentine", "cyberpunk", "retro", "aqua"].map((t) => (
               <li key={t}>
                 <input
                   type="radio"
                   name="theme"
-                  className="theme-controller w-full btn btn-sm p-3 btn-ghost justify-start"
+                  className="theme-controller w-full btn btn-sm p-4 btn-ghost justify-start"
                   aria-label={t}
                   value={t}
                   checked={theme === t}
@@ -88,18 +82,18 @@ return (
             ))}
           </ul>
         </div>
-      </div>
+      </div> 
 
       {/* RIGHT: USER + LANG */}
       <div className="flex items-center">
         <div ref={langRef} className="relative">
 
           <button onClick={() => setLangOpen(!langOpen)}
-            className="btn btn-sm btn-primary rounded-3xl pr-5 mr-3 flex items-center">
+            className="btn btn-sm btn-primary rounded-3xl pr-5 mr-3 flex justify-center items-center">
             <img src={`https://flagcdn.com/w40/${languages.find((l) => l.code === lang)?.flag}.png`}
-              className="w-5 h-3"/>
-            <span className="hidden sm:inline">{lang}</span>
-          </button>
+              className="w-5 h-3 ml-2"/>
+            <span>{lang}</span>
+          </button> 
 
           {langOpen && (
             <div className="absolute right-0 mt-3 bg-base-200 p-3 ml-10 rounded-xl shadow z-50">
@@ -135,15 +129,14 @@ return (
               <FaUserCircle className="w-8 h-8 sm:w-10 sm:h-10 text-gray-500" />
             )}
 
-            <span className="block sm:block text-sm mr-5 font-semibold truncate">
+            <span className="block sm:block text-sm p-2 font-semibold truncate">
               {user.displayName || user.email}
             </span>
 
             <button onClick={handleLogout}
-              className="btn btn-xs ml-3 sm:btn-sm btn-error">
+              className="btn btn-sm btn-error">
               <LogOut size={14} />
             </button>
-
           </div>
         ) : (
           <button onClick={() => navigate("/login")}

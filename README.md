@@ -32,7 +32,7 @@ A modern, multilingual movie application built with React, Vite, and Firebase. U
 
 1. Clone the repository
 ```bash
-git clone <repository-url>
+git clone "https://github.com/xondamir011/movies_01.git"
 cd Movies
 ```
 
@@ -43,12 +43,12 @@ npm install
 
 3. Create `.env.local` file and add Firebase config:
 ```
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_auth_domain
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_storage_bucket
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_messaging_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
+VITE_FIREBASE_API_KEY="AIzaSyDnJCaACKYimBbKX8Hsb0j5Cmgt958zrPA"
+VITE_FIREBASE_AUTH_DOMAIN="mongodb-af2aa.firebaseapp.com"
+VITE_FIREBASE_PROJECT_ID="mongodb-af2aa"
+VITE_FIREBASE_STORAGE_BUCKET="mongodb-af2aa.appspot.com"
+VITE_FIREBASE_MESSAGING_SENDER_ID="753459863047"
+VITE_FIREBASE_APP_ID="1:753459863047:web:8736ac7c2978ed375814a2"
 ```
 
 4. Start development server
@@ -120,4 +120,4 @@ Created by Xondamir Madaliyev
 
 ---
 
-**Last Updated:** April 22, 2026
+**Last Updated:** March 18, 2026

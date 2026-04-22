@@ -57,9 +57,7 @@ export default function App() {
     const fetchMovies = async () => {
       setLoading(true);
       try {
-        const res = await fetch(
-          `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=${langMap[lang]}`
-        );
+        const res = await fetch(`https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=${langMap[lang]}`);
         const data = await res.json();
         setMovies(data.results || []);
       } catch (err) {
