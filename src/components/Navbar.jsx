@@ -66,17 +66,17 @@ return (
         <div className="dropdown">
           <div tabIndex={0}
             role="button"
-            className="btn btn-xs sm:btn-sm btn-secondary rounded-3xl">
+            className="btn btn-sm btn-secondary pr-3 rounded-3xl">
             Theme
           </div>
 
-          <ul className="dropdown-content bg-base-300 rounded-box z-50 md:w-40 sm:w-28 p-2 shadow">
+          <ul className="dropdown-content bg-base-300 rounded-box z-50 md:w-40 sm:w-28 p-3 m-2 mr-3 shadow">
             {["dark", "valentine", "cyberpunk", "retro", "aqua"].map((t) => (
               <li key={t}>
                 <input
                   type="radio"
                   name="theme"
-                  className="theme-controller w-full btn btn-sm btn-ghost justify-start"
+                  className="theme-controller w-full btn btn-sm p-3 btn-ghost justify-start"
                   aria-label={t}
                   value={t}
                   checked={theme === t}
@@ -95,9 +95,9 @@ return (
         <div ref={langRef} className="relative">
 
           <button onClick={() => setLangOpen(!langOpen)}
-            className="btn btn-xs sm:btn-sm btn-primary rounded-3xl mr-2 flex items-center">
+            className="btn btn-sm btn-primary rounded-3xl pr-5 mr-3 flex items-center">
             <img src={`https://flagcdn.com/w40/${languages.find((l) => l.code === lang)?.flag}.png`}
-              className="w-5 h-3 sm:w-6 sm:h-4"/>
+              className="w-5 h-3"/>
             <span className="hidden sm:inline">{lang}</span>
           </button>
 
