@@ -5,11 +5,11 @@ export default function MovieCard({ movie, lang }) {
   const [trailerUrl, setTrailerUrl] = useState(null);
 
   const t = {
-    EN: { more: "Details", watch: "Watch", desc: "No description" },
-    UZ: { more: "Batafsil", watch: "Ko'rish", desc: "Tavsif yo‘q" },
-    RU: { more: "Подробнее", watch: "Смотреть", desc: "Описание отсутствует" },
-    DE: { more: "Details", watch: "Ansehen", desc: "Keine Beschreibung" },
-    TR: { more: "Detay", watch: "İzle", desc: "Açıklama yok" },
+    EN: { more: "Details", desc: "No description" },
+    UZ: { more: "Batafsil", desc: "Tavsif yo‘q" },
+    RU: { more: "Подробнее", desc: "Описание отсутствует" },
+    DE: { more: "Details", desc: "Keine Beschreibung" },
+    TR: { more: "Detay", desc: "Açıklama yok" },
   };
 
   const openTrailer = () => {
@@ -96,11 +96,7 @@ export default function MovieCard({ movie, lang }) {
                 <a href={`https://www.themoviedb.org/movie/${movie.id}`}
                   target="_blank" className="btn btn-secondary">
                   ℹ️ {t[lang].more}
-                </a>
-
-                <button onClick={openTrailer} className="btn btn-success">
-                  🎬 {t[lang].watch}
-                </button>
+                </a>            
               </div>
             </div>
           </div>
