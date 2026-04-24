@@ -34,9 +34,9 @@ export default function MovieCard({ movie, lang }) {
 
         <div className="p-2">
           <h3 className="text-lg font-semibold mb-2 truncate">
-            {movie.title}
+            {movie.title || movie.name}  
           </h3>
-          <p className="text-sm opacity-70">📅 {movie.release_date}</p>
+          <p className="text-sm opacity-70">📅 {movie.release_date || movie.first_air_date}</p>
           <p>⭐️ {movie.vote_average ? movie.vote_average.toFixed(1) : "0.0"}</p>
         </div>
       </div>

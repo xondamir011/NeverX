@@ -10,59 +10,55 @@ export default function Search({
 }) {
   const [activeFilter, setActiveFilter] = useState("");
 
-  const filterLabels = {
-    EN: ["New Movies", "Popular", "Old Movies"],
-    UZ: ["Yangi filmlar", "Mashhur", "Eski filmlar"],
-    RU: ["Новые фильмы", "Популярные", "Старые фильмы"],
-    DE: ["Neue Filme", "Beliebt", "Alte Filme"],
-    TR: ["Yeni Filmler", "Popüler", "Eski Filmler"],
-  };
+const filters = [
+  { key: "all", label: { UZ: "hammasi", EN: "all", RU: "все", DE: "alle", TR: "tümü" } },
+  { key: "series", label: { UZ: "Serial", EN: "Series", RU: "Сериал", DE: "Serie", TR: "Dizi" } },
+  { key: "horror", label: { UZ: "Qo'rqinchli", EN: "Horror", RU: "Ужас", DE: "Horror", TR: "Korku" } },
+  { key: "drama", label: { UZ: "Sevgi", EN: "Doramma", RU: "Драма", DE: "Drama", TR: "Drama" } },
+  { key: "comedy", label: { UZ: "Kulgili", EN: "Comedy", RU: "Комедия", DE: "Komödie", TR: "Komedi" } },
+];
 
-  const filters = filterLabels[currentLang] || filterLabels.UZ;
-
-  const handleFilterClick = (filter) => {
-    setActiveFilter(filter);
+  const handleFilterClick = (filterkey) => {
+    setActiveFilter(filterkey);
     setQuery("");
-    onSearch("", filter);
+    onSearch("", filterkey); 
   };
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      if (query.trim() || activeFilter) {
-        onSearch(query, activeFilter);
-      }
+      onSearch(query, activeFilter);
     }, 500);
 
     return () => clearTimeout(timeout);
   }, [query, activeFilter]);
 
   return (
-    <div className="w-full p-3">
-      <div className="flex gap-2 mb-3">
+    <div className="w-full max-w-5xl mx-auto p-5">
 
+      {/* SEARCH */}
+      <div className="flex flex-col sm:flex-row gap-2 mb-3">
         <input type="text"
           placeholder={placeholder || "Qidirish..."}
-          className="flex-1 input input-bordered input-primary mb-3 rounded-xl"
+          className="flex-1 input input-bordered input-primary rounded-xl"
           value={query}
           onChange={(e) => setQuery(e.target.value)}/>
 
         <button onClick={() => onSearch(query, activeFilter)}
-          className="btn btn-primary w-12 flex items-center justify-center">
-          <SearchIcon size={18}/>
+          className="btn btn-primary w-12 sm:w-15 flex items-center justify-center">
+          <SearchIcon size={20} />
         </button>
-
       </div>
 
-      <div className="flex gap-2 justify-center overflow-x-auto pb-2">
+      {/* CATEGORY BUTTONS */}
+      <div className="flex gap-8 sm:gap-5 sm:justify-center justify-center overflow-x-auto pt-5">
         {filters.map((filter) => (
-          <button key={filter}
-            onClick={() => handleFilterClick(filter)}
-            className={`whitespace-nowrap btn :btn
-              ${activeFilter === filter ? "btn-primary" : "btn-outline"}`}>
-            {filter}
+          <button key={filter.key}
+            onClick={() => handleFilterClick(filter.key)}
+            className={`whitespace-nowrap btn btn-lg sm:btn-md lg:btn-lg btn-primary 
+              ${activeFilter === filter.key ? "btn-primary" : "btn-outline"}`}>
+            {filter.label[currentLang] || filter.label.EN}
           </button>
         ))}
-
       </div>
 
     </div>

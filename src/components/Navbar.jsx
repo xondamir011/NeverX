@@ -52,7 +52,7 @@ return (
         <Drawer lang={lang}/>
       </div>
 
-      <div className="flex items-center gap-3 p-3 justify-start flex-1">
+      <div className="flex items-center gap-5 p-3 justify-start flex-1">
         <h2 className="hidden sm:inline text-lg">
          <span className="hidden sm:inline text-lg">🎬</span> {titles[lang]?.replace("🎬", "") || "Movies"}
         </h2>
