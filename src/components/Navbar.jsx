@@ -48,7 +48,7 @@ return (
 
     <div className="flex items-center justify-between flex-nowrap">
 
-      <div className="flex items-center gap-3">
+      <div className="flex items-center gap-2">
         <Drawer lang={lang}/>
       </div>
 

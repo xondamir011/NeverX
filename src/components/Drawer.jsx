@@ -27,7 +27,7 @@ export default function Drawer( { lang }) {
  };
 
   return (
-    <div className="z-20 ml-3 mr-5">
+    <div className="z-20 sm:ml-3 md:ml-0">
       <button onClick={() => setOpen(true)} className="text-white text-2xl">☰</button>
 
       {open && (

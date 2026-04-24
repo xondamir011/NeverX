@@ -77,7 +77,7 @@ export default function MovieCard({ movie, lang }) {
                 {/* PLAY BUTTON */}
                 <button onClick={openTrailer}
                   className="absolute inset-0 flex items-center justify-center">
-                  <div className="bg-black/60 p-4 rounded-full text-xl hover:scale-110 transition">
+                  <div className="bg-black/60 p-4 cursor-pointer rounded-full text-xl hover:scale-110 transition">
                     Tomosha qilish ▶️
                   </div>
                 </button>

@@ -33,34 +33,38 @@ const filters = [
   }, [query, activeFilter]);
 
   return (
-    <div className="w-full max-w-5xl mx-auto p-5">
+<div className="w-full max-w-5xl mx-auto px-3 sm:px-5 py-3">
+  <div className="flex flex-row gap-2 mb-3">
+    
+    <input
+      type="text"
+      placeholder={placeholder || "Qidirish..."}
+      className="flex-1 input input-bordered input-primary rounded-xl h-9 sm:h-11"
+      value={query}
+      onChange={(e) => setQuery(e.target.value)}/>
 
-      {/* SEARCH */}
-      <div className="flex flex-col sm:flex-row gap-2 mb-3">
-        <input type="text"
-          placeholder={placeholder || "Qidirish..."}
-          className="flex-1 input input-bordered input-primary rounded-xl"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}/>
+    <button onClick={() => onSearch(query, activeFilter)}
+      className="btn btn-primary w-9 sm:w-11 h-9 sm:h-11 flex items-center justify-center p-0">
+      <SearchIcon size={16} />
+    </button>
 
-        <button onClick={() => onSearch(query, activeFilter)}
-          className="btn btn-primary w-12 sm:w-15 flex items-center justify-center">
-          <SearchIcon size={20} />
-        </button>
-      </div>
+  </div>
 
-      {/* CATEGORY BUTTONS */}
-      <div className="flex gap-8 sm:gap-5 sm:justify-center justify-center overflow-x-auto pt-5">
-        {filters.map((filter) => (
-          <button key={filter.key}
-            onClick={() => handleFilterClick(filter.key)}
-            className={`whitespace-nowrap btn btn-lg sm:btn-md lg:btn-lg btn-primary 
-              ${activeFilter === filter.key ? "btn-primary" : "btn-outline"}`}>
-            {filter.label[currentLang] || filter.label.EN}
-          </button>
-        ))}
-      </div>
+  {/* CATEGORY BUTTONS */}
+  <div className="flex gap-1.5 sm:gap-2 overflow-x-auto pb-2">
 
-    </div>
+    {filters.map((filter) => (
+      <button
+        key={filter.key}
+        onClick={() => handleFilterClick(filter.key)}
+        className={`whitespace-nowrap btn btn-lg sm:btn-md lg:btn-lg btn-primary
+          ${activeFilter === filter.key ? "btn-primary text-white" : "btn-outline"}`}>
+        {filter.label[currentLang] || filter.label.EN}
+      </button>
+    ))}
+
+  </div>
+
+</div>
   );
 }
