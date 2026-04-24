@@ -39,7 +39,7 @@ const filters = [
     <input
       type="text"
       placeholder={placeholder || "Qidirish..."}
-      className="flex-1 input input-bordered input-primary rounded-xl h-9 sm:h-11"
+      className="flex-1 input input-bordered input-primary rounded-xl h-10 sm:h-12"
       value={query}
       onChange={(e) => setQuery(e.target.value)}/>
 
