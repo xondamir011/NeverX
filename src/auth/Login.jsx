@@ -1,4 +1,5 @@
 import { auth } from "../firebase/config";
+import { saveUser } from "../firebase/userService";
 import {
   signInWithEmailAndPassword,
   signInWithPopup,
@@ -19,39 +20,37 @@ export default function Login() {
       toast.error("Email va password kiriting ❌");
       return;
     }
-
     try {
-      await signInWithEmailAndPassword(auth, email, password);
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      await saveUser(result.user); 
       toast.success("Muvaffaqiyatli kirdingiz ✅");
     } catch (err) {
-      toast.error("Login yoki parol noto‘g‘ri ❌");
+      toast.error("Login yoki parol noto'g'ri ❌");
     }
   };
 
   const googleLogin = async () => {
     try {
-     const provider = new GoogleAuthProvider();
-     provider.setCustomParameters({
-      prompt: "select_account"
-     });
-     const result = await signInWithPopup(auth, provider);
-     toast.success("Google orqali kirdingiz ✅");
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({ prompt: "select_account" });
+      const result = await signInWithPopup(auth, provider);
+      await saveUser(result.user); 
+      toast.success("Google orqali kirdingiz ✅");
+    } catch (err) {
+      toast.error("Google login xatolik ❌");
+    }
+  };
 
-   } catch (err) {
-    toast.error("Google login xatolik ❌");
-   }
- };
-
-const githubLogin = async () => {
-  try {
-    const provider = new GithubAuthProvider();
-    const result = await signInWithPopup(auth, provider);
-    toast.success("GitHub orqali kirdingiz ✅");
-    
-  } catch (err) {
-    toast.error("GitHub login xatolik ❌");
-  }
-};
+  const githubLogin = async () => {
+    try {
+      const provider = new GithubAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      await saveUser(result.user);
+      toast.success("GitHub orqali kirdingiz ✅");
+    } catch (err) {
+      toast.error("GitHub login xatolik ❌");
+    }
+  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-900">
@@ -71,7 +70,7 @@ const githubLogin = async () => {
           onChange={(e) => setPassword(e.target.value)}/>
 
         <button onClick={login}
-          className="w-full bg-blue-500 p-3 rounded-lg font-semibold hover:bg-blue-600">
+          className="w-full bg-blue-500 p-3 cursor-pointer rounded-lg font-semibold hover:bg-blue-600">
           Login
         </button>
 

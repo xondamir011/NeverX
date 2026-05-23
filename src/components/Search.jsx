@@ -10,18 +10,18 @@ export default function Search({
 }) {
   const [activeFilter, setActiveFilter] = useState("");
 
-const filters = [
-  { key: "all", label: { UZ: "hammasi", EN: "all", RU: "все", DE: "alle", TR: "tümü" } },
-  { key: "series", label: { UZ: "Serial", EN: "Series", RU: "Сериал", DE: "Serie", TR: "Dizi" } },
-  { key: "horror", label: { UZ: "Qo'rqinchli", EN: "Horror", RU: "Ужас", DE: "Horror", TR: "Korku" } },
-  { key: "drama", label: { UZ: "Sevgi", EN: "Doramma", RU: "Драма", DE: "Drama", TR: "Drama" } },
-  { key: "comedy", label: { UZ: "Kulgili", EN: "Comedy", RU: "Комедия", DE: "Komödie", TR: "Komedi" } },
-];
+  const filters = [
+    { key: "all", label: { UZ: "hammasi", EN: "all", RU: "все", DE: "alle", TR: "tümü" } },
+    { key: "series", label: { UZ: "Serial", EN: "Series", RU: "Сериал", DE: "Serie", TR: "Dizi" } },
+    { key: "horror", label: { UZ: "Qo'rqinchli", EN: "Horror", RU: "Ужас", DE: "Horror", TR: "Korku" } },
+    { key: "drama", label: { UZ: "Sevgi", EN: "Doramma", RU: "Драма", DE: "Drama", TR: "Drama" } },
+    { key: "comedy", label: { UZ: "Kulgili", EN: "Comedy", RU: "Комедия", DE: "Komödie", TR: "Komedi" } },
+  ];
 
   const handleFilterClick = (filterkey) => {
     setActiveFilter(filterkey);
     setQuery("");
-    onSearch("", filterkey); 
+    onSearch("", filterkey);
   };
 
   useEffect(() => {
@@ -33,38 +33,39 @@ const filters = [
   }, [query, activeFilter]);
 
   return (
-<div className="w-full max-w-5xl mx-auto px-3 sm:px-5 py-3">
-  <div className="flex flex-row gap-2 mb-3">
-    
-    <input
-      type="text"
-      placeholder={placeholder || "Qidirish..."}
-      className="flex-1 input input-bordered input-primary rounded-xl h-10 sm:h-12"
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}/>
+    <div className="w-full max-w-5xl mx-auto px-3 sm:px-5 py-3">
+      <div className="flex items-center gap-2 mb-3">
 
-    <button onClick={() => onSearch(query, activeFilter)}
-      className="btn btn-primary w-9 sm:w-11 h-9 sm:h-11 flex items-center justify-center p-0">
-      <SearchIcon size={16} />
-    </button>
+        <input
+          type="text"
+          placeholder={placeholder || "Qidirish..."}
+          className="flex-1 input input-bordered input-primary rounded-xl h-11 sm:h-12"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}/>
 
-  </div>
+        <button onClick={() => onSearch(query, activeFilter)}
+          className="btn btn-primary rounded-xl h-11 sm:h-12 px-3 sm:px-4 flex items-center justify-center">
+          <SearchIcon size={18} />
+        </button>
 
-  {/* CATEGORY BUTTONS */}
-  <div className="flex gap-1.5 sm:gap-2 overflow-x-auto pb-2">
+      </div>
 
-    {filters.map((filter) => (
-      <button
-        key={filter.key}
-        onClick={() => handleFilterClick(filter.key)}
-        className={`whitespace-nowrap btn btn-lg sm:btn-md lg:btn-lg btn-primary
-          ${activeFilter === filter.key ? "btn-primary text-white" : "btn-outline"}`}>
-        {filter.label[currentLang] || filter.label.EN}
-      </button>
-    ))}
+      {/* CATEGORY BUTTONS */}
+      <div className="flex justify-center gap-2 overflow-x-auto sm:flex-wrap pb-2">
+        {filters.map((filter) => (
+          <button
+            key={filter.key}
+            onClick={() => handleFilterClick(filter.key)}
+            className={`whitespace-nowrap px-4 py-2 rounded-xl cursor-pointer text-sm sm:text-base transition-all
 
-  </div>
-
-</div>
+          ${activeFilter === filter.key
+                ? "bg-primary text-white"
+                : "bg-white/10 text-white/70 hover:bg-secondary"
+              } `}>
+            {filter.label[currentLang] || filter.label.EN}
+          </button>
+        ))}
+      </div>
+    </div>
   );
 }

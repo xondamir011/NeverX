@@ -201,16 +201,11 @@ function YouTubePlayer({ videoId, title }) {
         position: "relative", width: "100%", aspectRatio: "16/9",
         background: "#000", borderRadius: isFullscreen ? 0 : "12px 12px 0 0",
         overflow: "hidden", cursor: showControls ? "default" : "none",
-      }}
-    >
+      }}>
+        
       {/* YouTube iframe */}
-      <div ref={playerRef} style={{ width: "100%", height: "100%", pointerEvents: "none" }} />
-
-      {/* Clickable transparent overlay (play/pause) */}
-      <div
-        onClick={togglePlay}
-        style={{ position: "absolute", inset: 0, zIndex: 1 }}
-      />
+    <div ref={playerRef} style={{ width: "100%", height: "100%", pointerEvents: "none" }} />
+      <div onClick={togglePlay} style={{ position: "absolute", inset: 0, zIndex: 1 }} />
 
       {/* Controls */}
       <div
