@@ -11,7 +11,7 @@ export default function Search({
   const [activeFilter, setActiveFilter] = useState("");
 
   const filters = [
-    { key: "all", label: { UZ: "hammasi", EN: "all", RU: "все", DE: "alle", TR: "tümü" } },
+    { key: "All", label: { UZ: "Hammasi", EN: "All", RU: "Все", DE: "Alle", TR: "Tümü" } },
     { key: "series", label: { UZ: "Serial", EN: "Series", RU: "Сериал", DE: "Serie", TR: "Dizi" } },
     { key: "horror", label: { UZ: "Qo'rqinchli", EN: "Horror", RU: "Ужас", DE: "Horror", TR: "Korku" } },
     { key: "drama", label: { UZ: "Sevgi", EN: "Doramma", RU: "Драма", DE: "Drama", TR: "Drama" } },
@@ -51,12 +51,12 @@ export default function Search({
       </div>
 
       {/* CATEGORY BUTTONS */}
-      <div className="flex justify-center gap-2 overflow-x-auto sm:flex-wrap pb-2">
+      <div className="flex justify-center gap-1 overflow-x-auto sm:flex-wrap pb-2">
         {filters.map((filter) => (
           <button
             key={filter.key}
             onClick={() => handleFilterClick(filter.key)}
-            className={`whitespace-nowrap px-4 py-2 rounded-xl cursor-pointer text-sm sm:text-base transition-all
+            className={`whitespace-nowrap px-2 py-2 rounded-xl cursor-pointer text-sm sm:text-base transition-all
 
           ${activeFilter === filter.key
                 ? "bg-primary text-white"

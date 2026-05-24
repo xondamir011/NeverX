@@ -35,7 +35,7 @@ export default function Footer({ lang }) {
 
       <div className="flex justify-center gap-12 mt-3 mr-5 mb-3">
         <a href="https://t.me/mars_it_school" className="link link-hover hover:text-info transition-all">Telegram</a>
-        <a href="https://github.com/xondamir011" className="link link-hover hover:text-accent">GitHub</a>
+        <a href="https://github.com/xondamir011" className="link link-hover hover:text-gray-400 transition-all">GitHub</a>
        <a href="https://xondamirmadaliyev79@gmail.com" className="link link-hover hover:text-secondary transition-all">Contact</a>
       </div>
 
