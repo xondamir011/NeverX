@@ -3,6 +3,8 @@ import Drawer from "./Drawer";
 import { FaUserCircle, FaPalette } from "react-icons/fa";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/config";
+import { FaFilm } from "react-icons/fa";
+import { FaCog } from "react-icons/fa";
 
 export default function Navbar({
   user,
@@ -29,14 +31,6 @@ export default function Navbar({
     { code: "DE", label: "Deutsch", flag: "de" },
     { code: "TR", label: "Türkçe", flag: "tr" },
   ];
-
-  const titles = {
-    EN: "Movies",
-    UZ: "Filmlar",
-    RU: "Фильмы",
-    DE: "Filme",
-    TR: "Filmler",
-  };
 
   const adminText = {
     EN: "Admin",
@@ -97,8 +91,8 @@ export default function Navbar({
         {/* LEFT */}
         <div className="flex items-center gap-2">
           <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} />
-          <h2 className="text-lg ml-2 font-semibold truncate">
-            🎬{titles[lang] || "Movies"}
+          <h2 className="flex items-center gap-1 text-xl ml-3 font-semibold truncate">
+             <FaFilm size={25} /> NeverX
           </h2>
         </div>
 
@@ -107,8 +101,8 @@ export default function Navbar({
           {isAdmin && (
             <button onClick={() => setShowAdmin(true)}
               className="w-18 h-12 sm:w-18 sm:h-12 rounded-lg bg-base-100 border-none hover:bg-base-100
-               flex items-center justify-center font-semibold">
-              <span className="text-lg">⚙️</span>
+               flex items-center justify-center gap-1 font-semibold">
+              <span className="text-lg"><FaCog /></span>
               <span>{adminText[lang] || "Admin"}</span>
             </button>
           )}
