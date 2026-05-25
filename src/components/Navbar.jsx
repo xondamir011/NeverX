@@ -17,6 +17,7 @@ export default function Navbar({
   const [langOpen, setLangOpen] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [drawerOpen, setDrawerOpen] = useState(false);
 
   const langRef = useRef(null);
   const dropRef = useRef(null);
@@ -72,7 +73,7 @@ export default function Navbar({
 
         {/* LEFT */}
         <div className="flex items-center gap-2">
-           <Drawer lang={lang} user={user} />
+          <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} />
           <h2 className="text-sm sm:text-lg font-semibold truncate">
             🎬 {titles[lang] || "Movies"}
           </h2>
@@ -82,26 +83,25 @@ export default function Navbar({
         <div className="flex items-center gap-2">
           {isAdmin && (
             <button onClick={() => setShowAdmin(true)}
-              className="btn btn-sm bg-indigo-600 text-white border-none hover:bg-indigo-700">
+              className="btn btn-lg sm:btn-sm bg-indigo-600 text-white border-none hover:bg-indigo-700">
               ⚙️ {adminText[lang] || "Admin"}
             </button>
           )}
 
           {/* THEME */}
           <div className="dropdown dropdown-end">
-            <div className="btn btn-sm bg-base-100 rounded-xl">
+            <div className="btn btn-lg sm:btn-sm bg-base-100 rounded-xl">
               <FaPalette />
             </div>
             <ul className="dropdown-content bg-base-300 mt-2 rounded-box w-40 p-2 shadow">
               {["dark", "valentine", "cyberpunk", "retro", "aqua"].map((t) => (
                 <li key={t}>
                   <button onClick={() => {
-                      setTheme(t);
-                      localStorage.setItem("theme", t);
-                    }}
-                    className={`btn btn-sm w-full justify-start mb-1 ${
-                      theme === t ? "btn-primary" : "btn-ghost"
-                    }`}>
+                    setTheme(t);
+                    localStorage.setItem("theme", t);
+                  }}
+                    className={`btn btn-sm w-full justify-start mb-1 ${theme === t ? "btn-primary" : "btn-ghost"
+                      }`}>
                     {t}
                   </button>
                 </li>
@@ -112,7 +112,7 @@ export default function Navbar({
           {/* LANGUAGE */}
           <div ref={langRef} className="relative">
             <button onClick={() => setLangOpen(!langOpen)}
-              className="btn btn-sm bg-base-100 rounded-xl">
+              className="btn btn-lg sm:btn-sm bg-base-100 rounded-xl">
               {lang}
             </button>
 
@@ -128,7 +128,7 @@ export default function Navbar({
                     className="flex gap-2 p-2 hover:bg-base-300 cursor-pointer rounded-lg">
                     <img src={`https://flagcdn.com/w40/${l.flag}.png`}
                       className="w-5 h-4"
-                      alt={l.label}/>
+                      alt={l.label} />
                     <span>{l.label}</span>
                   </div>
                 ))}
@@ -147,7 +147,7 @@ export default function Navbar({
               }}>
 
               {user?.photoURL ? (
-                <img src={user.photoURL}
+                <img className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border-2 border-white/20" src={user.photoURL}
                   alt="avatar"
                   style={{
                     width: isMobile ? 34 : 40,
@@ -155,7 +155,7 @@ export default function Navbar({
                     borderRadius: "50%",
                     objectFit: "cover",
                     border: "2px solid rgba(255,255,255,0.2)",
-                  }}/>
+                  }} />
               ) : (
                 <FaUserCircle
                   style={{
@@ -176,18 +176,18 @@ export default function Navbar({
                   width: isMobile ? 170 : 230,
                   borderRadius: isMobile ? 14 : 22,
                   boxShadow: "0 12px 48px rgba(0,0,0,0.18)",
-                  padding: isMobile ? "8px 10px" : "12px 15px",
+                  padding: isMobile ? "10px 10px" : "12px 15px",
                   zIndex: 999,
                   animation: "dropIn 0.25s ease",
                 }}>
                 {/* USER INFO */}
                 <div style={{
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    gap: isMobile ? 6 : 10,
-                    marginBottom: isMobile ? 10 : 16,
-                  }}>
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: isMobile ? 6 : 10,
+                  marginBottom: isMobile ? 10 : 16,
+                }}>
                   {user?.photoURL ? (
                     <img
                       src={user.photoURL}
@@ -195,21 +195,21 @@ export default function Navbar({
                         width: isMobile ? 50 : 76,
                         height: isMobile ? 50 : 76,
                         borderRadius: "50%",
-                      }}/>
+                      }} />
                   ) : (
                     <FaUserCircle
                       style={{
                         fontSize: isMobile ? 50 : 76,
                         color: "#d1d5db",
-                      }}/>
+                      }} />
                   )}
 
                   <h2 style={{
-                      margin: 0,
-                      fontSize: isMobile ? 14 : 18,
-                      fontWeight: 700,
-                      textAlign: "center",
-                    }}>
+                    margin: 0,
+                    fontSize: isMobile ? 14 : 18,
+                    fontWeight: 700,
+                    textAlign: "center",
+                  }}>
                     {user?.displayName || user?.email}
                   </h2>
                 </div>
@@ -217,7 +217,8 @@ export default function Navbar({
                 <hr style={{ margin: "0 0 6px", borderTop: "1px solid #fce7f3" }} />
 
                 {/* PROFILE */}
-                <button className="cursor-pointer hover:bg-base-300"
+                <button onClick={() => {setDrawerOpen(true); setDropOpen(false)}}
+                  className="cursor-pointer hover:bg-base-300 active:bg-base-300 transition-colors"
                   style={{
                     display: "block",
                     width: "100%",
@@ -231,7 +232,7 @@ export default function Navbar({
 
                 {/* LOGOUT */}
                 <button onClick={handleLogout}
-                  className="cursor-pointer hover:bg-base-300"
+                  className="cursor-pointer hover:bg-base-300 active:bg-base-300 transition-colors"
                   style={{
                     display: "block",
                     width: "100%",

@@ -1,9 +1,7 @@
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
 
-export default function Drawer({ lang, user }) {
-  const [open, setOpen] = useState(false);
-
+export default function Drawer({ lang, user, open, setOpen }) {
   const userImg = user?.photoURL;
   const userEmail = user?.email || "No email";
 

@@ -51,7 +51,7 @@ export default function Search({
       </div>
 
       {/* CATEGORY BUTTONS */}
-      <div className="flex justify-center gap-1 overflow-x-auto sm:flex-wrap pb-2">
+      <div className="flex justify-center gap-2 overflow-x-auto sm:flex-wrap pb-2">
         {filters.map((filter) => (
           <button
             key={filter.key}
