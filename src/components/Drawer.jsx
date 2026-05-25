@@ -28,6 +28,24 @@ export default function Drawer({ lang, user, open, setOpen }) {
     },
   };
 
+  const texts ={
+    EN: {
+      phone: "Phone",
+    },  
+    UZ: {
+      phone: "Telefon",
+    },
+    RU: {
+      phone: "Телефон",
+    },
+    DE: {
+      phone: "Mein Telefon",
+    },
+    TR: {
+      phone: "Telefonum",
+    },
+  }
+
   return (
     <div className="z-20">
       <button onClick={() => setOpen(true)}
@@ -51,7 +69,6 @@ export default function Drawer({ lang, user, open, setOpen }) {
         </button>
 
         {/* USER */}
-
         <div className="text-center mt-5 flex flex-col items-center">
           {userImg ? (
             <img src={userImg}
@@ -102,7 +119,7 @@ export default function Drawer({ lang, user, open, setOpen }) {
           </div>
 
           <div>
-            <h2 className="text-lg">Phone:</h2>
+            <h2 className="text-lg">{texts[lang]?.phone}:</h2>
             <a href="tel:+998935607563"
               className="text-cyan-300 hover:text-cyan-500">
               📞 +998 93 560 75 63

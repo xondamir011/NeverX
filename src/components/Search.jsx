@@ -56,7 +56,7 @@ export default function Search({
           <button
             key={filter.key}
             onClick={() => handleFilterClick(filter.key)}
-            className={`whitespace-nowrap px-2 py-2 rounded-xl cursor-pointer text-sm sm:text-base transition-all
+            className={`whitespace-nowrap px-1.5 py-2 sm:px-5 sm:py-3 rounded-xl cursor-pointer text-sm sm:text-base transition-all
 
           ${activeFilter === filter.key
                 ? "bg-primary text-white"

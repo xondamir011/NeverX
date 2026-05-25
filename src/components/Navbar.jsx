@@ -46,6 +46,29 @@ export default function Navbar({
     TR: "Admin",
   };
 
+  const texts = {
+    EN: {
+      profile: "Profile",
+      logout: "Logout",
+    },
+    UZ: {
+      profile: "Profil",
+      logout: "Chiqish",
+    },
+    RU: {
+      profile: "Профиль",
+      logout: "Выход",
+    },
+    DE: {
+      profile: "Profil",
+      logout: "Abmelden",
+    },
+    TR: {
+      profile: "Profil",
+      logout: "Çıkış",
+    },
+  };
+
   useEffect(() => {
     const handler = (e) => {
       if (langRef.current && !langRef.current.contains(e.target)) {
@@ -80,20 +103,20 @@ export default function Navbar({
         </div>
 
         {/* RIGHT */}
-        <div className="flex items-center gap-2">
+        <div className="flex  items-center gap-2">
           {isAdmin && (
             <button onClick={() => setShowAdmin(true)}
-              className="btn btn-lg sm:btn-sm bg-indigo-600 text-white border-none hover:bg-indigo-700">
+              className="btn w-17 h-12 sm:w-18 sm:h-12 bg-base-100 text-white border-none hover:bg-base-100">
               ⚙️ {adminText[lang] || "Admin"}
             </button>
           )}
 
           {/* THEME */}
           <div className="dropdown dropdown-end">
-            <div className="btn btn-lg sm:btn-sm bg-base-100 rounded-xl">
+            <div tabIndex={0} role="button" className="btn w-12 h-10 bg-base-100 rounded-xl">
               <FaPalette />
             </div>
-            <ul className="dropdown-content bg-base-300 mt-2 rounded-box w-40 p-2 shadow">
+            <ul tabIndex={0} className="dropdown-content bg-base-300 mt-2 rounded-box w-40 p-2 shadow">
               {["dark", "valentine", "cyberpunk", "retro", "aqua"].map((t) => (
                 <li key={t}>
                   <button onClick={() => {
@@ -112,7 +135,7 @@ export default function Navbar({
           {/* LANGUAGE */}
           <div ref={langRef} className="relative">
             <button onClick={() => setLangOpen(!langOpen)}
-              className="btn btn-lg sm:btn-sm bg-base-100 rounded-xl">
+              className="btn w-12 h-10 bg-base-100 rounded-xl">
               {lang}
             </button>
 
@@ -147,7 +170,7 @@ export default function Navbar({
               }}>
 
               {user?.photoURL ? (
-                <img className="w-8 h-8 sm:w-10 sm:h-10 rounded-full object-cover border-2 border-white/20" src={user.photoURL}
+                <img className="rounded-full object-cover border-2 border-white/20" src={user.photoURL}
                   alt="avatar"
                   style={{
                     width: isMobile ? 34 : 40,
@@ -217,31 +240,28 @@ export default function Navbar({
                 <hr style={{ margin: "0 0 6px", borderTop: "1px solid #fce7f3" }} />
 
                 {/* PROFILE */}
-                <button onClick={() => {setDrawerOpen(true); setDropOpen(false)}}
-                  className="cursor-pointer hover:bg-base-300 active:bg-base-300 transition-colors"
+                <button onClick={() => {
+                  setDrawerOpen(true);
+                  setDropOpen(false);
+                }}
+                  className="w-full text-left rounded-xl hover:bg-base-300 active:bg-base-300 active:scale-[0.98] 
+                   transition-all cursor-pointer duration-150"
                   style={{
-                    display: "block",
-                    width: "100%",
-                    textAlign: "left",
-                    padding: isMobile ? "6px 8px" : "10px 12px",
+                    padding: isMobile ? "8px 10px" : "10px 12px",
                     fontSize: isMobile ? 13 : 15,
-                    borderRadius: 10,
                   }}>
-                  Profil
+                  {texts[lang]?.profile}
                 </button>
 
                 {/* LOGOUT */}
                 <button onClick={handleLogout}
-                  className="cursor-pointer hover:bg-base-300 active:bg-base-300 transition-colors"
+                  className="w-full text-left rounded-xl hover:bg-base-300 active:bg-base-300 active:scale-[0.98]
+                   transition-all duration-150"
                   style={{
-                    display: "block",
-                    width: "100%",
-                    textAlign: "left",
-                    padding: isMobile ? "6px 8px" : "10px 12px",
+                    padding: isMobile ? "8px 10px" : "10px 12px",
                     fontSize: isMobile ? 13 : 15,
-                    borderRadius: 10,
                   }}>
-                  Chiqish
+                  {texts[lang]?.logout}
                 </button>
               </div>
             )}
