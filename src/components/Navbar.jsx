@@ -103,10 +103,10 @@ export default function Navbar({
         </div>
 
         {/* RIGHT */}
-        <div className="flex  items-center gap-2">
+        <div className="flex items-center gap-2">
           {isAdmin && (
             <button onClick={() => setShowAdmin(true)}
-              className="btn w-17 h-12 sm:w-18 sm:h-12 bg-base-100 text-white border-none hover:bg-base-100">
+              className="w-18 h-12 sm:w-18 sm:h-12 rounded-xl bg-base-100 text-base font-semibold border-none hover:bg-base-100">
               ⚙️ {adminText[lang] || "Admin"}
             </button>
           )}

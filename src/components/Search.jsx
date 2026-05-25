@@ -53,14 +53,13 @@ export default function Search({
       {/* CATEGORY BUTTONS */}
       <div className="flex justify-center gap-2 overflow-x-auto sm:flex-wrap pb-2">
         {filters.map((filter) => (
-          <button
-            key={filter.key}
+          <button key={filter.key}
             onClick={() => handleFilterClick(filter.key)}
-            className={`whitespace-nowrap px-1.5 py-2 sm:px-5 sm:py-3 rounded-xl cursor-pointer text-sm sm:text-base transition-all
+            className={`whitespace-nowrap px-5 sm:py-3 rounded-xl font-semibold cursor-pointer text-base-content transition-all
 
           ${activeFilter === filter.key
-                ? "bg-primary text-white"
-                : "bg-white/10 text-white/70 hover:bg-secondary"
+                ? "bg-base-200"
+                : "bg-base-200"
               } `}>
             {filter.label[currentLang] || filter.label.EN}
           </button>

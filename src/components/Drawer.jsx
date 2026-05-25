@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FaUserCircle } from "react-icons/fa";
+import { FaTimes } from "react-icons/fa";
 
 export default function Drawer({ lang, user, open, setOpen }) {
   const userImg = user?.photoURL;
@@ -49,7 +50,7 @@ export default function Drawer({ lang, user, open, setOpen }) {
   return (
     <div className="z-20">
       <button onClick={() => setOpen(true)}
-        className="text-white text-2xl">
+        className="text-base">
         ☰
       </button>
 
@@ -60,12 +61,13 @@ export default function Drawer({ lang, user, open, setOpen }) {
       )}
 
       {/* DRAWER */}
-      <div className={`fixed top-0 left-0 h-full w-72 bg-gray-900 text-white p-5 transform transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"
+      <div className={`fixed top-0 left-0 h-full w-72 bg-base-200 text-base p-5 transform transition-transform duration-300 ${open ? "translate-x-0" : "-translate-x-full"
         }`}>
 
-        <button className="w-10 h-10 border-white rounded-full border-2"
+        <button className="flex justify-center items-center cursor-pointer w-10 h-10 rounded-full border-2 hover:bg-base-300
+         active:scale-95 transition-all duration-150"
           onClick={() => setOpen(false)}>
-          ❌
+          <FaTimes size={28} />
         </button>
 
         {/* USER */}
@@ -75,7 +77,7 @@ export default function Drawer({ lang, user, open, setOpen }) {
               alt="user avatar"
               className="w-24 h-24 rounded-full border-2 border-cyan-400 object-cover" />
           ) : (
-            <FaUserCircle className="w-24 h-24 text-gray-400" />
+            <FaUserCircle className="w-24 h-24" />
           )}
 
           {/* NAME */}
@@ -84,7 +86,7 @@ export default function Drawer({ lang, user, open, setOpen }) {
           </h2>
 
           {/* ROLE */}
-          <p className="text-cyan-300 text-lg mb-8">
+          <p className="text-cyan-400 text-lg mb-8">
             {t[lang]?.role || t.EN.role}
           </p>
         </div>
@@ -94,7 +96,7 @@ export default function Drawer({ lang, user, open, setOpen }) {
 
           <div>
             <h2 className="text-lg">Telegram:</h2>
-            <a className="text-cyan-300 hover:text-cyan-500"
+            <a className="text-cyan-400 hover:text-cyan-500"
               href="https://t.me/xondamir_mi"
               target="_blank">
               @xondamir_mi
@@ -103,7 +105,7 @@ export default function Drawer({ lang, user, open, setOpen }) {
 
           <div>
             <h2 className="text-lg">GitHub:</h2>
-            <a className="text-cyan-300 hover:text-cyan-500"
+            <a className="text-cyan-400 hover:text-cyan-500"
               href="https://github.com/xondamir011"
               target="_blank">
               xondamir011
@@ -112,7 +114,7 @@ export default function Drawer({ lang, user, open, setOpen }) {
 
           <div>
             <h2 className="text-lg">Email:</h2>
-            <a className="text-cyan-300 hover:text-cyan-500"
+            <a className="text-cyan-400 hover:text-cyan-500"
               href="mailto:xondamirmadaliyev79@gmail.com">
               xondamirmadaliyev79@gmail.com
             </a>
@@ -121,7 +123,7 @@ export default function Drawer({ lang, user, open, setOpen }) {
           <div>
             <h2 className="text-lg">{texts[lang]?.phone}:</h2>
             <a href="tel:+998935607563"
-              className="text-cyan-300 hover:text-cyan-500">
+              className="text-cyan-400 hover:text-cyan-500">
               📞 +998 93 560 75 63
             </a>
           </div>
