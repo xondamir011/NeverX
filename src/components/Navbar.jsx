@@ -105,11 +105,6 @@ export default function Navbar({
         {/* RIGHT */}
         <div className="flex items-center gap-2">
           {isAdmin && (
-            // <button onClick={() => setShowAdmin(true)}
-            //   className="w-18 h-12 sm:w-18 sm:h-12 rounded-xl bg-base-100 text-base font-semibold border-none hover:bg-base-100">
-            //   ⚙️ {adminText[lang] || "Admin"}
-            // </button>
-
             <button onClick={() => setShowAdmin(true)}
               className="w-18 h-12 sm:w-18 sm:h-12 rounded-lg bg-base-100 border-none hover:bg-base-100
                flex items-center justify-center font-semibold">
@@ -177,7 +172,7 @@ export default function Navbar({
               }}>
 
               {user?.photoURL ? (
-                <img className="rounded-full object-cover border-2 border-white/20" src={user.photoURL}
+                <img className="rounded-full bg-base-200 object-cover border-2 border-white/20" src={user.photoURL}
                   alt="avatar"
                   style={{
                     width: isMobile ? 34 : 40,
@@ -202,8 +197,8 @@ export default function Navbar({
                   position: "absolute",
                   top: "calc(100% + 12px)",
                   right: 0,
-
-                  width: isMobile ? 170 : 230,
+                  width: isMobile ? "88vw" : 230,
+                  maxWidth: 230,
                   borderRadius: isMobile ? 14 : 22,
                   boxShadow: "0 12px 48px rgba(0,0,0,0.18)",
                   padding: isMobile ? "10px 10px" : "12px 15px",
@@ -251,8 +246,8 @@ export default function Navbar({
                   setDrawerOpen(true);
                   setDropOpen(false);
                 }}
-                  className="w-full text-left rounded-xl hover:bg-base-300 active:bg-base-300 active:scale-[0.98] 
-                   transition-all cursor-pointer duration-150"
+                  className="w-full text-left rounded-xl hover:bg-base-300 active:bg-base-300 active:scale-[0.98]
+                    transition-all duration-150"
                   style={{
                     padding: isMobile ? "8px 10px" : "10px 12px",
                     fontSize: isMobile ? 13 : 15,
