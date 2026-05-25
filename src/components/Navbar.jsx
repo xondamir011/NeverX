@@ -97,17 +97,24 @@ export default function Navbar({
         {/* LEFT */}
         <div className="flex items-center gap-2">
           <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} />
-          <h2 className="text-sm sm:text-lg font-semibold truncate">
-            🎬 {titles[lang] || "Movies"}
+          <h2 className="text-lg ml-2 font-semibold truncate">
+            🎬{titles[lang] || "Movies"}
           </h2>
         </div>
 
         {/* RIGHT */}
         <div className="flex items-center gap-2">
           {isAdmin && (
+            // <button onClick={() => setShowAdmin(true)}
+            //   className="w-18 h-12 sm:w-18 sm:h-12 rounded-xl bg-base-100 text-base font-semibold border-none hover:bg-base-100">
+            //   ⚙️ {adminText[lang] || "Admin"}
+            // </button>
+
             <button onClick={() => setShowAdmin(true)}
-              className="w-18 h-12 sm:w-18 sm:h-12 rounded-xl bg-base-100 text-base font-semibold border-none hover:bg-base-100">
-              ⚙️ {adminText[lang] || "Admin"}
+              className="w-18 h-12 sm:w-18 sm:h-12 rounded-lg bg-base-100 border-none hover:bg-base-100
+               flex items-center justify-center font-semibold">
+              <span className="text-lg">⚙️</span>
+              <span>{adminText[lang] || "Admin"}</span>
             </button>
           )}
 

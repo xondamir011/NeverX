@@ -50,7 +50,7 @@ export default function Drawer({ lang, user, open, setOpen }) {
   return (
     <div className="z-20">
       <button onClick={() => setOpen(true)}
-        className="text-base">
+        className="flex items-center justify-center text-2xl rounded-xl hover:bg-base-300 active:scale-95 transition-all">
         ☰
       </button>
 

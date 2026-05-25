@@ -55,7 +55,7 @@ export default function Search({
         {filters.map((filter) => (
           <button key={filter.key}
             onClick={() => handleFilterClick(filter.key)}
-            className={`whitespace-nowrap px-5 sm:py-3 rounded-xl font-semibold cursor-pointer text-base-content transition-all
+            className={`whitespace-nowrap px-2 py-3 mt-3 rounded-xl font-semibold cursor-pointer text-base-content transition-all
 
           ${activeFilter === filter.key
                 ? "bg-base-200"
