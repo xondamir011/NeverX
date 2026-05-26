@@ -90,7 +90,7 @@ export default function Navbar({
 
         {/* LEFT */}
         <div className="flex items-center gap-2">
-          <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} />
+            <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} />
           <h2 className="flex items-center gap-1 text-xl ml-3 font-semibold truncate">
              <FaFilm size={25} /> NeverX
           </h2>

@@ -1,123 +1,165 @@
-# 🎬 Movies App
+# 🎬 NeverX App
 
-A modern, multilingual movie application built with React, Vite, and Firebase. Users can explore movies, manage favorites, and enjoy a seamless experience with theme customization.
+A modern, multilingual movie & TV show platform built with React, Vite, and Firebase. Explore movies, watch trailers, save favorites, like and comment — all in one place.
 
-## Features
+🌐 **Live:** [movies-01-sandy.vercel.app](https://movies-01-sandy.vercel.app)
 
-- 🌍 **Multilingual Support** - English, Uzbek, Russian, German, Turkish
-- 🎨 **Theme Customization** - Dark, Valentine, Cyberpunk, Retro, Aqua themes
-- 🔐 **Firebase Authentication** - Secure user login and registration
-- 📱 **Responsive Design** - Mobile-friendly interface with Tailwind CSS
-- 🎭 **Movie Browsing** - Browse and search movies
-- ❤️ **Favorites** - Save your favorite movies
-- 👤 **User Profile** - Personalized user experience
+---
 
-## Tech Stack
+## ✨ Features
 
-- **Frontend Framework:** React 18
-- **Build Tool:** Vite
-- **Styling:** Tailwind CSS + DaisyUI
-- **Authentication:** Firebase Auth
-- **Routing:** React Router
-- **Icons:** React Icons, React Feather
-- **State Management:** React Hooks
+- 🌍 **5 languages** — English, Uzbek, Russian, German, Turkish
+- 🎨 **5 themes** — Dark, Valentine, Cyberpunk, Retro, Aqua
+- 🔐 **Firebase Auth** — Email/Password, Google, GitHub login
+- 📱 **PWA** — Install as a mobile app, works offline
+- 🎬 **Movie & TV browsing** — Popular, Horror, Series, Comedy, Doramma
+- 🔍 **Search** — Real-time movie search via TMDB API
+- ▶️ **Trailer player** — Built-in YouTube player with custom controls
+- ❤️ **Likes** — Like movies, count shown on cards
+- 🔖 **Save** — Save movies to your collection
+- 💬 **Comments** — Leave comments on any movie
+- 👁️ **View history** — Track which movies you've watched
+- 🛡️ **Admin panel** — Manage users, views, saved movies
+- ⬜ **Skeleton loading** — Smooth loading experience
 
-## Getting Started
+---
+
+## 🛠 Tech Stack
+
+| Category | Technology |
+|----------|-----------|
+| Frontend | React 18 |
+| Build | Vite + PWA |
+| Styling | Tailwind CSS + DaisyUI |
+| Auth | Firebase Authentication |
+| Database | Firebase Firestore |
+| API | TMDB API |
+| Routing | React Router v6 |
+| Icons | React Icons |
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
-- Node.js (v16 or higher)
-- npm or yarn
+- Node.js v18+
+- npm
 
 ### Installation
 
-1. Clone the repository
+**1. Clone:**
 ```bash
-git clone "https://github.com/xondamir011/movies_01.git"
-cd Movies
+git clone https://github.com/xondamir011/movies_01.git
+cd movies_01
 ```
 
-2. Install dependencies
+**2. Install:**
 ```bash
 npm install
 ```
 
-3. Create `.env.local` file and add Firebase config:
-```
-VITE_FIREBASE_API_KEY="AIzaSyDnJCaACKYimBbKX8Hsb0j5Cmgt958zrPA"
-VITE_FIREBASE_AUTH_DOMAIN="mongodb-af2aa.firebaseapp.com"
-VITE_FIREBASE_PROJECT_ID="mongodb-af2aa"
-VITE_FIREBASE_STORAGE_BUCKET="mongodb-af2aa.appspot.com"
-VITE_FIREBASE_MESSAGING_SENDER_ID="753459863047"
-VITE_FIREBASE_APP_ID="1:753459863047:web:8736ac7c2978ed375814a2"
+**3. Firebase sozlash:**
+
+`src/firebase/config.js` faylini oching va o'zingizning Firebase config'ingizni qo'ying:
+```js
+const firebaseConfig = {
+  apiKey: "...",
+  authDomain: "...",
+  projectId: "...",
+  ...
+};
 ```
 
-4. Start development server
+**4. Start:**
 ```bash
 npm run dev
 ```
 
-5. Build for production
+**5. Build:**
 ```bash
 npm run build
+npm run preview
 ```
-
-## Project Structure
-
-```
-src/
-├── components/      # React components
-├── firebase/        # Firebase configuration
-├── pages/           # Page components
-├── App.jsx          # Main app component
-└── main.jsx         # Entry point
-```
-
-## Available Scripts
-
-- `npm run dev` - Start development server
-- `npm run build` - Build for production
-- `npm run lint` - Run ESLint
-- `npm run preview` - Preview production build
-
-## Features in Detail
-
-### Multi-language Support
-Switch between 5 languages with flag icons. Language preference is saved to localStorage.
-
-### Theme System
-Choose from 5 different themes. Your theme preference is saved locally.
-
-### Authentication
-- Sign up with email and password
-- Login with existing account
-- Logout functionality
-- Google authentication support
-
-### Responsive Navigation
-- Mobile-friendly drawer menu
-- Language selector
-- Theme switcher
-- User profile section
-
-## Browser Support
-
-- Chrome (latest)
-- Firefox (latest)
-- Safari (latest)
-- Edge (latest)
-
-## Contributing
-
-Pull requests are welcome. For major changes, please open an issue first.
-
-## License
-
-This project is open source and available under the MIT License.
-
-## Author
-
-Created by Xondamir Madaliyev
 
 ---
 
-**Last Updated:** March 18, 2026
+## 📁 Project Structure
+
+```
+src/
+├── admin/
+│   └── AdminPanel.jsx       # Admin panel (users, views, movies)
+├── auth/
+│   ├── Login.jsx
+│   └── Register.jsx
+├── components/
+│   ├── Drawer.jsx
+│   ├── Footer.jsx
+│   ├── MovieCard.jsx        # Trailer, like, save, comments
+│   ├── Navbar.jsx
+│   └── Search.jsx
+├── firebase/
+│   ├── config.js            # Firebase + Firestore init
+│   ├── userService.js       # User CRUD
+│   ├── viewService.js       # View tracking
+│   └── movieService.js      # Saved movies
+├── App.jsx
+└── main.jsx
+```
+
+---
+
+## 🔥 Firestore Structure
+
+```
+users/{uid}           → name, email, photo, lastSeen, role
+views/{uid}/movies/   → movieId, title, watchedAt
+savedMovies/          → title, poster, addedAt, addedBy
+likes/{movieId}       → count, users/{uid}
+comments/{movieId}/list/ → text, userName, createdAt
+```
+
+---
+
+## 🛡️ Admin Panel
+
+Admin panel faqat belgilangan UID uchun ochiladi:
+- 👥 Foydalanuvchilar ro'yxati + kim qachon kirgan
+- 👁️ Har bir foydalanuvchi ko'rgan filmlar
+- 🎬 Saqlangan filmlar + o'chirish
+- 📊 Dashboard statistika
+
+---
+
+## 📱 PWA
+
+```bash
+npm run build
+npm run preview
+```
+Brauzerda install tugmasi chiqadi → telefonga ilova sifatida o'rnatiladi.
+
+---
+
+## 🌐 Browser Support
+
+Chrome · Firefox · Safari · Edge (latest versions)
+
+---
+
+## 👤 Author
+
+**Xondamir Madaliyev**
+- Telegram: [@xondamir_mi](https://t.me/xondamir_mi)
+- GitHub: [xondamir011](https://github.com/xondamir011)
+- Email: xondamirmadaliyev79@gmail.com
+
+---
+
+## 📄 License
+
+MIT License — open source, free to use.
+
+---
+
+*Last updated: May 2026*

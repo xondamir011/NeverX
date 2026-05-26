@@ -82,6 +82,11 @@ export default function App() {
 
   const isAdmin = user?.uid === ADMIN_UID;
 
+  const handleLogout = async () => {
+    await signOut(auth);
+    setUser(null);
+  };
+
   if (!user) {
     return (
       <div className="min-h-screen bg-slate-900 flex items-center justify-center p-3">
@@ -105,7 +110,8 @@ export default function App() {
           setTheme={setTheme}
           isAdmin={isAdmin}
           setShowAdmin={setShowAdmin}
-          showAdmin={showAdmin}/>
+          showAdmin={showAdmin}
+          handleLogout={handleLogout}/>
 
         <AdminPanel setShowAdmin={setShowAdmin} />
       </div>
@@ -122,13 +128,13 @@ export default function App() {
         setTheme={setTheme}
         isAdmin={isAdmin}
         setShowAdmin={setShowAdmin}
-        showAdmin={showAdmin}/>
+        showAdmin={showAdmin} />
 
       <div className="p-2 sm:p-4">
         <Search
           query={query}
           setQuery={setQuery}
-          onSearch={fetchMovies} 
+          onSearch={fetchMovies}
           currentLang={lang}
           placeholder={
             {
@@ -138,7 +144,7 @@ export default function App() {
               DE: "Suchen...",
               TR: "Ara..."
             }[lang]
-          }/>
+          } />
       </div>
 
       {loading && (
