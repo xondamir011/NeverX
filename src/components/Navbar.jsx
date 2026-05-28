@@ -24,6 +24,35 @@ export default function Navbar({
   const langRef = useRef(null);
   const dropRef = useRef(null);
 
+  const [installPrompt, setInstallPrompt] = useState(null);
+  const [installed, setInstalled] = useState(false);
+
+  useEffect(() => {
+    const handler = (e) => {
+      e.preventDefault();
+      setInstallPrompt(e);
+    };
+    window.addEventListener("beforeinstallprompt", handler);
+    window.addEventListener("appinstalled", () => setInstalled(true));
+    return () => window.removeEventListener("beforeinstallprompt", handler);
+  }, []);
+
+  const handleInstall = async () => {
+    if (!installPrompt) return;
+    installPrompt.prompt();
+    const { outcome } = await installPrompt.userChoice;
+    if (outcome === "accepted") setInstalled(true);
+    setInstallPrompt(null);
+  };
+
+  const t = {
+    EN: { role: "Frontend Dev | Mobile Graphics" },
+    UZ: { role: "Frontend dasturchi | Mobilograf" },
+    RU: { role: "Фронтенд разработчик | Мобильная графика" },
+    DE: { role: "Frontend Entwickler | Mobile Grafik" },
+    TR: { role: "Fröntend Gelíştírící | Möbíl Grâfík" },
+  };
+
   const languages = [
     { code: "EN", label: "English", flag: "us" },
     { code: "UZ", label: "O'zbek", flag: "uz" },
@@ -90,9 +119,9 @@ export default function Navbar({
 
         {/* LEFT */}
         <div className="flex items-center gap-2">
-            <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} />
+          <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} />
           <h2 className="flex items-center gap-1 text-xl ml-3 font-semibold truncate">
-             <FaFilm size={25} /> NeverX
+            <FaFilm size={25} /> NeverX
           </h2>
         </div>
 
@@ -100,7 +129,7 @@ export default function Navbar({
         <div className="flex items-center gap-2">
           {isAdmin && (
             <button onClick={() => setShowAdmin(true)}
-              className="w-18 h-12 sm:w-18 sm:h-12 rounded-lg bg-base-100 border-none hover:bg-base-100
+              className="w-18 h-12 sm:w-18 sm:h-12 rounded-lg cursor-pointer border-none hover:bg-base-100
                flex items-center justify-center gap-1 font-semibold">
               <span className="text-lg"><FaCog /></span>
               <span>{adminText[lang] || "Admin"}</span>
@@ -109,7 +138,7 @@ export default function Navbar({
 
           {/* THEME */}
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="btn w-12 h-10 bg-base-100 rounded-xl">
+            <div tabIndex={0} role="button" className="flex items-center cursor-pointer justify-center w-12 h-10 rounded-xl">
               <FaPalette />
             </div>
             <ul tabIndex={0} className="dropdown-content bg-base-300 mt-2 rounded-box w-40 p-2 shadow">
@@ -131,7 +160,7 @@ export default function Navbar({
           {/* LANGUAGE */}
           <div ref={langRef} className="relative">
             <button onClick={() => setLangOpen(!langOpen)}
-              className="btn w-12 h-10 bg-base-100 rounded-xl">
+              className="w-12 h-10 cursor-pointer rounded-xl">
               {lang}
             </button>
 
@@ -185,62 +214,63 @@ export default function Navbar({
               )}
             </button>
 
+            {!installed && installPrompt && (
+              <button
+                onClick={handleInstall}
+                className="mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-white transition-all active:scale-95"
+                style={{ background: "linear-gradient(135deg, #234E70, #5B8DB8)" }}>
+                <FaDownload size={16} />
+                {t[lang]?.install || t.EN.install}
+              </button>
+            )}
+
+            {installed && (
+              <div className="mt-4 w-full text-center py-3 rounded-xl text-sm opacity-50 border border-current">
+                {t[lang]?.installed || t.EN.installed}
+              </div>
+            )}
+
             {dropOpen && (
-              <div className="bg-base-200"
-                style={{
-                  position: "absolute",
-                  top: "calc(100% + 12px)",
-                  right: 0,
-                  width: isMobile ? "88vw" : 230,
-                  maxWidth: 230,
-                  borderRadius: isMobile ? 14 : 22,
-                  boxShadow: "0 12px 48px rgba(0,0,0,0.18)",
-                  padding: isMobile ? "10px 10px" : "12px 15px",
-                  zIndex: 999,
-                  animation: "dropIn 0.25s ease",
-                }}>
-                {/* USER INFO */}
-                <div style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: isMobile ? 6 : 10,
-                  marginBottom: isMobile ? 10 : 16,
-                }}>
+              <div className="absolute right-0 top-[52px] w-[260px] bg-base-200 border border-white/10 rounded-3xl shadow-2xl p-4 z-[999]">
+                <div className="flex flex-col items-center text-center">
                   {user?.photoURL ? (
-                    <img
-                      src={user.photoURL}
-                      style={{
-                        width: isMobile ? 50 : 76,
-                        height: isMobile ? 50 : 76,
-                        borderRadius: "50%",
-                      }} />
+                    <img src={user.photoURL} alt="avatar"
+                      className="w-20 h-20 rounded-full object-cover border-2 border-white/20"/>
                   ) : (
-                    <FaUserCircle
-                      style={{
-                        fontSize: isMobile ? 50 : 76,
-                        color: "#d1d5db",
-                      }} />
+                    <FaUserCircle className="text-7xl text-gray-400" />
                   )}
 
-                  <h2 style={{
-                    margin: 0,
-                    fontSize: isMobile ? 14 : 18,
-                    fontWeight: 700,
-                    textAlign: "center",
-                  }}>
+                  <h2 className="mt-3 font-bold text-lg">
                     {user?.displayName || user?.email}
                   </h2>
+
+                  <p className="text-sm text-cyan-400 mt-1">
+                    {t[lang]?.role}
+                  </p>
                 </div>
 
-                <hr style={{ margin: "0 0 6px", borderTop: "1px solid #fce7f3" }} />
+                {/* INSTALL BUTTON */}
+                {!installed && installPrompt && (
+                  <button onClick={handleInstall}
+                    className="mt-5 w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 active:scale-[0.98] transition-all">
+                    <FaDownload size={15} />
+                    {t[lang]?.install || "Install"}
+                  </button>
+                )}
+
+                {/* INSTALLED */}
+                {installed && (
+                  <div className="mt-4 w-full text-center py-3 rounded-2xl text-sm opacity-60">
+                    {t[lang]?.installed || "Installed"}
+                  </div>
+                )}
 
                 {/* PROFILE */}
                 <button onClick={() => {
                   setDrawerOpen(true);
                   setDropOpen(false);
                 }}
-                  className="w-full text-left rounded-xl hover:bg-base-300 active:bg-base-300 active:scale-[0.98]
+                  className="w-full mt-5 text-left cursor-pointer rounded-xl hover:bg-base-300 active:bg-base-300 active:scale-[0.98]
                     transition-all duration-150"
                   style={{
                     padding: isMobile ? "8px 10px" : "10px 12px",
@@ -251,7 +281,7 @@ export default function Navbar({
 
                 {/* LOGOUT */}
                 <button onClick={handleLogout}
-                  className="w-full text-left rounded-xl hover:bg-base-300 active:bg-base-300 active:scale-[0.98]
+                  className="w-full text-left cursor-pointer rounded-xl hover:bg-base-300 active:bg-base-300 active:scale-[0.98]
                    transition-all duration-150"
                   style={{
                     padding: isMobile ? "8px 10px" : "10px 12px",
@@ -273,6 +303,6 @@ export default function Navbar({
           to { opacity: 1; transform: translateY(0) scale(1); }
         }
       `}</style>
-    </div>
+    </div >
   );
 }
