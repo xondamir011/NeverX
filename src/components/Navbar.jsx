@@ -15,6 +15,7 @@ export default function Navbar({
   isAdmin,
   setShowAdmin,
   handleLogout,
+  setShowAddMovie
 }) {
   const [langOpen, setLangOpen] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
@@ -92,6 +93,24 @@ export default function Navbar({
     },
   };
 
+   const movieTexts = {
+    EN: {
+      add: "Movie Add +",
+    },
+    UZ: {
+      add: "Kino qo'shish+",
+    },
+    RU: {
+      add: "Добавить фильм +",
+    },
+    DE: {
+      add: "Film hinzufügen +",
+    },
+    TR: {
+      add: "Film ekle +",
+    },
+  };
+
   useEffect(() => {
     const handler = (e) => {
       if (langRef.current && !langRef.current.contains(e.target)) {
@@ -127,6 +146,12 @@ export default function Navbar({
 
         {/* RIGHT */}
         <div className="flex items-center">
+          <div className="flex justify-center items-center gap-5">
+          <button onClick={() => setShowAddMovie(true)}
+            className="btn bg-primary text-white border-none">
+            {movieTexts[lang]?.add || "Add Movie"}
+          </button>
+
           {isAdmin && (
             <button onClick={() => setShowAdmin(true)}
               className="w-18 h-12 sm:w-18 sm:h-12 rounded-lg cursor-pointer border-none hover:bg-base-100
@@ -135,6 +160,7 @@ export default function Navbar({
               <span>{adminText[lang] || "Admin"}</span>
             </button>
           )}
+       </div>
 
           {/* THEME */}
           <div className="dropdown dropdown-end">
@@ -183,6 +209,8 @@ export default function Navbar({
             )}
           </div>
 
+
+
           {/* USER DROPDOWN */}
           <div ref={dropRef} style={{ position: "relative" }}>
             <button onClick={() => setDropOpen((p) => !p)}
@@ -204,7 +232,7 @@ export default function Navbar({
                     border: "2px solid rgba(255,255,255,0.2)",
                   }} />
               ) : (
-                <FaUserCircle style={{fontSize: isMobile ? 34 : 40, color: "#9ca3af", }}/>
+                <FaUserCircle style={{ fontSize: isMobile ? 34 : 40, color: "#9ca3af", }} />
               )}
             </button>
 
@@ -229,7 +257,7 @@ export default function Navbar({
                 <div className="flex flex-col items-center text-center">
                   {user?.photoURL ? (
                     <img src={user.photoURL} alt="avatar"
-                      className="w-20 h-20 rounded-full object-cover border-2 border-white/20"/>
+                      className="w-20 h-20 rounded-full object-cover border-2 border-white/20" />
                   ) : (
                     <FaUserCircle className="text-7xl text-gray-400" />
                   )}

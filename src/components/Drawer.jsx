@@ -11,7 +11,8 @@ import {
   FaDragon,
   FaChild,
   FaMask,
-  FaMagic
+  FaMagic,
+  FaBars 
 } from "react-icons/fa";
 
 export default function Drawer({
@@ -201,7 +202,7 @@ export default function Drawer({
     <div className="z-20">
       <button onClick={() => setOpen(true)}
         className="flex items-center justify-center text-2xl rounded-xl hover:bg-base-300 active:scale-95 transition-all w-11 h-11">
-        ☰
+        <FaBars />
       </button>
 
       {/* OVERLAY */}

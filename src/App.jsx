@@ -24,6 +24,7 @@ export default function App() {
   const [loading, setLoading] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
   const [theme, setTheme] = useState(localStorage.getItem("theme") || "dark");
+  const [showAddMovie, setShowAddMovie] = useState(false);
 
   const API_KEY = "44cae21994113f58296e3b6d0db555f3";
 
@@ -111,9 +112,10 @@ export default function App() {
           isAdmin={isAdmin}
           setShowAdmin={setShowAdmin}
           showAdmin={showAdmin}
-          handleLogout={handleLogout}/>
+          handleLogout={handleLogout}
+          setShowAddMovie={setShowAddMovie}/>
 
-        <AdminPanel setShowAdmin={setShowAdmin} />
+        <AdminPanel setShowAdmin={setShowAdmin} lang={lang} />
       </div>
     );
   }
