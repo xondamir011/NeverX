@@ -142,14 +142,13 @@ export default function Navbar({
               <FaPalette />
             </div>
             <ul tabIndex={0} className="dropdown-content bg-base-300 mt-2 rounded-box w-40 p-2 shadow">
-              {["dark", "valentine", "cyberpunk", "retro", "aqua"].map((t) => (
+              {["dark", "valentine", "synthwave", "winter", "aqua"].map((t) => (
                 <li key={t}>
                   <button onClick={() => {
                     setTheme(t);
                     localStorage.setItem("theme", t);
                   }}
-                    className={`btn btn-sm w-full justify-start mb-1 ${theme === t ? "btn-primary" : "btn-ghost"
-                      }`}>
+                    className={`btn btn-sm w-full justify-start mb-1 ${theme === t ? "btn-primary" : "btn-ghost"}`}>
                     {t}
                   </button>
                 </li>
