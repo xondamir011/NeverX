@@ -118,7 +118,7 @@ export default function Navbar({
       <div className="flex items-center justify-between px-3 py-2 sm:px-4">
 
         {/* LEFT */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} />
           <h2 className="flex items-center gap-1 text-xl ml-3 font-semibold truncate">
             <FaFilm size={25} /> NeverX
@@ -126,7 +126,7 @@ export default function Navbar({
         </div>
 
         {/* RIGHT */}
-        <div className="flex items-center gap-2">
+        <div className="flex items-center">
           {isAdmin && (
             <button onClick={() => setShowAdmin(true)}
               className="w-18 h-12 sm:w-18 sm:h-12 rounded-lg cursor-pointer border-none hover:bg-base-100
@@ -205,12 +205,7 @@ export default function Navbar({
                     border: "2px solid rgba(255,255,255,0.2)",
                   }} />
               ) : (
-                <FaUserCircle
-                  style={{
-                    fontSize: isMobile ? 34 : 40,
-                    color: "#9ca3af",
-                  }}
-                />
+                <FaUserCircle style={{fontSize: isMobile ? 34 : 40, color: "#9ca3af", }}/>
               )}
             </button>
 
