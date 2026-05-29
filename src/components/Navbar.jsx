@@ -1,10 +1,8 @@
 import { useState, useRef, useEffect } from "react";
 import Drawer from "./Drawer";
-import { FaUserCircle, FaPalette } from "react-icons/fa";
+import { FaUserCircle, FaPalette, FaDownload, FaFilm, FaCog } from "react-icons/fa";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/config";
-import { FaFilm } from "react-icons/fa";
-import { FaCog } from "react-icons/fa";
 
 export default function Navbar({
   user,
@@ -14,7 +12,6 @@ export default function Navbar({
   setTheme,
   isAdmin,
   setShowAdmin,
-  handleLogout,
   setShowAddMovie
 }) {
   const [langOpen, setLangOpen] = useState(false);
@@ -33,9 +30,13 @@ export default function Navbar({
       e.preventDefault();
       setInstallPrompt(e);
     };
+
     window.addEventListener("beforeinstallprompt", handler);
     window.addEventListener("appinstalled", () => setInstalled(true));
-    return () => window.removeEventListener("beforeinstallprompt", handler);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
+    };
   }, []);
 
   const handleInstall = async () => {
@@ -46,69 +47,8 @@ export default function Navbar({
     setInstallPrompt(null);
   };
 
-  const t = {
-    EN: { role: "Frontend Dev | Mobile Graphics" },
-    UZ: { role: "Frontend dasturchi | Mobilograf" },
-    RU: { role: "Фронтенд разработчик | Мобильная графика" },
-    DE: { role: "Frontend Entwickler | Mobile Grafik" },
-    TR: { role: "Fröntend Gelíştírící | Möbíl Grâfík" },
-  };
-
-  const languages = [
-    { code: "EN", label: "English", flag: "us" },
-    { code: "UZ", label: "O'zbek", flag: "uz" },
-    { code: "RU", label: "Русский", flag: "ru" },
-    { code: "DE", label: "Deutsch", flag: "de" },
-    { code: "TR", label: "Türkçe", flag: "tr" },
-  ];
-
-  const adminText = {
-    EN: "Admin",
-    UZ: "Admin",
-    RU: "Админ",
-    DE: "Admin",
-    TR: "Admin",
-  };
-
-  const texts = {
-    EN: {
-      profile: "Profile",
-      logout: "Logout",
-    },
-    UZ: {
-      profile: "Profil",
-      logout: "Chiqish",
-    },
-    RU: {
-      profile: "Профиль",
-      logout: "Выход",
-    },
-    DE: {
-      profile: "Profil",
-      logout: "Abmelden",
-    },
-    TR: {
-      profile: "Profil",
-      logout: "Çıkış",
-    },
-  };
-
-   const movieTexts = {
-    EN: {
-      add: "Movie Add +",
-    },
-    UZ: {
-      add: "Kino qo'shish+",
-    },
-    RU: {
-      add: "Добавить фильм +",
-    },
-    DE: {
-      add: "Film hinzufügen +",
-    },
-    TR: {
-      add: "Film ekle +",
-    },
+  const handleLogout = async () => {
+    await signOut(auth);
   };
 
   useEffect(() => {
@@ -132,49 +72,66 @@ export default function Navbar({
     return () => window.removeEventListener("resize", checkSize);
   }, []);
 
+  const languages = [
+    { code: "EN", label: "English", flag: "us" },
+    { code: "UZ", label: "O'zbek", flag: "uz" },
+    { code: "RU", label: "Русский", flag: "ru" },
+    { code: "DE", label: "Deutsch", flag: "de" },
+    { code: "TR", label: "Türkçe", flag: "tr" },
+  ];
+
+  const isGoogleAvatar = user?.photoURL?.includes("googleusercontent");
+
   return (
     <div className="sticky top-0 z-30 bg-base-200 border-b border-white/10">
       <div className="flex items-center justify-between px-3 py-2 sm:px-4">
 
         {/* LEFT */}
-        <div className="flex items-center">
+        <div className="flex items-center gap-3">
           <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} />
-          <h2 className="flex items-center gap-1 text-xl ml-3 font-semibold truncate">
-            <FaFilm size={25} /> NeverX
+          <h2 className="flex items-center gap-2 text-xl font-semibold">
+            <FaFilm size={22} /> NeverX
           </h2>
         </div>
 
         {/* RIGHT */}
-        <div className="flex items-center">
-          <div className="flex justify-center items-center gap-5">
-          <button onClick={() => setShowAddMovie(true)}
-            className="btn bg-primary text-white border-none">
-            {movieTexts[lang]?.add || "Add Movie"}
+        <div className="flex items-center gap-4">
+
+          {/* ADD MOVIE */}
+          <button  onClick={() => {
+              setShowAddMovie(true);
+              localStorage.setItem("admin_tab", "add");
+            }}
+            className="btn bg-blue-600 hover:bg-blue-700 text-white border-none">
+            Add Movie +
           </button>
 
+          {/* ADMIN */}
           {isAdmin && (
-            <button onClick={() => setShowAdmin(true)}
-              className="w-18 h-12 sm:w-18 sm:h-12 rounded-lg cursor-pointer border-none hover:bg-base-100
-               flex items-center justify-center gap-1 font-semibold">
-              <span className="text-lg"><FaCog /></span>
-              <span>{adminText[lang] || "Admin"}</span>
+            <button
+              onClick={() => setShowAdmin(true)}
+              className="flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-base-100" >
+              <FaCog />
+              <span>Admin</span>
             </button>
           )}
-       </div>
 
           {/* THEME */}
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} role="button" className="flex items-center cursor-pointer justify-center w-12 h-10 rounded-xl">
+            <div tabIndex={0} className="cursor-pointer w-10 h-10 flex items-center justify-center">
               <FaPalette />
             </div>
-            <ul tabIndex={0} className="dropdown-content bg-base-300 mt-2 rounded-box w-40 p-2 shadow">
+
+            <ul className="dropdown-content bg-base-300 mt-2 rounded-box w-40 p-2 shadow">
               {["dark", "valentine", "synthwave", "winter", "aqua"].map((t) => (
                 <li key={t}>
-                  <button onClick={() => {
-                    setTheme(t);
-                    localStorage.setItem("theme", t);
-                  }}
-                    className={`btn btn-sm w-full justify-start mb-1 ${theme === t ? "btn-primary" : "btn-ghost"}`}>
+                  <button
+                    onClick={() => {
+                      setTheme(t);
+                      localStorage.setItem("theme", t);
+                    }}
+                    className="btn btn-sm w-full justify-start mb-1"
+                  >
                     {t}
                   </button>
                 </li>
@@ -184,24 +141,29 @@ export default function Navbar({
 
           {/* LANGUAGE */}
           <div ref={langRef} className="relative">
-            <button onClick={() => setLangOpen(!langOpen)}
-              className="w-12 h-10 cursor-pointer rounded-xl">
+            <button
+              onClick={() => setLangOpen(!langOpen)}
+              className="w-12 h-10 rounded-xl">
               {lang}
             </button>
 
             {langOpen && (
               <div className="absolute right-0 mt-3 bg-base-200 p-2 rounded-xl shadow w-40 z-50">
                 {languages.map((l) => (
-                  <div key={l.code}
+                  <div
+                    key={l.code}
                     onClick={() => {
                       setLang(l.code);
                       localStorage.setItem("lang", l.code);
                       setLangOpen(false);
                     }}
-                    className="flex gap-2 p-2 hover:bg-base-300 cursor-pointer rounded-lg">
-                    <img src={`https://flagcdn.com/w40/${l.flag}.png`}
+                    className="flex gap-2 p-2 hover:bg-base-300 cursor-pointer rounded-lg"
+                  >
+                    <img
+                      src={`https://flagcdn.com/w40/${l.flag}.png`}
                       className="w-5 h-4"
-                      alt={l.label} />
+                      alt={l.label}
+                    />
                     <span>{l.label}</span>
                   </div>
                 ))}
@@ -209,107 +171,68 @@ export default function Navbar({
             )}
           </div>
 
+          {/* USER */}
+          <div ref={dropRef} className="relative">
 
-
-          {/* USER DROPDOWN */}
-          <div ref={dropRef} style={{ position: "relative" }}>
-            <button onClick={() => setDropOpen((p) => !p)}
-              style={{
-                background: "none",
-                border: "none",
-                cursor: "pointer",
-                padding: 0,
-              }}>
-
-              {user?.photoURL ? (
-                <img className="rounded-full bg-base-200 object-cover border-2 border-white/20" src={user.photoURL}
+            <button onClick={() => setDropOpen(!dropOpen)}>
+              {user?.photoURL && !isGoogleAvatar ? (
+                <img
+                  src={user.photoURL}
                   alt="avatar"
-                  style={{
-                    width: isMobile ? 34 : 40,
-                    height: isMobile ? 34 : 40,
-                    borderRadius: "50%",
-                    objectFit: "cover",
-                    border: "2px solid rgba(255,255,255,0.2)",
-                  }} />
+                  className="w-10 h-10 rounded-full object-cover border"
+                  onError={(e) => (e.currentTarget.style.display = "none")}
+                />
               ) : (
-                <FaUserCircle style={{ fontSize: isMobile ? 34 : 40, color: "#9ca3af", }} />
+                <FaUserCircle size={34} className="text-gray-400" />
               )}
             </button>
 
-            {!installed && installPrompt && (
-              <button
-                onClick={handleInstall}
-                className="mt-4 w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-white transition-all active:scale-95"
-                style={{ background: "linear-gradient(135deg, #234E70, #5B8DB8)" }}>
-                <FaDownload size={16} />
-                {t[lang]?.install || t.EN.install}
-              </button>
-            )}
-
-            {installed && (
-              <div className="mt-4 w-full text-center py-3 rounded-xl text-sm opacity-50 border border-current">
-                {t[lang]?.installed || t.EN.installed}
-              </div>
-            )}
-
             {dropOpen && (
-              <div className="absolute right-0 top-[52px] w-[260px] bg-base-200 border border-white/10 rounded-3xl shadow-2xl p-4 z-[999]">
-                <div className="flex flex-col items-center text-center">
-                  {user?.photoURL ? (
-                    <img src={user.photoURL} alt="avatar"
-                      className="w-20 h-20 rounded-full object-cover border-2 border-white/20" />
+              <div className="absolute right-0 top-12 w-64 bg-base-200 p-4 rounded-2xl shadow-xl z-[999]">
+
+                <div className="text-center">
+                  {user?.photoURL && !isGoogleAvatar ? (
+                    <img
+                      src={user.photoURL}
+                      className="w-16 h-16 mx-auto rounded-full"
+                    />
                   ) : (
-                    <FaUserCircle className="text-7xl text-gray-400" />
+                    <FaUserCircle size={60} className="mx-auto text-gray-400" />
                   )}
 
-                  <h2 className="mt-3 font-bold text-lg">
+                  <h2 className="mt-2 font-bold">
                     {user?.displayName || user?.email}
                   </h2>
-
-                  <p className="text-sm text-cyan-400 mt-1">
-                    {t[lang]?.role}
-                  </p>
                 </div>
 
-                {/* INSTALL BUTTON */}
+                {/* INSTALL */}
                 {!installed && installPrompt && (
-                  <button onClick={handleInstall}
-                    className="mt-5 w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-semibold text-white bg-gradient-to-r from-blue-600 to-indigo-600 active:scale-[0.98] transition-all">
-                    <FaDownload size={15} />
-                    {t[lang]?.install || "Install"}
+                  <button
+                    onClick={handleInstall}
+                    className="mt-4 w-full py-2 rounded-xl bg-blue-600 text-white flex items-center justify-center gap-2"
+                  >
+                    <FaDownload />
+                    Install App
                   </button>
                 )}
 
-                {/* INSTALLED */}
-                {installed && (
-                  <div className="mt-4 w-full text-center py-3 rounded-2xl text-sm opacity-60">
-                    {t[lang]?.installed || "Installed"}
-                  </div>
-                )}
-
                 {/* PROFILE */}
-                <button onClick={() => {
-                  setDrawerOpen(true);
-                  setDropOpen(false);
-                }}
-                  className="w-full mt-5 text-left cursor-pointer rounded-xl hover:bg-base-300 active:bg-base-300 active:scale-[0.98]
-                    transition-all duration-150"
-                  style={{
-                    padding: isMobile ? "8px 10px" : "10px 12px",
-                    fontSize: isMobile ? 13 : 15,
-                  }}>
-                  {texts[lang]?.profile}
+                <button
+                  onClick={() => {
+                    setDrawerOpen(true);
+                    setDropOpen(false);
+                  }}
+                  className="w-full mt-3 p-2 hover:bg-base-300 rounded-lg text-left"
+                >
+                  Profile
                 </button>
 
                 {/* LOGOUT */}
-                <button onClick={handleLogout}
-                  className="w-full text-left cursor-pointer rounded-xl hover:bg-base-300 active:bg-base-300 active:scale-[0.98]
-                   transition-all duration-150"
-                  style={{
-                    padding: isMobile ? "8px 10px" : "10px 12px",
-                    fontSize: isMobile ? 13 : 15,
-                  }}>
-                  {texts[lang]?.logout}
+                <button
+                  onClick={handleLogout}
+                  className="w-full p-2 hover:bg-base-300 rounded-lg text-left text-red-400"
+                >
+                  Logout
                 </button>
               </div>
             )}
@@ -317,14 +240,6 @@ export default function Navbar({
 
         </div>
       </div>
-
-      {/* ANIMATION */}
-      <style>{`
-        @keyframes dropIn {
-          from { opacity: 0; transform: translateY(-8px) scale(0.97); }
-          to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-      `}</style>
-    </div >
+    </div>
   );
 }

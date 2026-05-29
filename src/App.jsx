@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Routes, Route, Navigate } from "react-router-dom";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "./firebase/config";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -38,6 +38,7 @@ export default function App() {
 
   const fetchMovies = async (queryText = "") => {
     setLoading(true);
+
     try {
       let baseUrl = "";
 
@@ -56,7 +57,13 @@ export default function App() {
       );
 
       const allMovies = responses.flatMap((data) => data.results || []);
-      setMovies(allMovies);
+
+      // 🔥 DUPLICATE REMOVE FIX
+      const uniqueMovies = Array.from(
+        new Map(allMovies.map((m) => [m.id, m])).values()
+      );
+
+      setMovies(uniqueMovies);
     } catch (err) {
       console.log(err);
     } finally {
@@ -111,9 +118,8 @@ export default function App() {
           setTheme={setTheme}
           isAdmin={isAdmin}
           setShowAdmin={setShowAdmin}
-          showAdmin={showAdmin}
-          handleLogout={handleLogout}
-          setShowAddMovie={setShowAddMovie}/>
+          setShowAddMovie={setShowAddMovie}
+        />
 
         <AdminPanel setShowAdmin={setShowAdmin} lang={lang} />
       </div>
@@ -130,7 +136,8 @@ export default function App() {
         setTheme={setTheme}
         isAdmin={isAdmin}
         setShowAdmin={setShowAdmin}
-        showAdmin={showAdmin} />
+        setShowAddMovie={setShowAddMovie}
+      />
 
       <div className="p-2 sm:p-4">
         <Search
@@ -138,15 +145,14 @@ export default function App() {
           setQuery={setQuery}
           onSearch={fetchMovies}
           currentLang={lang}
-          placeholder={
-            {
-              EN: "Search...",
-              UZ: "Qidirish...",
-              RU: "Поиск...",
-              DE: "Suchen...",
-              TR: "Ara..."
-            }[lang]
-          } />
+          placeholder={{
+            EN: "Search...",
+            UZ: "Qidirish...",
+            RU: "Поиск...",
+            DE: "Suchen...",
+            TR: "Ara...",
+          }[lang]}
+        />
       </div>
 
       {loading && (
@@ -157,15 +163,13 @@ export default function App() {
 
       {!loading && movies.length === 0 && (
         <h2 className="text-center text-lg mt-30">
-          {
-            {
-              EN: "No movies found 😔",
-              UZ: "Film topilmadi 😔",
-              RU: "Фильмы не найдены 😔",
-              DE: "Keine Filme gefunden 😔",
-              TR: "Film bulunamadı 😔"
-            }[lang]
-          }
+          {{
+            EN: "No movies found 😔",
+            UZ: "Film topilmadi 😔",
+            RU: "Фильмы не найдены 😔",
+            DE: "Keine Filme gefunden 😔",
+            TR: "Film bulunamadı 😔",
+          }[lang]}
         </h2>
       )}
 
