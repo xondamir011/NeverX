@@ -13,6 +13,8 @@ import Search from "./components/Search";
 import Footer from "./components/Footer";
 import AdminPanel from "./admin/AdminPanel";
 import { saveUser } from "./firebase/userService";
+import AddMovie from "./admin/AddMovie";
+import AddMovieModal from "./admin/AddMovieModal";
 
 const ADMIN_UID = "N6sqvO4mcXfIB8O2rcZDvFlM59s1";
 
@@ -58,7 +60,6 @@ export default function App() {
 
       const allMovies = responses.flatMap((data) => data.results || []);
 
-      // 🔥 DUPLICATE REMOVE FIX
       const uniqueMovies = Array.from(
         new Map(allMovies.map((m) => [m.id, m])).values()
       );
@@ -90,6 +91,11 @@ export default function App() {
 
   const isAdmin = user?.uid === ADMIN_UID;
 
+  const loadMovies = async () => {
+    const data = await getSavedMovies();
+    setMovies(data);
+  };
+
   const handleLogout = async () => {
     await signOut(auth);
     setUser(null);
@@ -118,12 +124,20 @@ export default function App() {
           setTheme={setTheme}
           isAdmin={isAdmin}
           setShowAdmin={setShowAdmin}
-          setShowAddMovie={setShowAddMovie}
-        />
+          setShowAddMovie={setShowAddMovie} />
 
-        <AdminPanel setShowAdmin={setShowAdmin} lang={lang} />
+        <AdminPanel setShowAdmin={setShowAdmin} lang={lang}
+          showAddMovie={showAddMovie} setShowAddMovie={setShowAddMovie} />
       </div>
     );
+  }
+
+  {
+    showAddMovie && (
+      <AddMovieModal
+        onClose={() => setShowAddMovie(false)}
+        adminUid={user.uid} />
+    )
   }
 
   return (
@@ -136,8 +150,7 @@ export default function App() {
         setTheme={setTheme}
         isAdmin={isAdmin}
         setShowAdmin={setShowAdmin}
-        setShowAddMovie={setShowAddMovie}
-      />
+        setShowAddMovie={setShowAddMovie} />
 
       <div className="p-2 sm:p-4">
         <Search
@@ -151,8 +164,7 @@ export default function App() {
             RU: "Поиск...",
             DE: "Suchen...",
             TR: "Ara...",
-          }[lang]}
-        />
+          }[lang]} />
       </div>
 
       {loading && (

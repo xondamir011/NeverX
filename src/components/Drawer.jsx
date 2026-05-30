@@ -12,7 +12,8 @@ import {
   FaChild,
   FaMask,
   FaMagic,
-  FaBars 
+  FaBars,
+  FaPlus
 } from "react-icons/fa";
 
 export default function Drawer({
@@ -25,6 +26,7 @@ export default function Drawer({
 
   const [installPrompt, setInstallPrompt] = useState(null);
   const [installed, setInstalled] = useState(false);
+  const isMobile = window.innerWidth < 768;
 
   useEffect(() => {
     const handler = (e) => {
@@ -250,33 +252,22 @@ export default function Drawer({
 
         </div>
 
-        {/* Install DOWN */}
-        <div className="flex-1" />
-        {!installed && installPrompt && (
-          <button onClick={handleInstall}
-            className="w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-semibold text-white transition-all active:scale-95"
-            style={{
-              background: "linear-gradient(135deg, #2563eb, #7c3aed)",
-            }}>
-            <FaDownload size={16} />
-
-            {t[lang]?.install || t.EN.install}
+        {isMobile && (
+          <button onClick={() => {
+              setShowAddMovie(true);
+              localStorage.setItem("admin_tab", "add");
+              setOpen(false);
+            }}
+            className="w-full mt-5 mb-10 py-3 rounded-xl bg-base-300 text-base font-semibold flex items-center justify-center gap-2">
+            <FaPlus size={16} />
+            <span>Add Movie</span>
           </button>
-        )}
-
-        {/* INSTALLED */}
-        {installed && (
-          <div className="w-full text-center py-3 rounded-2xl text-sm opacity-50 border border-white/10">
-            {t[lang]?.installed || t.EN.installed}
-          </div>
         )}
 
         <div className="flex items-center gap-2">
           {user?.photoURL ? (
-            <img
-              src={user.photoURL}
-              className="w-11 h-11 rounded-full object-cover border border-white/20"
-            />
+            <img src={user.photoURL}
+              className="w-11 h-11 rounded-full object-cover border border-white/20" />
           ) : (
             <FaUserCircle className="text-4xl text-gray-400" />
           )}

@@ -25,7 +25,7 @@ export default function Register() {
       if (name.trim()) {
         await updateProfile(result.user, { displayName: name.trim() });
       }
-      
+
       await result.user.reload();
       await saveUser(result.user);
 
@@ -45,36 +45,55 @@ export default function Register() {
   };
 
   return (
-    <div className="h-screen flex items-center justify-center bg-slate-900">
-      <div className="p-6 bg-slate-800 rounded-2xl w-80 shadow-xl text-white">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      <video
+        autoPlay
+        muted
+        loop
+        playsInline
+        className="absolute inset-0 w-full h-full object-cover">
+        <source src="/videos/neverx.mp4" type="video/mp4" />
+      </video>
 
-        <h2 className="text-xl font-bold mb-5 text-center">Ro'yxatdan o'tish 📝</h2>
+      {/* DARK OVERLAY */}
+      <div className="absolute inset-0 bg-black/60" />
+      <div className="relative z-10 w-[92%] max-w-[320px] sm:max-w-[380px] p-5 sm:p-6 rounded-2xl backdrop-blur-xl
+       bg-black/30 border border-white/10 shadow-2xl text-white">
 
-        <input className="input input-bordered w-full mb-3 bg-slate-700 border-none text-white"
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          theme="dark"/>
+
+        <h2 className="text-xl font-bold mb-4 text-center">
+          Ro'yxatdan o'tish 📝
+        </h2>
+
+        <input className="input input-bordered w-full mb-3 bg-white/10 border-white/10 text-white"
           placeholder="Ism (ixtiyoriy)"
           onChange={(e) => setName(e.target.value)} />
 
-        <input className="input input-bordered w-full mb-3 bg-slate-700 border-none text-white"
+        <input className="input input-bordered w-full mb-3 bg-white/10 border-white/10 text-white"
           placeholder="Email"
           onChange={(e) => setEmail(e.target.value)} />
 
-        <input className="input input-bordered w-full mb-4 bg-slate-700 border-none text-white"
-          type="password"
+        <input type="password"
+          className="input input-bordered w-full mb-4 bg-white/10 border-white/10 text-white"
           placeholder="Parol (kamida 6 belgi)"
           onChange={(e) => setPassword(e.target.value)} />
 
         <button onClick={register}
           disabled={loading}
-          className="btn btn-success w-full">
-          {loading ? <span className="loading loading-spinner loading-sm" /> : "Register"}
+          className="btn btn-primary w-full">
+          {loading
+            ? <span className="loading loading-spinner loading-sm" />
+            : "Register"}
         </button>
 
         <p onClick={() => navigate("/login")}
-          className="text-sm text-center mt-3 cursor-pointer text-gray-400 hover:text-white transition">
+          className="text-sm text-center mt-4 cursor-pointer text-gray-300 hover:text-white">
           Already have account? Login
         </p>
-
-        <ToastContainer position="top-right" autoClose={2000} theme="dark" />
       </div>
     </div>
   );

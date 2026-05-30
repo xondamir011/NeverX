@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Drawer from "./Drawer";
-import { FaUserCircle, FaPalette, FaDownload, FaFilm, FaCog } from "react-icons/fa";
+import { FaUserCircle, FaPalette, FaFilm, FaCog, FaPlus } from "react-icons/fa";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/config";
 
@@ -88,7 +88,7 @@ export default function Navbar({
 
         {/* LEFT */}
         <div className="flex items-center gap-3">
-          <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} />
+          <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} setShowAddMovie={setShowAddMovie} />
           <h2 className="flex items-center gap-2 text-xl font-semibold">
             <FaFilm size={22} /> NeverX
           </h2>
@@ -96,20 +96,19 @@ export default function Navbar({
 
         {/* RIGHT */}
         <div className="flex items-center gap-4">
-
-          {/* ADD MOVIE */}
-          <button  onClick={() => {
+          {!isMobile && (
+            <button onClick={() => {
               setShowAddMovie(true);
               localStorage.setItem("admin_tab", "add");
             }}
-            className="btn bg-blue-600 hover:bg-blue-700 text-white border-none">
-            Add Movie +
-          </button>
+              className="btn bg-base-300 hover:bg-base-200 text-base border-none">
+              <FaPlus size={15} /> Add Movie
+            </button>
+          )}
 
           {/* ADMIN */}
           {isAdmin && (
-            <button
-              onClick={() => setShowAdmin(true)}
+            <button onClick={() => setShowAdmin(true)}
               className="flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-base-100" >
               <FaCog />
               <span>Admin</span>
@@ -125,13 +124,11 @@ export default function Navbar({
             <ul className="dropdown-content bg-base-300 mt-2 rounded-box w-40 p-2 shadow">
               {["dark", "valentine", "synthwave", "winter", "aqua"].map((t) => (
                 <li key={t}>
-                  <button
-                    onClick={() => {
-                      setTheme(t);
-                      localStorage.setItem("theme", t);
-                    }}
-                    className="btn btn-sm w-full justify-start mb-1"
-                  >
+                  <button onClick={() => {
+                    setTheme(t);
+                    localStorage.setItem("theme", t);
+                  }}
+                    className="btn w-full justify-start mb-2">
                     {t}
                   </button>
                 </li>
@@ -150,20 +147,16 @@ export default function Navbar({
             {langOpen && (
               <div className="absolute right-0 mt-3 bg-base-200 p-2 rounded-xl shadow w-40 z-50">
                 {languages.map((l) => (
-                  <div
-                    key={l.code}
+                  <div key={l.code}
                     onClick={() => {
                       setLang(l.code);
                       localStorage.setItem("lang", l.code);
                       setLangOpen(false);
                     }}
-                    className="flex gap-2 p-2 hover:bg-base-300 cursor-pointer rounded-lg"
-                  >
-                    <img
-                      src={`https://flagcdn.com/w40/${l.flag}.png`}
-                      className="w-5 h-4"
-                      alt={l.label}
-                    />
+                    className="flex gap-2 p-2 hover:bg-base-300 cursor-pointer rounded-lg">
+
+                    <img src={`https://flagcdn.com/w40/${l.flag}.png`}
+                      className="w-5 h-4" alt={l.label} />
                     <span>{l.label}</span>
                   </div>
                 ))}
@@ -173,15 +166,10 @@ export default function Navbar({
 
           {/* USER */}
           <div ref={dropRef} className="relative">
-
             <button onClick={() => setDropOpen(!dropOpen)}>
-              {user?.photoURL && !isGoogleAvatar ? (
-                <img
-                  src={user.photoURL}
-                  alt="avatar"
-                  className="w-10 h-10 rounded-full object-cover border"
-                  onError={(e) => (e.currentTarget.style.display = "none")}
-                />
+              {user?.photoURL ? (
+                <img src={user.photoURL} alt="avatar"
+                  className="w-10 h-10 cursor-pointer rounded-full object-cover border border-white/20" />
               ) : (
                 <FaUserCircle size={34} className="text-gray-400" />
               )}
@@ -189,13 +177,10 @@ export default function Navbar({
 
             {dropOpen && (
               <div className="absolute right-0 top-12 w-64 bg-base-200 p-4 rounded-2xl shadow-xl z-[999]">
-
                 <div className="text-center">
-                  {user?.photoURL && !isGoogleAvatar ? (
-                    <img
-                      src={user.photoURL}
-                      className="w-16 h-16 mx-auto rounded-full"
-                    />
+                  {user?.photoURL ? (
+                    <img src={user.photoURL} alt="avatar"
+                      className="w-16 h-16 cursor-pointer mx-auto rounded-full object-cover" />
                   ) : (
                     <FaUserCircle size={60} className="mx-auto text-gray-400" />
                   )}
@@ -205,33 +190,18 @@ export default function Navbar({
                   </h2>
                 </div>
 
-                {/* INSTALL */}
-                {!installed && installPrompt && (
-                  <button
-                    onClick={handleInstall}
-                    className="mt-4 w-full py-2 rounded-xl bg-blue-600 text-white flex items-center justify-center gap-2"
-                  >
-                    <FaDownload />
-                    Install App
-                  </button>
-                )}
-
                 {/* PROFILE */}
-                <button
-                  onClick={() => {
+                <button onClick={() => {
                     setDrawerOpen(true);
                     setDropOpen(false);
                   }}
-                  className="w-full mt-3 p-2 hover:bg-base-300 rounded-lg text-left"
-                >
+                  className="w-full mt-3 p-2 cursor-pointer hover:bg-base-300 rounded-lg text-left">
                   Profile
                 </button>
 
                 {/* LOGOUT */}
-                <button
-                  onClick={handleLogout}
-                  className="w-full p-2 hover:bg-base-300 rounded-lg text-left text-red-400"
-                >
+                <button onClick={handleLogout}
+                  className="w-full p-2 cursor-pointer hover:bg-base-300 rounded-lg text-left text-red-500">
                   Logout
                 </button>
               </div>

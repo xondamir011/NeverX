@@ -4,7 +4,7 @@ import {
   doc, serverTimestamp, query, orderBy
 } from "firebase/firestore";
 
-// ── Film qo'shish (admin) ─────────────────────────────────────
+// ── Film qo'shish (admin)
 export const addMovie = async (movie, adminUid) => {
   await addDoc(collection(db, "savedMovies"), {
     movieId: movie.id,
@@ -19,12 +19,12 @@ export const addMovie = async (movie, adminUid) => {
   });
 };
 
-// ── Film o'chirish (admin) ────────────────────────────────────
+// ── Film o'chirish (admin) 
 export const removeMovie = async (docId) => {
   await deleteDoc(doc(db, "savedMovies", docId));
 };
 
-// ── Barcha saqlangan filmlar ──────────────────────────────────
+// ── Barcha saqlangan filmlar
 export const getSavedMovies = async () => {
   const q = query(collection(db, "savedMovies"), orderBy("addedAt", "desc"));
   const snap = await getDocs(q);
