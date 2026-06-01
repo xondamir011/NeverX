@@ -6,13 +6,14 @@ import { auth } from "../firebase/config";
 
 export default function Navbar({
   user,
-  setLang,
+  setLang,  
   lang,
   theme,
   setTheme,
   isAdmin,
   setShowAdmin,
-  setShowAddMovie
+  setShowAddMovie,
+  onSearch
 }) {
   const [langOpen, setLangOpen] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
@@ -84,18 +85,20 @@ export default function Navbar({
 
   return (
     <div className="sticky top-0 z-30 bg-base-200 border-b border-white/10">
-      <div className="flex items-center justify-between px-3 py-2 sm:px-4">
+      <div className="flex items-center justify-between py-2 sm:px-4">
 
         {/* LEFT */}
-        <div className="flex items-center gap-3">
-          <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} setShowAddMovie={setShowAddMovie} />
-          <h2 className="flex items-center gap-2 text-xl font-semibold">
+        <div className="flex items-center gap-1">
+          <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} onSearch={onSearch}
+            setShowAddMovie={setShowAddMovie} />
+
+          <h2 className="flex items-center gap-1 text-xl font-semibold">
             <FaFilm size={22} /> NeverX
           </h2>
         </div>
 
         {/* RIGHT */}
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-5">
           {!isMobile && (
             <button onClick={() => {
               setShowAddMovie(true);
@@ -109,7 +112,7 @@ export default function Navbar({
           {/* ADMIN */}
           {isAdmin && (
             <button onClick={() => setShowAdmin(true)}
-              className="flex items-center gap-1 px-3 py-2 rounded-lg hover:bg-base-100" >
+              className="flex items-center cursor-pointer gap-1 py-2 rounded-lg hover:bg-base-100" >
               <FaCog />
               <span>Admin</span>
             </button>
@@ -117,7 +120,7 @@ export default function Navbar({
 
           {/* THEME */}
           <div className="dropdown dropdown-end">
-            <div tabIndex={0} className="cursor-pointer w-10 h-10 flex items-center justify-center">
+            <div tabIndex={0} className="cursor-pointer flex items-center">
               <FaPalette />
             </div>
 
@@ -138,9 +141,7 @@ export default function Navbar({
 
           {/* LANGUAGE */}
           <div ref={langRef} className="relative">
-            <button
-              onClick={() => setLangOpen(!langOpen)}
-              className="w-12 h-10 rounded-xl">
+            <button className="cursor-pointer" onClick={() => setLangOpen(!langOpen)}>
               {lang}
             </button>
 
@@ -169,18 +170,18 @@ export default function Navbar({
             <button onClick={() => setDropOpen(!dropOpen)}>
               {user?.photoURL ? (
                 <img src={user.photoURL} alt="avatar"
-                  className="w-10 h-10 cursor-pointer rounded-full object-cover border border-white/20" />
+                  className="w-10 h-10 cursor-pointer rounded-full object-cover border-2 border-cyan-400" />
               ) : (
                 <FaUserCircle size={34} className="text-gray-400" />
               )}
             </button>
 
             {dropOpen && (
-              <div className="absolute right-0 top-12 w-64 bg-base-200 p-4 rounded-2xl shadow-xl z-[999]">
+              <div className="absolute right-0 top-12 w-64 bg-base-200 p-4 rounded-2xl shadow-xl">
                 <div className="text-center">
                   {user?.photoURL ? (
                     <img src={user.photoURL} alt="avatar"
-                      className="w-16 h-16 cursor-pointer mx-auto rounded-full object-cover" />
+                      className="w-16 h-16 cursor-pointer mx-auto rounded-full border-2 border-cyan-400 object-cover" />
                   ) : (
                     <FaUserCircle size={60} className="mx-auto text-gray-400" />
                   )}
@@ -192,9 +193,9 @@ export default function Navbar({
 
                 {/* PROFILE */}
                 <button onClick={() => {
-                    setDrawerOpen(true);
-                    setDropOpen(false);
-                  }}
+                  setDrawerOpen(true);
+                  setDropOpen(false);
+                }}
                   className="w-full mt-3 p-2 cursor-pointer hover:bg-base-300 rounded-lg text-left">
                   Profile
                 </button>

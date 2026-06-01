@@ -18,9 +18,7 @@ export default function AddMovieModal({
     setLoading(true);
 
     try {
-      const res = await fetch(
-        `https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&query=${query}`
-      );
+      const res = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${TMDB_KEY}&query=${query}`);
 
       const data = await res.json();
 

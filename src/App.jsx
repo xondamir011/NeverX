@@ -38,19 +38,69 @@ export default function App() {
     TR: "tr-TR",
   };
 
-  const fetchMovies = async (queryText = "") => {
+  const fetchMovies = async (queryText = "", category = "") => {
     setLoading(true);
 
     try {
-      let baseUrl = "";
+      const pages = [1, 2, 3, 4, 5];
 
-      if (queryText.trim()) {
-        baseUrl = `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${queryText}&language=${langMap[lang]}`;
-      } else {
-        baseUrl = `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=${langMap[lang]}`;
+      const genreMap = {
+        horror: 27,
+        comedy: 35,
+        drama: 18,
+        action: 28,
+        fantasy: 14,
+        thriller: 53,
+        cartoon: 16,
+        anime: 16,
+      };
+
+      let baseUrl = "";
+      let isSeries = category === "series";
+
+      if (isSeries) {
+        const responses = await Promise.all(
+          pages.map((page) =>
+            fetch(
+              `https://api.themoviedb.org/3/discover/tv?api_key=${API_KEY}&language=${langMap[lang]}&page=${page}`
+            ).then((res) => res.json())
+          )
+        );
+
+        const allSeries = responses.flatMap((d) => d.results || []);
+
+        const uniqueSeries = Array.from(
+          new Map(allSeries.map((s) => [s.id, s])).values()
+        );
+
+        setMovies(uniqueSeries);
+        return;
       }
 
-      const pages = [1, 2, 3, 4, 5];
+      if (category && genreMap[category]) {
+        const genreId = genreMap[category];
+
+        const responses = await Promise.all(
+          pages.map((page) =>
+            fetch(
+              `https://api.themoviedb.org/3/discover/movie?api_key=${API_KEY}&with_genres=${genreId}&language=${langMap[lang]}&page=${page}`
+            ).then((res) => res.json())
+          )
+        );
+
+        const allMovies = responses.flatMap((d) => d.results || []);
+
+        const uniqueMovies = Array.from(
+          new Map(allMovies.map((m) => [m.id, m])).values()
+        );
+
+        setMovies(uniqueMovies);
+        return;
+      }
+
+      baseUrl = queryText.trim()
+        ? `https://api.themoviedb.org/3/search/movie?api_key=${API_KEY}&query=${queryText}&language=${langMap[lang]}`
+        : `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=${langMap[lang]}`;
 
       const responses = await Promise.all(
         pages.map((page) =>
@@ -58,7 +108,7 @@ export default function App() {
         )
       );
 
-      const allMovies = responses.flatMap((data) => data.results || []);
+      const allMovies = responses.flatMap((d) => d.results || []);
 
       const uniqueMovies = Array.from(
         new Map(allMovies.map((m) => [m.id, m])).values()
@@ -124,7 +174,8 @@ export default function App() {
           setTheme={setTheme}
           isAdmin={isAdmin}
           setShowAdmin={setShowAdmin}
-          setShowAddMovie={setShowAddMovie} />
+          setShowAddMovie={setShowAddMovie}
+          onSearch={fetchMovies} />
 
         <AdminPanel setShowAdmin={setShowAdmin} lang={lang}
           showAddMovie={showAddMovie} setShowAddMovie={setShowAddMovie} />
@@ -132,16 +183,16 @@ export default function App() {
     );
   }
 
-  {
-    showAddMovie && (
-      <AddMovieModal
-        onClose={() => setShowAddMovie(false)}
-        adminUid={user.uid} />
-    )
-  }
-
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
+      {
+        showAddMovie && (
+          <AddMovieModal
+            onClose={() => setShowAddMovie(false)}
+            adminUid={user.uid} />
+        )
+      }
+
       <Navbar
         user={user}
         setLang={setLang}
@@ -150,7 +201,8 @@ export default function App() {
         setTheme={setTheme}
         isAdmin={isAdmin}
         setShowAdmin={setShowAdmin}
-        setShowAddMovie={setShowAddMovie} />
+        setShowAddMovie={setShowAddMovie}
+        onSearch={fetchMovies} />
 
       <div className="p-2 sm:p-4">
         <Search
@@ -176,11 +228,11 @@ export default function App() {
       {!loading && movies.length === 0 && (
         <h2 className="text-center text-lg mt-30">
           {{
-            EN: "No movies found 😔",
-            UZ: "Film topilmadi 😔",
-            RU: "Фильмы не найдены 😔",
-            DE: "Keine Filme gefunden 😔",
-            TR: "Film bulunamadı 😔",
+            EN: "No movies or series found 😔",
+            UZ: "Film yoki serial topilmadi 😔",
+            RU: "Фильмы или сериалы не найдены 😔",
+            DE: "Keine Filme oder Serien gefunden 😔",
+            TR: "Film silole dizi bulunamadı 😔",
           }[lang]}
         </h2>
       )}

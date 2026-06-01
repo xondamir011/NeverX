@@ -21,7 +21,8 @@ export default function Drawer({
   user,
   open,
   setOpen,
-  onSearch
+  onSearch,
+  setShowAddMovie
 }) {
 
   const [installPrompt, setInstallPrompt] = useState(null);
@@ -200,6 +201,17 @@ export default function Drawer({
     },
   };
 
+  const genreMap = {
+    horror: 27,
+    comedy: 35,
+    drama: 18,
+    action: 28,
+    fantasy: 14,
+    thriller: 53,
+    cartoon: 16,
+    anime: 16,
+  };
+
   return (
     <div className="z-20">
       <button onClick={() => setOpen(true)}
@@ -236,7 +248,7 @@ export default function Drawer({
           {filters.map((filter) => (
             <button key={filter.key}
               onClick={() => {
-                onSearch("", filter.key);
+                onSearch?.("", filter.key);
                 setOpen(false);
               }}
               className="flex items-center cursor-pointer gap-3 px-4 py-3 rounded-2xl bg-base-300 hover:bg-base-100 active:scale-[0.98] transition-all text-left">
@@ -254,10 +266,10 @@ export default function Drawer({
 
         {isMobile && (
           <button onClick={() => {
-              setShowAddMovie(true);
-              localStorage.setItem("admin_tab", "add");
-              setOpen(false);
-            }}
+            setShowAddMovie(true);
+            localStorage.setItem("admin_tab", "add");
+            setOpen(false);
+          }}
             className="w-full mt-5 mb-10 py-3 rounded-xl bg-base-300 text-base font-semibold flex items-center justify-center gap-2">
             <FaPlus size={16} />
             <span>Add Movie</span>

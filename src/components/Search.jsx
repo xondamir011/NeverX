@@ -447,7 +447,7 @@ export default function Search({
       </div>
 
       {/* BANNER */}
-      <div className="relative overflow-hidden rounded-[35px] h-[280px] sm:h-[480px] group">
+      <div className="relative overflow-hidden rounded-[35px] pb-85 h-[250px] sm:h-[450px] group">
 
         {/* IMAGE */}
         <img src={active.image} alt="banner"
@@ -509,7 +509,7 @@ export default function Search({
             </p>
 
             <button onClick={() => onSearch(active.title.EN)}
-              className="mt-6 bg-primary cursor-pointer hover:opacity-90 transition-all text-primary-content font-bold px-8 sm:px-14 py-4 rounded-full flex items-center gap-2 hover:scale-105 shadow-xl">
+              className="mt-6 bg-primary cursor-pointer mb-6 hover:opacity-90 transition-all text-primary-content font-bold px-8 sm:px-14 py-4 rounded-full flex items-center gap-2 hover:scale-105 shadow-xl">
               <Play size={18} fill="currentColor" />
               {text[currentLang]?.watch}
             </button>
@@ -517,7 +517,7 @@ export default function Search({
           </div>
 
           {/* DOTS */}
-          <div className="flex items-center justify-center gap-3">
+          <div className="flex items-center justify-center none gap-3">
             {banners.map((_, i) => (
               <button key={i}
                 onClick={() => setCurrent(i)}

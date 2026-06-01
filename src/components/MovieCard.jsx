@@ -199,7 +199,6 @@ export default function MovieCard({ movie, lang = "UZ" }) {
     loadLike();
     loadSave();
     loadComments();
-    // Ko'rishni saqlash
     recordView(user, movie);
   }, [showModal]);
 
