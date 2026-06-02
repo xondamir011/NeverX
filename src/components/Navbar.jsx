@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import Drawer from "./Drawer";
-import { FaUserCircle, FaPalette, FaFilm, FaCog, FaPlus } from "react-icons/fa";
+import { FaUserCircle, FaPalette, FaFilm, FaPlus, FaUserShield } from "react-icons/fa";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/config";
 
@@ -113,7 +113,7 @@ export default function Navbar({
           {isAdmin && (
             <button onClick={() => setShowAdmin(true)}
               className="flex items-center cursor-pointer gap-1 py-2 rounded-lg hover:bg-base-100" >
-              <FaCog />
+              <FaUserShield />
               <span>Admin</span>
             </button>
           )}
@@ -197,7 +197,7 @@ export default function Navbar({
                   setDropOpen(false);
                 }}
                   className="w-full mt-3 p-2 cursor-pointer hover:bg-base-300 rounded-lg text-left">
-                  Profile
+                  Settings
                 </button>
 
                 {/* LOGOUT */}

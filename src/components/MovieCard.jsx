@@ -7,6 +7,7 @@ import {
   collection, getDocs, increment, updateDoc, serverTimestamp
 } from "firebase/firestore";
 import { db } from "../firebase/config";
+import { FaPlay } from "react-icons/fa";
 
 const T = {
   EN: { more: "Details", desc: "No description", details: "Details", save: "Save", saved: "Saved", like: "Like" },
@@ -337,8 +338,8 @@ export default function MovieCard({ movie, lang = "UZ" }) {
         <div className="relative overflow-hidden aspect-[2/3]">
           <img src={posterUrl} alt={title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
           <div className="absolute inset-0 bg-black/50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <div className="bg-red-600 rounded-full w-14 h-14 flex items-center justify-center shadow-lg">
-              <span className="text-white text-2xl ml-1">▶</span>
+            <div className="bg-base-200 rounded-full w-14 h-14 flex items-center justify-center shadow-lg">
+              <span className="text-white text-2xl ml-1"><FaPlay /></span>
             </div>
           </div>
           {/* Like badge on card */}
@@ -394,7 +395,7 @@ export default function MovieCard({ movie, lang = "UZ" }) {
                 <button onClick={toggleLike}
                   disabled={likeLoading}
                   className={`btn btn-sm gap-1 ${liked ? "bg-red-500 text-white border-none" : "btn-outline"}`}>
-                  {liked ? "❤️" : "🤍"} {likeCount > 0 ? likeCount : ""} {t.like}
+                  {liked ? "❤️" : "❤️"} {likeCount > 0 ? likeCount : ""} {t.like}
                 </button>
 
                 {/* Save */}
