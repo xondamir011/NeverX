@@ -1,19 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import Drawer from "./Drawer";
-import { FaUserCircle, FaPalette, FaFilm, FaPlus, FaUserShield } from "react-icons/fa";
+import { FaUserCircle, FaPalette, FaPlus, FaUserShield, FaCrown, FaFilm, FaSearch } from "react-icons/fa";
 import { signOut } from "firebase/auth";
 import { auth } from "../firebase/config";
 
 export default function Navbar({
-  user,
-  setLang,  
-  lang,
-  theme,
-  setTheme,
-  isAdmin,
-  setShowAdmin,
-  setShowAddMovie,
-  onSearch
+  user, setLang, lang, theme, setTheme,
+  isAdmin, setShowAdmin, setShowAddMovie, onSearch,
 }) {
   const [langOpen, setLangOpen] = useState(false);
   const [dropOpen, setDropOpen] = useState(false);
@@ -23,54 +16,22 @@ export default function Navbar({
   const langRef = useRef(null);
   const dropRef = useRef(null);
 
-  const [installPrompt, setInstallPrompt] = useState(null);
-  const [installed, setInstalled] = useState(false);
+  const handleLogout = async () => await signOut(auth);
 
   useEffect(() => {
     const handler = (e) => {
-      e.preventDefault();
-      setInstallPrompt(e);
+      if (langRef.current && !langRef.current.contains(e.target)) setLangOpen(false);
+      if (dropRef.current && !dropRef.current.contains(e.target)) setDropOpen(false);
     };
-
-    window.addEventListener("beforeinstallprompt", handler);
-    window.addEventListener("appinstalled", () => setInstalled(true));
-
-    return () => {
-      window.removeEventListener("beforeinstallprompt", handler);
-    };
-  }, []);
-
-  const handleInstall = async () => {
-    if (!installPrompt) return;
-    installPrompt.prompt();
-    const { outcome } = await installPrompt.userChoice;
-    if (outcome === "accepted") setInstalled(true);
-    setInstallPrompt(null);
-  };
-
-  const handleLogout = async () => {
-    await signOut(auth);
-  };
-
-  useEffect(() => {
-    const handler = (e) => {
-      if (langRef.current && !langRef.current.contains(e.target)) {
-        setLangOpen(false);
-      }
-      if (dropRef.current && !dropRef.current.contains(e.target)) {
-        setDropOpen(false);
-      }
-    };
-
     document.addEventListener("mousedown", handler);
     return () => document.removeEventListener("mousedown", handler);
   }, []);
 
   useEffect(() => {
-    const checkSize = () => setIsMobile(window.innerWidth < 768);
-    checkSize();
-    window.addEventListener("resize", checkSize);
-    return () => window.removeEventListener("resize", checkSize);
+    const check = () => setIsMobile(window.innerWidth < 768);
+    check();
+    window.addEventListener("resize", check);
+    return () => window.removeEventListener("resize", check);
   }, []);
 
   const languages = [
@@ -81,136 +42,188 @@ export default function Navbar({
     { code: "TR", label: "Türkçe", flag: "tr" },
   ];
 
-  const isGoogleAvatar = user?.photoURL?.includes("googleusercontent");
+  const premium = {
+    EN: {
+      label: "Premium",
+    },
+    UZ: {
+      label: "Obuna",
+    },
+    RU: {
+      label: "Премиум",
+    },
+    DE: {
+      label: "Abonnement",
+    },
+    TR: {
+      label: "Abonelik",
+    }
+  };
+
+  const add = {
+    EN: {
+      label: "Add Movie",
+    },
+    UZ: {
+      label: "Film qo'shish",
+    },
+    RU: {
+      label: "Добавить фильм",
+    },
+    DE: {
+      label: "Film hinzufügen",
+    },
+    TR: {
+      label: "Film ekle",
+    }
+  }
+
+  const admin = {
+    EN: {
+      label: "Admin",
+    },
+    UZ: {
+      label: "Adminstrator",
+    },
+    RU: {
+      label: "Админ",
+    },
+    DE: {
+      label: "Admin",
+    },
+    TR: {
+      label: "Yönetici",
+    }
+  }
 
   return (
     <div className="sticky top-0 z-30 bg-base-200 border-b border-white/10">
-      <div className="flex items-center justify-between py-2 sm:px-4">
+      <div className="flex items-center justify-between gap-2 py-2 px-3 sm:px-4">
 
-        {/* LEFT */}
-        <div className="flex items-center gap-1">
-          <Drawer lang={lang} user={user} open={drawerOpen} setOpen={setDrawerOpen} onSearch={onSearch}
-            setShowAddMovie={setShowAddMovie} />
-
-          <h2 className="flex items-center gap-1 text-xl font-semibold">
-            <FaFilm size={22} /> NeverX
-          </h2>
+        {/* CHAP — Drawer + Logo */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          {isMobile && (
+            <Drawer
+              lang={lang} user={user}
+              open={drawerOpen} setOpen={setDrawerOpen}
+              onSearch={onSearch} setShowAddMovie={setShowAddMovie}
+              isAdmin={isAdmin} />
+          )}
+          <div className="hidden md:flex items-center gap-1">
+            <FaFilm size={25} />
+            <h2 className="font-bold text-lg">NeverX</h2>
+          </div>
         </div>
 
-        {/* RIGHT */}
-        <div className="flex items-center gap-5">
-          {!isMobile && (
-            <button onClick={() => {
-              setShowAddMovie(true);
-              localStorage.setItem("admin_tab", "add");
-            }}
-              className="btn bg-base-300 hover:bg-base-200 text-base border-none">
-              <FaPlus size={15} /> Add Movie
-            </button>
-          )}
-
-          {/* ADMIN */}
-          {isAdmin && (
-            <button onClick={() => setShowAdmin(true)}
-              className="flex items-center cursor-pointer gap-1 py-2 rounded-lg hover:bg-base-100" >
-              <FaUserShield />
-              <span>Admin</span>
-            </button>
-          )}
-
-          {/* THEME */}
-          <div className="dropdown dropdown-end">
-            <div tabIndex={0} className="cursor-pointer flex items-center">
-              <FaPalette />
-            </div>
-
-            <ul className="dropdown-content bg-base-300 mt-2 rounded-box w-40 p-2 shadow">
-              {["dark", "valentine", "synthwave", "winter", "aqua"].map((t) => (
-                <li key={t}>
-                  <button onClick={() => {
-                    setTheme(t);
-                    localStorage.setItem("theme", t);
-                  }}
-                    className="btn w-full justify-start mb-2">
-                    {t}
-                  </button>
-                </li>
-              ))}
-            </ul>
+        {/* O'RTA — Search */}
+        <div className="flex flex-1 justify-center px-2 md:px-6">
+          <div className="relative w-full md:max-w-sm">
+            <FaSearch className="absolute z-5 text-white left-3 top-1/2 -translate-y-1/2 pointer-events-none" size={14} />
+            <input type="text"
+              placeholder="Search..."
+              onChange={(e) => onSearch?.(e.target.value)}
+              className="input input-bordered pl-8 h-11 w-full sm:w-xl"/>
           </div>
+        </div>
 
-          {/* LANGUAGE */}
+        {/* O'NG — tugmalar */}
+        <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
+          {!isMobile && isAdmin && (
+            <button onClick={() => { setShowAddMovie(true); localStorage.setItem("admin_tab", "add"); }}
+              className="btn bg-base-200 hover:bg-base-100 border-none gap-1">
+              <FaPlus size={12} /> {add[lang]?.label || "Add Movie"}
+            </button>
+          )}
+
+          {!isMobile && isAdmin && (
+            <button onClick={() => setShowAdmin(true)}
+              className="flex items-center btn gap-1 cursor-pointer px-3 py-2 rounded-lg hover:bg-base-300 transition text-sm font-semibold">
+              <FaUserShield size={14} /> {admin[lang]?.label || "Admin"}
+            </button>
+          )}
+
+          <button className="btn bg-gradient-to-r from-blue-800 to-red-500 text-white border-none hover:scale-105 transition-all duration-300 shadow-lg gap-1">
+            <FaCrown size={17} />{premium[lang]?.label || "Premium"}
+          </button>
+
           <div ref={langRef} className="relative">
-            <button className="cursor-pointer" onClick={() => setLangOpen(!langOpen)}>
+            <button onClick={() => setLangOpen(!langOpen)}
+              className="cursor-pointer text-sm font-semibold px-2 py-1 rounded-lg hover:bg-base-300 transition">
               {lang}
             </button>
-
             {langOpen && (
-              <div className="absolute right-0 mt-3 bg-base-200 p-2 rounded-xl shadow w-40 z-50">
+              <div className="absolute right-0 mt-2 bg-base-200 p-2 rounded-xl shadow-xl w-40 z-50 border border-base-300">
                 {languages.map((l) => (
                   <div key={l.code}
-                    onClick={() => {
-                      setLang(l.code);
-                      localStorage.setItem("lang", l.code);
-                      setLangOpen(false);
-                    }}
-                    className="flex gap-2 p-2 hover:bg-base-300 cursor-pointer rounded-lg">
-
-                    <img src={`https://flagcdn.com/w40/${l.flag}.png`}
-                      className="w-5 h-4" alt={l.label} />
-                    <span>{l.label}</span>
+                    onClick={() => { setLang(l.code); localStorage.setItem("lang", l.code); setLangOpen(false); }}
+                    className="flex gap-2 p-2 hover:bg-base-300 cursor-pointer rounded-lg items-center">
+                    <img src={`https://flagcdn.com/w40/${l.flag}.png`} className="w-5 h-4 rounded-sm" alt={l.label} />
+                    <span className="text-sm">{l.label}</span>
                   </div>
                 ))}
               </div>
             )}
           </div>
 
-          {/* USER */}
           <div ref={dropRef} className="relative">
             <button onClick={() => setDropOpen(!dropOpen)}>
               {user?.photoURL ? (
                 <img src={user.photoURL} alt="avatar"
-                  className="w-10 h-10 cursor-pointer rounded-full object-cover border-2 border-cyan-400" />
+                  className="rounded-full object-cover border-2 border-cyan-400 cursor-pointer"
+                  style={{ width: isMobile ? 32 : 38, height: isMobile ? 32 : 38 }} />
               ) : (
-                <FaUserCircle size={34} className="text-gray-400" />
+                <FaUserCircle size={isMobile ? 30 : 36} className="text-gray-400 cursor-pointer" />
               )}
             </button>
 
             {dropOpen && (
-              <div className="absolute right-0 top-12 w-64 bg-base-200 p-4 rounded-2xl shadow-xl">
-                <div className="text-center">
+              <div className="absolute right-0 top-12 w-56 bg-base-200 p-4 rounded-2xl shadow-2xl border border-base-300 z-50"
+                style={{ animation: "dropIn 0.2s ease" }}>
+                <div className="text-center mb-4">
                   {user?.photoURL ? (
                     <img src={user.photoURL} alt="avatar"
-                      className="w-16 h-16 cursor-pointer mx-auto rounded-full border-2 border-cyan-400 object-cover" />
+                      className="w-14 h-14 mx-auto rounded-full border-2 border-cyan-400 object-cover" />
                   ) : (
-                    <FaUserCircle size={60} className="mx-auto text-gray-400" />
+                    <FaUserCircle size={52} className="mx-auto text-gray-400" />
                   )}
-
-                  <h2 className="mt-2 font-bold">
+                  <h2 className="mt-2 font-bold text-sm truncate">
                     {user?.displayName || user?.email}
                   </h2>
                 </div>
 
-                {/* PROFILE */}
-                <button onClick={() => {
-                  setDrawerOpen(true);
-                  setDropOpen(false);
-                }}
-                  className="w-full mt-3 p-2 cursor-pointer hover:bg-base-300 rounded-lg text-left">
-                  Settings
-                </button>
-
-                {/* LOGOUT */}
-                <button onClick={handleLogout}
-                  className="w-full p-2 cursor-pointer hover:bg-base-300 rounded-lg text-left text-red-500">
-                  Logout
-                </button>
+                <div className="border-t border-base-300 pt-3">
+                  <div className="dropdown dropdown-end w-full">
+                    <div tabIndex={0} className="cursor-pointer flex gap-2 items-center px-2 py-2 rounded-lg hover:bg-base-300 font-semibold text-sm mb-1">
+                      <FaPalette size={13} /> Theme
+                    </div>
+                    <ul className="dropdown-content bg-base-300 rounded-xl w-40 p-2 shadow-xl z-50">
+                      {["dark", "valentine", "synthwave", "winter", "aqua"].map((t) => (
+                        <li key={t}>
+                          <button onClick={() => { setTheme(t); localStorage.setItem("theme", t); }}
+                            className={`btn btn-sm w-full justify-start mb-1 ${theme === t ? "btn-primary" : "btn-ghost"}`}>
+                            {t}
+                          </button>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                  <button onClick={handleLogout}
+                    className="w-full px-2 py-2 text-sm text-red-500 hover:bg-base-300 rounded-lg text-left font-semibold transition">
+                    Logout
+                  </button>
+                </div>
               </div>
             )}
           </div>
-
         </div>
       </div>
+
+      <style>{`
+    @keyframes dropIn {
+      from { opacity: 0; transform: translateY(-8px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+  `}</style>
     </div>
   );
 }

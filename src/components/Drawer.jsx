@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import {
   FaUserCircle,
   FaTimes,
-  FaDownload,
   FaTv,
   FaGhost,
   FaHeart,
@@ -13,7 +12,8 @@ import {
   FaMask,
   FaMagic,
   FaBars,
-  FaPlus
+  FaPlus,
+  FaFilm
 } from "react-icons/fa";
 
 export default function Drawer({
@@ -24,278 +24,176 @@ export default function Drawer({
   onSearch,
   setShowAddMovie
 }) {
-
-  const [installPrompt, setInstallPrompt] = useState(null);
-  const [installed, setInstalled] = useState(false);
-  const isMobile = window.innerWidth < 768;
+  const [isMobile, setIsMobile] = useState(false);
 
   useEffect(() => {
-    const handler = (e) => {
-      e.preventDefault();
-      setInstallPrompt(e);
-    };
+    const check = () =>
+      setIsMobile(window.innerWidth < 768);
 
-    window.addEventListener("beforeinstallprompt", handler);
+    check();
 
-    window.addEventListener("appinstalled", () => {
-      setInstalled(true);
-    });
+    window.addEventListener("resize", check);
 
-    return () => {
-      window.removeEventListener("beforeinstallprompt", handler);
-    };
+    return () =>
+      window.removeEventListener("resize", check);
   }, []);
-
-  const handleInstall = async () => {
-    if (!installPrompt) return;
-
-    installPrompt.prompt();
-
-    const { outcome } = await installPrompt.userChoice;
-
-    if (outcome === "accepted") {
-      setInstalled(true);
-    }
-
-    setInstallPrompt(null);
-  };
 
   const filters = [
     {
       key: "series",
       icon: <FaTv />,
-      label: {
-        UZ: "Serial",
-        EN: "Series",
-        RU: "Сериал",
-        DE: "Serie",
-        TR: "Dizi",
-      },
+      label: { EN: "Series", UZ: "Serial" }
     },
-
     {
       key: "horror",
       icon: <FaGhost />,
-      label: {
-        UZ: "Qo'rqinchli",
-        EN: "Horror",
-        RU: "Ужас",
-        DE: "Horror",
-        TR: "Korku",
-      },
+      label: { EN: "Horror", UZ: "Qo'rqinchli" }
     },
-
     {
       key: "drama",
       icon: <FaHeart />,
-      label: {
-        UZ: "Drama",
-        EN: "Drama",
-        RU: "Драма",
-        DE: "Drama",
-        TR: "Drama",
-      },
+      label: { EN: "Drama", UZ: "Drama" }
     },
-
     {
       key: "comedy",
       icon: <FaLaugh />,
-      label: {
-        UZ: "Kulgili",
-        EN: "Comedy",
-        RU: "Комедия",
-        DE: "Komödie",
-        TR: "Komedi",
-      },
+      label: { EN: "Comedy", UZ: "Komediya" }
     },
     {
       key: "action",
       icon: <FaBolt />,
-      label: {
-        UZ: "Jangari",
-        EN: "Action",
-        RU: "Боевик",
-        DE: "Action",
-        TR: "Aksiyon",
-      },
+      label: { EN: "Action", UZ: "Jangari" }
     },
-
     {
       key: "anime",
       icon: <FaDragon />,
-      label: {
-        UZ: "Anime",
-        EN: "Anime",
-        RU: "Аниме",
-        DE: "Anime",
-        TR: "Anime",
-      },
+      label: { EN: "Anime", UZ: "Anime" }
     },
-
     {
       key: "cartoon",
       icon: <FaChild />,
-      label: {
-        UZ: "Multfilm",
-        EN: "Cartoon",
-        RU: "Мультфильм",
-        DE: "Cartoon",
-        TR: "Çizgi Film",
-      },
+      label: { EN: "Cartoon", UZ: "Multfilm" }
     },
-
     {
       key: "thriller",
       icon: <FaMask />,
-      label: {
-        UZ: "Triller",
-        EN: "Thriller",
-        RU: "Триллер",
-        DE: "Thriller",
-        TR: "Gerilim",
-      },
+      label: { EN: "Thriller", UZ: "Triller" }
     },
-
     {
       key: "fantasy",
       icon: <FaMagic />,
-      label: {
-        UZ: "Fantastika",
-        EN: "Fantasy",
-        RU: "Фэнтези",
-        DE: "Fantasy",
-        TR: "Fantastik",
-      },
-    },
+      label: { EN: "Fantasy", UZ: "Fantastika" }
+    }
   ];
-
-  const t = {
-    EN: {
-      categories: "Categories",
-      install: "Install App",
-      installed: "Installed ✓",
-    },
-
-    UZ: {
-      categories: "Kategoriyalar",
-      install: "Ilovani o'rnatish",
-      installed: "O'rnatildi ✓",
-    },
-
-    RU: {
-      categories: "Категории",
-      install: "Установить",
-      installed: "Установлено ✓",
-    },
-
-    DE: {
-      categories: "Kategorien",
-      install: "App installieren",
-      installed: "Installiert ✓",
-    },
-
-    TR: {
-      categories: "Kategoriler",
-      install: "Uygulamayı yükle",
-      installed: "Yüklendi ✓",
-    },
-  };
-
-  const genreMap = {
-    horror: 27,
-    comedy: 35,
-    drama: 18,
-    action: 28,
-    fantasy: 14,
-    thriller: 53,
-    cartoon: 16,
-    anime: 16,
-  };
 
   return (
     <div className="z-20">
       <button onClick={() => setOpen(true)}
-        className="flex items-center justify-center text-2xl rounded-xl hover:bg-base-300 active:scale-95 transition-all w-11 h-11">
+        className="md:hidden flex items-center justify-center text-2xl w-11 h-11 rounded-xl hover:bg-base-300">
         <FaBars />
       </button>
 
       {/* OVERLAY */}
       {open && (
         <div onClick={() => setOpen(false)}
-          className="fixed inset-0 bg-black/50 z-30" />)}
+          className="fixed inset-0 bg-black/60 z-30 md:hidden" />
+      )}
 
       {/* DRAWER */}
-      <div className={`fixed top-0 left-0 h-full w-72 bg-base-200 text-base p-5 transform transition-transform duration-300 z-40 flex flex-col
-        ${open ? "translate-x-0" : "-translate-x-full"}`}>
+      <div className={`fixed top-0 left-0 h-full w-72 bg-base-200 p-5 z-40 flex flex-col transition-transform duration-300 md:hidden ${open
+          ? "translate-x-0"
+          : "-translate-x-full"
+        }`}>
 
-        {/* Close */}
-        <div className="flex items-center justify-between">
-          <button className="flex justify-center items-center cursor-pointer w-10 h-10 rounded-full border border-white/10 hover:bg-base-300 active:scale-95 transition-all"
-            onClick={() => setOpen(false)}>
-            <FaTimes size={18} />
-          </button>
-        </div>
+        {/* CLOSE */}
+        <button onClick={() => setOpen(false)}
+          className="w-12 h-10 rounded-full border-2 hover:bg-base-300 flex items-center justify-center">
+          <FaTimes />
+        </button>
 
-        {/* CATEGORY TITLE */}
-        <div className="mt-8">
-          <h2 className="text-lg mb-3 font-bold opacity-80">
-            {t[lang]?.categories}
-          </h2>
+        {/* TITLE */}
+        <div className="flex ml-2 mt-5 items-center gap-2 mb-3">
+          <FaFilm size={25} />
+          <h2 className="font-bold text-lg">NeverX</h2>
         </div>
 
         {/* CATEGORIES */}
-        <div className="flex flex-col gap-2 mb-4">
-          {filters.map((filter) => (
-            <button key={filter.key}
+        <div className="flex flex-col gap-2">
+          {filters.map((f) => (
+            <button
+              key={f.key}
               onClick={() => {
-                onSearch?.("", filter.key);
+                onSearch?.("", f.key);
                 setOpen(false);
               }}
-              className="flex items-center cursor-pointer gap-3 px-4 py-3 rounded-2xl bg-base-300 hover:bg-base-100 active:scale-[0.98] transition-all text-left">
+              className="flex items-center gap-3 px-4 py-3 rounded-xl bg-base-300 hover:bg-base-100 transition"
+            >
               <span className="text-lg">
-                {filter.icon}
+                {f.icon}
               </span>
 
-              <span className="font-medium">
-                {filter.label[lang] || filter.label.EN}
+              <span>
+                {f.label[lang] || f.label.EN}
               </span>
             </button>
           ))}
-
         </div>
 
-        {isMobile && (
-          <button onClick={() => {
-            setShowAddMovie(true);
-            localStorage.setItem("admin_tab", "add");
-            setOpen(false);
-          }}
-            className="w-full mt-5 mb-10 py-3 rounded-xl bg-base-300 text-base font-semibold flex items-center justify-center gap-2">
-            <FaPlus size={16} />
-            <span>Add Movie</span>
-          </button>
-        )}
+        {/* BANNER */}
+        <div className="mt-5 rounded-2xl overflow-hidden bg-base-300">
+          <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba"
+            alt="banner"
+            className="w-full h-36 object-cover" />
 
-        <div className="flex items-center gap-2">
-          {user?.photoURL ? (
-            <img src={user.photoURL}
-              className="w-11 h-11 rounded-full object-cover border border-white/20" />
-          ) : (
-            <FaUserCircle className="text-4xl text-gray-400" />
-          )}
+          <div className="p-3">
+            <h3 className="font-bold">
+              Premium Movies
+            </h3>
 
-          <div>
-            <h2 className="font-semibold text-sm">
-              {user?.displayName || "Guest"}
-            </h2>
-
-            <p className="text-xs opacity-60">
-              {user?.email || ""}
+            <p className="text-xs opacity-70 mt-1">
+              Watch latest movies and series
             </p>
           </div>
         </div>
 
+        {/* ADD MOVIE */}
+        {isMobile && (
+          <button onClick={() => {
+            setShowAddMovie(true);
+            setOpen(false);
+          }}
+            className="mt-4 py-3 rounded-xl bg-primary text-white flex items-center justify-center gap-2">
+            <FaPlus />
+            Add Movie
+          </button>
+        )}
+
+        {/* USER */}
+        <div className="mt-auto pt-5 border-t border-base-300">
+          <div className="flex items-center gap-3">
+            {user?.photoURL ? (
+              <img
+                src={user.photoURL}
+                alt="user"
+                className="w-10 h-10 rounded-full object-cover"
+              />
+            ) : (
+              <FaUserCircle className="text-4xl" />
+            )}
+
+            <div>
+              <p className="font-semibold text-sm">
+                {user?.displayName || "Guest"}
+              </p>
+
+              <p className="text-xs opacity-60 truncate max-w-[180px]">
+                {user?.email || ""}
+              </p>
+            </div>
+          </div>
+        </div>
       </div>
+
     </div>
   );
 }
