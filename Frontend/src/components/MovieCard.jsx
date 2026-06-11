@@ -9,6 +9,23 @@ import {
 import { db } from "../firebase/config";
 import { FaPlay } from "react-icons/fa";
 
+const [isPremium, setIsPremium] = useState(false);
+
+useEffect(() => {
+  const loadPremium = async () => {
+    if (!user) return;
+
+    const userRef = doc(db, "users", user.uid);
+    const snap = await getDoc(userRef);
+
+    if (snap.exists()) {
+      setIsPremium(snap.data().isPremium === true);
+    }
+  };
+
+  loadPremium();
+}, [user]);
+
 const T = {
   EN: { more: "Details", desc: "No description", details: "Details", save: "Save", saved: "Saved", like: "Like" },
   UZ: { more: "Batafsil", desc: "Tavsif yo'q", details: "Batafsil", save: "Saqlash", saved: "Saqlangan", like: "Like" },
