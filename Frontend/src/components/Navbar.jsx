@@ -82,7 +82,7 @@ export default function Navbar({
               <input type="text"
                 placeholder="Search..."
                 onChange={(e) => onSearch?.(e.target.value)}
-                className="input input-bordered pl-10 h-11 w-full"/>
+                className="input input-bordered pl-10 h-11 w-145"/>
             </div>
           </div>
 
@@ -159,7 +159,7 @@ export default function Navbar({
 
                   <div className="border-t border-base-300 pt-3">
                     <div className="dropdown dropdown-end w-full">
-                      <div tabIndex={0} className="cursor-pointer flex justify-center gap-1 items-center px-2 py-2 rounded-lg hover:bg-base-300 font-semibold text-sm mb-1">
+                      <div tabIndex={0} className="cursor-pointer flex gap-1 items-center px-2 py-2 rounded-lg hover:bg-base-300 font-semibold text-sm mb-1">
                         <FaCog size={16} />
                         <span>{labels.settings[lang] || "Settings"}</span>
                       </div>
