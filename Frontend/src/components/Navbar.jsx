@@ -51,6 +51,14 @@ export default function Navbar({
     settings:{ EN: "Settings", UZ: "Sozlamalar", RU: "Настройки", DE: "Einstellungen", TR: "Ayarlar" },
   };
 
+  const out = {
+    EN: "Logout",
+    UZ: "Chiqish",
+    RU: "Выйти",
+    DE: "Abmelden",
+    TR: "Çıkış"
+  }
+
   return (
     <>
       {premiumOpen && (
@@ -178,7 +186,7 @@ export default function Navbar({
 
                     <button onClick={handleLogout}
                       className="w-full px-2 py-2 text-sm text-red-500 hover:bg-base-300 rounded-lg text-left font-semibold transition">
-                      Logout
+                      {out[lang] || "Logout"}
                     </button>
                   </div>
                 </div>
