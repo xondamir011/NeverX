@@ -123,11 +123,11 @@ export default function Navbar({
                 className="cursor-pointer text-sm font-semibold px-2 py-1 rounded-lg hover:bg-base-300 transition">
                 {lang}
               </button>
+              
               {langOpen && (
                 <div className="absolute right-0 mt-2 bg-base-200 p-2 rounded-xl shadow-xl w-40 z-50 border border-base-300">
                   {languages.map((l) => (
-                    <div key={l.code}
-                      onClick={() => { setLang(l.code); localStorage.setItem("lang", l.code); setLangOpen(false); }}
+                    <div key={l.code} onClick={() => { setLang(l.code); localStorage.setItem("lang", l.code); setLangOpen(false); }}
                       className="flex gap-2 p-2 hover:bg-base-300 cursor-pointer rounded-lg items-center">
                       <img src={`https://flagcdn.com/w40/${l.flag}.png`} className="w-5 h-4 rounded-sm" alt={l.label} />
                       <span className="text-sm">{l.label}</span>
@@ -145,7 +145,7 @@ export default function Navbar({
                     className="rounded-full object-cover border-2 border-cyan-400 cursor-pointer"
                     style={{ width: isMobile ? 32 : 38, height: isMobile ? 32 : 38 }}/>
                 ) : (
-                  <FaUserCircle size={isMobile ? 30 : 36} className="text-gray-400 cursor-pointer" />
+                  <FaUserCircle size={isMobile ? 30 : 36} className="text-gray-400 cursor-pointer"/>
                 )}
               </button>
 
