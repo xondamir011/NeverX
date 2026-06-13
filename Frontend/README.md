@@ -162,4 +162,4 @@ MIT License — open source, free to use.
 
 ---
 
-*Last updated: May 2026*
+*Last updated: May 2026* 
