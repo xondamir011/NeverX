@@ -121,7 +121,7 @@ export default function Navbar({
             <div ref={langRef} className="relative">
               <button onClick={() => setLangOpen(!langOpen)}
                 className="cursor-pointer text-sm font-semibold px-2 py-1 rounded-lg hover:bg-base-300 transition">
-                {lang}
+                 {lang}
               </button>
               
               {langOpen && (
