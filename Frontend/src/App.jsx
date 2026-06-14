@@ -329,7 +329,9 @@ export default function App() {
       </div>
     );
   }
-
+console.log("USER UID:", user?.uid);
+console.log("ADMIN UID:", ADMIN_UID);
+console.log("IS ADMIN:", user?.uid === ADMIN_UID);
   return (
     <div className="min-h-screen bg-base-100 text-base-content">
       {

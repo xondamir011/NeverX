@@ -84,26 +84,26 @@ export default function Navbar({
 
           {/* O'RTA — Search */}
           <div className="flex flex-1 justify-center px-2 md:px-6">
-            <div className="relative w-full md:max-w-sm">
+            <div className="relative w-full max-w-sm">
               <FaSearch className="absolute z-5 text-base-content/50 left-3 top-1/2 -translate-y-1/2 pointer-events-none" size={14}/>
             
               <input type="text"
                 placeholder="Search..."
                 onChange={(e) => onSearch?.(e.target.value)}
-                className="input input-bordered pl-10 h-11 w-145"/>
+                className="input input-bordered pl-10 h-11 w-full"/>
             </div>
           </div>
 
           {/* O'NG — tugmalar */}
           <div className="flex items-center gap-2 sm:gap-3 flex-shrink-0">
-            {!isMobile && isAdmin && (
+            {isAdmin && (
               <button onClick={() => { setShowAddMovie(true); localStorage.setItem("admin_tab", "add"); }}
                 className="btn bg-base-200 hover:bg-base-100 border-none gap-1">
                 <FaPlus size={12} /> {labels.add[lang] || "Add Movie"}
               </button>
             )}
 
-            {!isMobile && isAdmin && (
+            {isAdmin && (
               <button onClick={() => setShowAdmin(true)}
                 className="flex items-center btn gap-1 cursor-pointer px-3 py-2 rounded-lg hover:bg-base-300 transition text-sm font-semibold">
                 <FaUserShield size={14} /> {labels.admin[lang] || "Admin"}
