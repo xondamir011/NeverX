@@ -1,4 +1,6 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
+import neverx from "../assets/neverx.png";
 import {
   FaUserCircle,
   FaTimes,
@@ -13,8 +15,27 @@ import {
   FaMagic,
   FaBars,
   FaPlus,
-  FaFilm
 } from "react-icons/fa";
+
+const filters = [
+  { key: "series",   icon: <FaTv />,    label: { EN: "Series",   UZ: "Serial",      RU: "Сериалы",    DE: "Serien",     TR: "Diziler" } },
+  { key: "horror",   icon: <FaGhost />, label: { EN: "Horror",   UZ: "Qo'rqinchli", RU: "Ужасы",      DE: "Horror",     TR: "Korku" } },
+  { key: "drama",    icon: <FaHeart />, label: { EN: "Drama",    UZ: "Drama",       RU: "Драма",      DE: "Drama",      TR: "Dram" } },
+  { key: "comedy",   icon: <FaLaugh />, label: { EN: "Comedy",   UZ: "Komediya",    RU: "Комедия",    DE: "Komödie",    TR: "Komedi" } },
+  { key: "action",   icon: <FaBolt />,  label: { EN: "Action",   UZ: "Jangari",     RU: "Боевик",     DE: "Action",     TR: "Aksiyon" } },
+  { key: "anime",    icon: <FaDragon />,label: { EN: "Anime",    UZ: "Anime",       RU: "Аниме",      DE: "Anime",      TR: "Anime" } },
+  { key: "cartoon",  icon: <FaChild />, label: { EN: "Cartoon",  UZ: "Multfilm",    RU: "Мультфильм", DE: "Zeichentrick", TR: "Çizgi film" } },
+  { key: "thriller", icon: <FaMask />,  label: { EN: "Thriller", UZ: "Triller",     RU: "Триллер",    DE: "Thriller",   TR: "Gerilim" } },
+  { key: "fantasy",  icon: <FaMagic />, label: { EN: "Fantasy",  UZ: "Fantastika",  RU: "Фэнтези",    DE: "Fantasy",    TR: "Fantastik" } },
+];
+
+const addLabel = {
+  EN: "Add Movie",
+  UZ: "Film qo'shish",
+  RU: "Добавить фильм",
+  DE: "Film hinzufügen",
+  TR: "Film ekle",
+};
 
 export default function Drawer({
   lang,
@@ -22,178 +43,136 @@ export default function Drawer({
   open,
   setOpen,
   onSearch,
-  setShowAddMovie
+  setShowAddMovie,
+  isAdmin,
 }) {
-  const [isMobile, setIsMobile] = useState(false);
-
+  // Drawer ochiq bo'lsa orqa sahifa scroll bo'lmasin
   useEffect(() => {
-    const check = () =>
-      setIsMobile(window.innerWidth < 768);
+    const prev = document.body.style.overflow;
+    if (open) document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, [open]);
 
-    check();
+  // Esc bilan yopish
+  useEffect(() => {
+    if (!open) return;
+    const onKey = (e) => e.key === "Escape" && setOpen(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [open, setOpen]);
 
-    window.addEventListener("resize", check);
-
-    return () =>
-      window.removeEventListener("resize", check);
-  }, []);
-
-  const filters = [
-    {
-      key: "series",
-      icon: <FaTv />,
-      label: { EN: "Series", UZ: "Serial" }
-    },
-    {
-      key: "horror",
-      icon: <FaGhost />,
-      label: { EN: "Horror", UZ: "Qo'rqinchli" }
-    },
-    {
-      key: "drama",
-      icon: <FaHeart />,
-      label: { EN: "Drama", UZ: "Drama" }
-    },
-    {
-      key: "comedy",
-      icon: <FaLaugh />,
-      label: { EN: "Comedy", UZ: "Komediya" }
-    },
-    {
-      key: "action",
-      icon: <FaBolt />,
-      label: { EN: "Action", UZ: "Jangari" }
-    },
-    {
-      key: "anime",
-      icon: <FaDragon />,
-      label: { EN: "Anime", UZ: "Anime" }
-    },
-    {
-      key: "cartoon",
-      icon: <FaChild />,
-      label: { EN: "Cartoon", UZ: "Multfilm" }
-    },
-    {
-      key: "thriller",
-      icon: <FaMask />,
-      label: { EN: "Thriller", UZ: "Triller" }
-    },
-    {
-      key: "fantasy",
-      icon: <FaMagic />,
-      label: { EN: "Fantasy", UZ: "Fantastika" }
-    }
-  ];
-
-  return (
-    <div className="z-20">
-      <button onClick={() => setOpen(true)}
-        className="md:hidden flex items-center justify-center text-2xl w-11 h-11 rounded-xl hover:bg-base-300">
-        <FaBars />
-      </button>
-
+  const drawerUI = (
+    <>
       {/* OVERLAY */}
-      {open && (
-        <div onClick={() => setOpen(false)}
-          className="fixed inset-0 bg-black/60 z-30 md:hidden" />
-      )}
+      <div
+        onClick={() => setOpen(false)}
+        className={`fixed inset-0 bg-black/60 z-[90] md:hidden transition-opacity duration-300 ${
+          open ? "opacity-100" : "opacity-0 pointer-events-none"
+        }`}
+      />
 
       {/* DRAWER */}
-      <div className={`fixed top-0 left-0 h-full w-72 bg-base-200 p-5 z-40 flex flex-col transition-transform duration-300 md:hidden ${open
-          ? "translate-x-0"
-          : "-translate-x-full"
+      <aside
+        className={`fixed top-0 left-0 h-[100dvh] w-72 max-w-[85vw] bg-base-200 z-[100] flex flex-col md:hidden shadow-2xl transition-transform duration-300 ${
+          open ? "translate-x-0" : "-translate-x-full"
         }`}>
 
-        {/* CLOSE */}
-        <button onClick={() => setOpen(false)}
-          className="w-12 h-10 rounded-full border-2 hover:bg-base-300 flex items-center justify-center">
-          <FaTimes />
-        </button>
-
-        {/* TITLE */}
-        <div className="flex ml-2 mt-5 items-center gap-2 mb-3">
-          <FaFilm size={25} />
-          <h2 className="font-bold text-lg">NeverX</h2>
+        {/* HEADER: logo + yopish */}
+        <div className="flex items-center justify-between px-5 border-b border-base-300 flex-shrink-0">
+          <img src={neverx} alt="NeverX"
+            className="h-28 w-auto max-w-[170px] object-contain"/>
+          <button
+            onClick={() => setOpen(false)}
+            className="w-10 h-10 rounded-full border-2 border-base-300 hover:bg-base-300 flex items-center justify-center flex-shrink-0">
+            <FaTimes />
+          </button>
         </div>
 
-        {/* CATEGORIES */}
-        <div className="flex flex-col gap-2">
-          {filters.map((f) => (
+        {/* SCROLL QISMI */}
+        <div className="flex-1 overflow-y-auto px-5 py-4">
+          {/* CATEGORIES */}
+          <div className="flex flex-col gap-2">
+            {filters.map((f) => (
+              <button
+                key={f.key}
+                onClick={() => {
+                  onSearch?.("", f.key);
+                  setOpen(false);
+                }}
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-base-300 hover:bg-base-100 transition text-left"
+              >
+                <span className="text-lg">{f.icon}</span>
+                <span>{f.label[lang] || f.label.EN}</span>
+              </button>
+            ))}
+          </div>
+
+          {/* BANNER */}
+          <div className="mt-5 rounded-2xl overflow-hidden bg-base-300">
+            <img
+              src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba"
+              alt="banner"
+              className="w-full h-32 object-cover"
+            />
+            <div className="p-3">
+              <h3 className="font-bold">Premium Movies</h3>
+              <p className="text-xs opacity-70 mt-1">
+                Watch latest movies and series
+              </p>
+            </div>
+          </div>
+
+          {/* ADD MOVIE (faqat admin) */}
+          {isAdmin && (
             <button
-              key={f.key}
               onClick={() => {
-                onSearch?.("", f.key);
+                setShowAddMovie(true);
                 setOpen(false);
               }}
-              className="flex items-center gap-3 px-4 py-3 rounded-xl bg-base-300 hover:bg-base-100 transition"
+              className="mt-4 w-full py-3 rounded-xl bg-primary text-white flex items-center justify-center gap-2"
             >
-              <span className="text-lg">
-                {f.icon}
-              </span>
-
-              <span>
-                {f.label[lang] || f.label.EN}
-              </span>
+              <FaPlus />
+              {addLabel[lang] || addLabel.EN}
             </button>
-          ))}
+          )}
         </div>
 
-        {/* BANNER */}
-        <div className="mt-5 rounded-2xl overflow-hidden bg-base-300">
-          <img src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba"
-            alt="banner"
-            className="w-full h-36 object-cover" />
-
-          <div className="p-3">
-            <h3 className="font-bold">
-              Premium Movies
-            </h3>
-
-            <p className="text-xs opacity-70 mt-1">
-              Watch latest movies and series
-            </p>
-          </div>
-        </div>
-
-        {/* ADD MOVIE */}
-        {isMobile && (
-          <button onClick={() => {
-            setShowAddMovie(true);
-            setOpen(false);
-          }}
-            className="mt-4 py-3 rounded-xl bg-primary text-white flex items-center justify-center gap-2">
-            <FaPlus />
-            Add Movie
-          </button>
-        )}
-
-        {/* USER */}
-        <div className="mt-auto pt-5 border-t border-base-300">
+        {/* USER (pastda qotib turadi) */}
+        <div className="px-5 py-4 border-t border-base-300 flex-shrink-0">
           <div className="flex items-center gap-3">
             {user?.photoURL ? (
               <img
                 src={user.photoURL}
                 alt="user"
+                referrerPolicy="no-referrer"
                 className="w-10 h-10 rounded-full object-cover"
               />
             ) : (
-              <FaUserCircle className="text-4xl" />
+              <FaUserCircle className="text-4xl text-gray-400" />
             )}
 
-            <div>
-              <p className="font-semibold text-sm">
+            <div className="min-w-0">
+              <p className="font-semibold text-sm truncate">
                 {user?.displayName || "Guest"}
               </p>
-
-              <p className="text-xs opacity-60 truncate max-w-[180px]">
-                {user?.email || ""}
-              </p>
+              <p className="text-xs opacity-60 truncate">{user?.email || ""}</p>
             </div>
           </div>
         </div>
-      </div>
+      </aside>
+    </>
+  );
 
-    </div>
+  return (
+    <>
+      <button onClick={() => setOpen(true)}
+        className="md:hidden flex items-center justify-center text-2xl w-11 h-11 rounded-xl hover:bg-base-300">
+        <FaBars />
+      </button>
+
+      {createPortal(drawerUI, document.body)}
+    </>
   );
 }
