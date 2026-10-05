@@ -44,6 +44,7 @@ const T = {
   error: { EN: "Something went wrong", UZ: "Xatolik yuz berdi", RU: "Произошла ошибка", DE: "Etwas ist schiefgelaufen", TR: "Bir hata oluştu" },
 };
 
+
 // localStorage bilan ishlaydigan hook
 function useStored(key, initial) {
   const [value, setValue] = useState(() => {
@@ -89,8 +90,6 @@ export default function Navbar({
   const toggleSection = (name) => setOpenSection((p) => (p === name ? null : name));
 
   const handleLogout = async () => await signOut(auth);
-
-  // Google bilan kirgan foydalanuvchida parol yo'q
   const hasPassword = auth.currentUser?.providerData?.some(
     (p) => p.providerId === "password"
   );

@@ -101,27 +101,11 @@ export default function Drawer({
                   onSearch?.("", f.key);
                   setOpen(false);
                 }}
-                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-base-300 hover:bg-base-100 transition text-left"
-              >
+                className="flex items-center gap-3 px-4 py-3 rounded-xl bg-base-300 hover:bg-base-100 transition text-left">
                 <span className="text-lg">{f.icon}</span>
                 <span>{f.label[lang] || f.label.EN}</span>
               </button>
             ))}
-          </div>
-
-          {/* BANNER */}
-          <div className="mt-5 rounded-2xl overflow-hidden bg-base-300">
-            <img
-              src="https://images.unsplash.com/photo-1489599849927-2ee91cede3ba"
-              alt="banner"
-              className="w-full h-32 object-cover"
-            />
-            <div className="p-3">
-              <h3 className="font-bold">Premium Movies</h3>
-              <p className="text-xs opacity-70 mt-1">
-                Watch latest movies and series
-              </p>
-            </div>
           </div>
 
           {/* ADD MOVIE (faqat admin) */}
@@ -131,8 +115,7 @@ export default function Drawer({
                 setShowAddMovie(true);
                 setOpen(false);
               }}
-              className="mt-4 w-full py-3 rounded-xl bg-primary text-white flex items-center justify-center gap-2"
-            >
+              className="mt-4 w-full py-3 rounded-xl bg-primary text-white flex items-center justify-center gap-2">
               <FaPlus />
               {addLabel[lang] || addLabel.EN}
             </button>

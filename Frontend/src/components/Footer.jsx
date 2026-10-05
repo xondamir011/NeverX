@@ -50,7 +50,7 @@ export default function Footer({ lang }) {
   return (
     <>
       <footer className="bg-base-200 text-base-content mt-28 p-6 text-center">
-        <div className="hidden md:flex justify-center items-center h-17">
+        <div className="flex justify-center items-center h-17">
           <img src={neverx} className="h-[115px] w-auto max-w-none object-contain" alt="NeverX" />
         </div>
 
