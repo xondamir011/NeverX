@@ -18,6 +18,7 @@ import Navbar from "./components/Navbar";
 import MovieCard from "./components/MovieCard";
 import MovieDetails from "./components/MovieDetails";
 import Footer from "./components/Footer";
+import StoriesPage from "./pages/StoriesPage";
 import AdminPanel from "./admin/AdminPanel";
 import AddMovieModal from "./admin/AddMovieModal";
 
@@ -59,6 +60,8 @@ const texts = {
     scifi: "Sci-Fi",
     watchNow: "Watch Now",
     noMoviesFound: "No movies found",
+    stories: "Stories",
+    all: "All",
   },
 
   UZ: {
@@ -74,6 +77,8 @@ const texts = {
     scifi: "Ilmiy-Fantastika",
     watchNow: "Tomosha qilish",
     noMoviesFound: "Kinolar topilmadi",
+    stories: "Storylar",
+    all: "Hammasi",
   },
 
   RU: {
@@ -89,6 +94,8 @@ const texts = {
     scifi: "Научная фантастика",
     watchNow: "Смотреть",
     noMoviesFound: "Фильмы не найдены",
+    stories: "Истории",
+    all: "Все",
   },
 
   DE: {
@@ -104,6 +111,8 @@ const texts = {
     scifi: "Sci-Fi",
     watchNow: "Jetzt ansehen",
     noMoviesFound: "Keine Filme gefunden",
+    stories: "Stories",
+    all: "Alle",
   },
 
   TR: {
@@ -119,6 +128,8 @@ const texts = {
     scifi: "Bilim Kurgu",
     watchNow: "Şimdi İzle",
     noMoviesFound: "Film bulunamadı",
+    stories: "Hikayeler",
+    all: "Tümü",
   },
 };
 
@@ -429,6 +440,12 @@ export default function App() {
           path="/"
           element={
             <>
+              <StoriesPage
+                movies={movies}
+                lang={lang}
+                onSelect={(movie) => navigate(`/details/${movie.id}`)}
+              />
+
               {/* Banner */}
               <div className="max-w-7xl mx-auto px-3 md:px-5 mt-3 mb-5">
                 {banners.length > 0 ? (
@@ -496,7 +513,7 @@ export default function App() {
                         <button
                           key={index}
                           onClick={() => setBannerIdx(index)}
-                          className="rounded-full transition-all duration-300"
+                          className="rounded-full transition-all duration-300 cursor-pointer"
                           style={{
                             width: index === bannerIdx ? 20 : 8,
                             height: 8,
@@ -522,7 +539,7 @@ export default function App() {
                   <button
                     key={key}
                     onClick={() => fetchMovies("", key)}
-                    className="btn bg-base-200 p-5 rounded-xl hover:bg-base-300 transition-all"
+                    className="btn bg-base-200 p-5 rounded-xl hover:bg-base-300 transition-all cursor-pointer"
                   >
                     <Icon />
                     {t[key]}
@@ -546,7 +563,7 @@ export default function App() {
 
               {/* Movies */}
               {!loading && movies.length > 0 && (
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 p-3">
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-6 p-5">
                   {movies.map((movie) => (
                     <MovieCard
                       key={movie.id}
@@ -558,6 +575,11 @@ export default function App() {
               )}
             </>
           }
+        />
+
+        <Route
+          path="/stories"
+          element={<StoriesPage lang={lang} />}
         />
 
         <Route

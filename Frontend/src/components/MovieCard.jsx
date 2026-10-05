@@ -58,10 +58,6 @@ const T = {
 
 const TMDB_KEY = "44cae21994113f58296e3b6d0db555f3";
 
-// ─────────────────────────────────────────────────────────────
-// SKELETON
-// ─────────────────────────────────────────────────────────────
-
 export function MovieCardSkeleton() {
   return (
     <div className="bg-base-200 rounded-xl overflow-hidden animate-pulse">
@@ -780,7 +776,6 @@ export default function MovieCard({ movie, lang = "UZ" }) {
 
   // SEO uchun rasm nomi
   const imageAlt = `${title} poster — NeverX`;
-
   const imageTitle = `${title} — NeverX`;
 
   // ─────────────────────────────────────────────────────
