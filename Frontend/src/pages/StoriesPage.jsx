@@ -4,7 +4,6 @@ import {
   FaHeart,
   FaRegHeart,
   FaTimes,
-  FaArrowLeft,
   FaShare,
   FaPause,
 } from "react-icons/fa";
