@@ -1,7 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Drawer from "./Drawer";
 import PremiumModal from "../pages/PremiumModal";
-import neverx from "../assets/neverx.png";
+import KADRIX from "../assets/KADRIX.png";
 import {
   FaUserCircle, FaCog, FaPlus, FaUserShield, FaCrown, FaSearch,
   FaChevronDown, FaPalette, FaVideo, FaClosedCaptioning, FaPlay, FaBell,
@@ -223,7 +223,7 @@ export default function Navbar({
                 isAdmin={isAdmin} />
             )}
             <div className="hidden md:flex items-center h-11">
-              <img src={neverx} className="h-[115px] w-auto max-w-none object-contain" alt="NeverX" />
+              <img src={KADRIX} className="h-[60px] w-auto max-w-none object-contain" alt="KADRIX"/>
             </div>
           </div>
 

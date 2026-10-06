@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { createPortal } from "react-dom";
-import neverx from "../assets/neverx.png";
+import KADRIX from "../assets/KADRIX.png";
 import {
   FaUserCircle,
   FaTimes,
@@ -81,7 +81,7 @@ export default function Drawer({
 
         {/* HEADER: logo + yopish */}
         <div className="flex items-center justify-between px-5 border-b border-base-300 flex-shrink-0">
-          <img src={neverx} alt="NeverX"
+          <img src={KADRIX} alt="KADRIX"
             className="h-28 w-auto max-w-[170px] object-contain"/>
           <button
             onClick={() => setOpen(false)}

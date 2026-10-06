@@ -1,7 +1,7 @@
 import { auth } from "../firebase/config";
 import { saveUser } from "../firebase/userService";
-import neverxLogo from "../assets/neverx.png";
-import neverxBlueLogo from "../assets/neverxBlue.png";
+import KADRIX from "../assets/KADRIX.png";
+import KADRIXLIGHT from "../assets/KADRIXLIGHT.png";
 
 import {
   signInWithEmailAndPassword,
@@ -64,7 +64,6 @@ export default function Login() {
   );
 
   const langRef = useRef(null);
-
   const navigate = useNavigate();
 
   const languages = [
@@ -357,10 +356,6 @@ export default function Login() {
     [lang]
   );
 
-  // =====================================================
-  // MOUNT
-  // =====================================================
-
   useEffect(() => {
     const timer = setTimeout(() => {
       setMounted(true);
@@ -381,10 +376,6 @@ export default function Login() {
 
     localStorage.setItem("theme", theme);
   }, [theme]);
-
-  // =====================================================
-  // CLOSE LANGUAGE DROPDOWN
-  // =====================================================
 
   useEffect(() => {
     const handleClickOutside = (event) => {
@@ -409,10 +400,6 @@ export default function Login() {
     };
   }, []);
 
-  // =====================================================
-  // RECAPTCHA CLEANUP
-  // =====================================================
-
   useEffect(() => {
     return () => {
       if (window.recaptchaVerifier) {
@@ -427,10 +414,6 @@ export default function Login() {
     };
   }, []);
 
-  // =====================================================
-  // EMAIL LOGIN
-  // =====================================================
-
   const login = async () => {
     if (!email || !password) {
       toast.error(
@@ -439,12 +422,10 @@ export default function Login() {
           <span>{t.empty}</span>
         </div>
       );
-
       return;
     }
 
     setLoading(true);
-
     try {
       const result =
         await signInWithEmailAndPassword(
@@ -479,10 +460,6 @@ export default function Login() {
       setLoading(false);
     }
   };
-
-  // =====================================================
-  // GOOGLE LOGIN
-  // =====================================================
 
   const googleLogin = async () => {
     try {
@@ -617,10 +594,6 @@ export default function Login() {
     }
   };
 
-  // =====================================================
-  // PHONE FORMAT
-  // =====================================================
-
   const formatPhoneNumber = (value) => {
     let cleaned = value.replace(
       /[^\d+]/g,
@@ -643,10 +616,6 @@ export default function Login() {
 
     return cleaned;
   };
-
-  // =====================================================
-  // PHONE LOGIN
-  // =====================================================
 
   const phoneLogin = async () => {
     if (!phone) {
@@ -755,10 +724,6 @@ export default function Login() {
     }
   };
 
-  // =====================================================
-  // VERIFY PHONE
-  // =====================================================
-
   const verifyPhoneCode = async () => {
     if (!verificationCode) {
       toast.error(
@@ -817,10 +782,6 @@ export default function Login() {
     }
   };
 
-  // =====================================================
-  // SWITCH LOGIN MODE
-  // =====================================================
-
   const switchLoginMode = () => {
     setPhoneMode(!phoneMode);
 
@@ -838,10 +799,6 @@ export default function Login() {
     }
   };
 
-  // =====================================================
-  // THEME SWITCH
-  // =====================================================
-
   const handleThemeChange = (e) => {
     const newTheme = e.target.checked
       ? "night"
@@ -850,17 +807,8 @@ export default function Login() {
     setTheme(newTheme);
   };
 
-  // =====================================================
-  // RETURN
-  // =====================================================
-
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-base-200 text-base-content transition-colors duration-500">
-
-      {/* ================================================= */}
-      {/* BACKGROUND VIDEO */}
-      {/* ================================================= */}
-
       <div
         className="
           absolute
@@ -1446,7 +1394,7 @@ export default function Login() {
                   shadow-black/50
                 `
               : `
-                  bg-white/90
+                  bg-white/95
                   border-black/10
                   shadow-black/20
                 `
@@ -1462,16 +1410,10 @@ export default function Login() {
           {/* NEVERX LOGO */}
           {/* ================================================= */}
 
-          <div className="mb-7 text-center">
+          <div className="mb-5 text-center">
             <div className="flex justify-center">
-              <img
-                src={
-                  theme === "night"
-                    ? neverxLogo
-                    : neverxBlueLogo
-                }
-                alt="NeverX"
-                className="w-[250px] sm:w-[280px] h-auto object-contain transition-all duration-500"/>
+              <img src={theme === "night" ? KADRIX : KADRIXLIGHT} alt="KADRIX"
+                className="w-[250px] sm:w-[280px] h-auto mb-5 object-contain transition-all duration-500"/>
             </div>
 
             {/* FILM + TEXT */}

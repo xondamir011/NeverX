@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { FaTelegramPlane, FaChevronUp } from "react-icons/fa";
-import neverx from "../assets/neverx.png";
+import KADRIX from "../assets/KADRIX.png";
 
 const TELEGRAM_URL = "https://t.me/xondamir_blog"; 
 
@@ -50,8 +50,8 @@ export default function Footer({ lang }) {
   return (
     <>
       <footer className="bg-base-200 text-base-content mt-28 p-6 text-center">
-        <div className="flex justify-center items-center h-17">
-          <img src={neverx} className="h-[115px] w-auto max-w-none object-contain" alt="NeverX" />
+        <div className="flex justify-center items-center h-16">
+          <img src={KADRIX} className="h-[70px] w-auto max-w-none mb-3 object-contain" alt="KADRIX" />
         </div>
 
         <div className="flex justify-center gap-12 mt-3 mr-5 mb-3">
