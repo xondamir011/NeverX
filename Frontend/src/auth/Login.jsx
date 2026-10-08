@@ -415,7 +415,7 @@ export default function Login() {
   }, []);
 
   const login = async () => {
-    if (!email || !password) {
+    if (!email.trim() || !password.trim()) {
       toast.error(
         <div className="flex items-center gap-2">
           <FaTimesCircle className="text-error" />
@@ -426,13 +426,13 @@ export default function Login() {
     }
 
     setLoading(true);
+
     try {
-      const result =
-        await signInWithEmailAndPassword(
-          auth,
-          email,
-          password
-        );
+      const result = await signInWithEmailAndPassword(
+        auth,
+        email.trim(),
+        password
+      );
 
       await saveUser(result.user);
 
@@ -442,18 +442,29 @@ export default function Login() {
           <span>{t.success}</span>
         </div>
       );
+
+      navigate("/");
     } catch (error) {
-      console.error(
-        "EMAIL LOGIN ERROR:",
-        error
-      );
+      console.error("EMAIL LOGIN ERROR:", error);
+
+      let message = t.error;
+
+      if (error.code === "auth/invalid-credential") {
+        message = "Email yoki parol noto'g'ri";
+      } else if (error.code === "auth/user-not-found") {
+        message = "Bunday akkaunt mavjud emas";
+      } else if (error.code === "auth/wrong-password") {
+        message = "Parol noto'g'ri";
+      } else if (error.code === "auth/invalid-email") {
+        message = "Email noto'g'ri";
+      } else if (error.code === "auth/too-many-requests") {
+        message = "Juda ko'p urinish. Keyinroq qayta urinib ko'ring";
+      }
 
       toast.error(
         <div className="flex items-center gap-2">
           <FaTimesCircle className="text-error" />
-          <span>
-            {error.code || t.error}
-          </span>
+          <span>{message}</span>
         </div>
       );
     } finally {
@@ -1413,7 +1424,7 @@ export default function Login() {
           <div className="mb-5 text-center">
             <div className="flex justify-center">
               <img src={theme === "night" ? KADRIX : KADRIXLIGHT} alt="KADRIX"
-                className="w-[250px] sm:w-[280px] h-auto mb-5 object-contain transition-all duration-500"/>
+                className="w-[250px] sm:w-[280px] h-auto mb-5 object-contain transition-all duration-500" />
             </div>
 
             {/* FILM + TEXT */}
