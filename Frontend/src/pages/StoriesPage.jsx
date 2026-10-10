@@ -6,6 +6,8 @@ import {
   FaTimes,
   FaShare,
   FaPause,
+  FaRandom,
+  FaClock,
 } from "react-icons/fa";
 
 const API_KEY = "44cae21994113f58296e3b6d0db555f3";
@@ -177,8 +179,7 @@ export default function StoriesPage({ lang = "EN" }) {
           await Promise.all(
             [1, 2, 3].map((page) =>
               fetch(
-                `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=${
-                  langMap[L] || "en-US"
+                `https://api.themoviedb.org/3/movie/popular?api_key=${API_KEY}&language=${langMap[L] || "en-US"
                 }&page=${page}`
               ).then((r) => r.json())
             )
@@ -224,10 +225,6 @@ export default function StoriesPage({ lang = "EN" }) {
     };
   }, [L]);
 
-  // ==================================================
-  // LIST
-  // ==================================================
-
   const list = useMemo(() => {
     if (filter === "newest") {
       return [...movies].sort(
@@ -247,7 +244,6 @@ export default function StoriesPage({ lang = "EN" }) {
 
     return shuffle(movies);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     movies,
     filter,
@@ -382,7 +378,7 @@ export default function StoriesPage({ lang = "EN" }) {
             100,
             (elapsed /
               STORY_DURATION) *
-              100
+            100
           );
 
         setProgress(percent);
@@ -600,56 +596,54 @@ export default function StoriesPage({ lang = "EN" }) {
 
   return (
     <div className="max-w-7xl mx-auto px-3 md:px-5 py-5 min-h-[30vh]">
-        <div className="flex justify-center items-center gap-6 p-3 mb-8 rounded-xl bg-base-200 border border-base-300 overflow-x-auto">
-          {[
-            {
-              key: "random",
-              label: tr("random"),
-            },
-            {
-              key: "newest",
-              label: tr("newest"),
-            },
-            {
-              key: "liked",
-              label: tr("liked"),
-              icon: (
-                <FaHeart
-                  size={12}
-                />
-              ),
-            },
-          ].map((f) => (
-            <button
-              key={f.key}
-              onClick={() =>
-                changeFilter(
-                  f.key
-                )
-              }
-              className={`
-                flex items-center gap-1
-                px-3 py-1.5
+      <div className="flex justify-center items-center gap-7 p-3 mb-8 rounded-xl overflow-x-auto">
+        {[
+          {
+            key: "random",
+            label: tr("random"),
+            icon: <FaRandom />,
+          },
+          {
+            key: "newest",
+            label: tr("newest"),
+            icon: <FaClock />,
+          },
+          {
+            key: "liked",
+            label: tr("liked"),
+            icon: <FaHeart />,
+          },
+        ].map((f) => (
+          <button
+            key={f.key}
+            onClick={() =>
+              changeFilter(
+                f.key
+              )
+            }
+            className={`
+                flex items-center
+                gap-1.5
+                px-3 py-3
                 rounded-lg
                 text-xs sm:text-sm
                 font-semibold
                 whitespace-nowrap
                 cursor-pointer
-                transition
-                ${
-                  filter ===
-                  f.key
-                    ? "bg-success text-success-content"
-                    : "hover:bg-base-300 opacity-80"
-                }
-              `}
-            >
+                transition-all
+                ${filter ===
+                f.key
+                ? "bg-success text-success-content"
+                : "hover:bg-base-300 opacity-80"
+              }
+              `}>
+                
               {f.icon}
               {f.label}
-            </button>
-          ))}
+          </button>
+        ))}
 
-        </div>
+      </div>
 
       {loading && (
         <div className="flex justify-center mt-20">
@@ -726,10 +720,9 @@ export default function StoriesPage({ lang = "EN" }) {
                           transition-transform
                           duration-200
                           group-hover:scale-105
-                          ${
-                            isSeen
-                              ? "bg-base-300"
-                              : "bg-gradient-to-tr from-red-600 via-cyan-400 to-blue-900"
+                          ${isSeen
+                            ? "bg-base-300"
+                            : "bg-gradient-to-tr from-red-600 via-cyan-400 to-blue-900"
                           }
                         `}>
 
@@ -757,10 +750,9 @@ export default function StoriesPage({ lang = "EN" }) {
                         text-xs
                         text-center
                         truncate
-                        ${
-                          isSeen
-                            ? "opacity-50 font-medium"
-                            : "font-bold"
+                        ${isSeen
+                          ? "opacity-50 font-medium"
+                          : "font-bold"
                         }
                       `}
                     >
@@ -848,22 +840,21 @@ export default function StoriesPage({ lang = "EN" }) {
                           h-full
                           bg-white
                           rounded-full
-                          ${
-                            index <
+                          ${index <
                             viewer
-                              ? "w-full"
-                              : index >
-                                viewer
+                            ? "w-full"
+                            : index >
+                              viewer
                               ? "w-0"
                               : ""
                           }
                         `}
                         style={
                           index ===
-                          viewer
+                            viewer
                             ? {
-                                width: `${progress}%`,
-                              }
+                              width: `${progress}%`,
+                            }
                             : undefined
                         }
                       />

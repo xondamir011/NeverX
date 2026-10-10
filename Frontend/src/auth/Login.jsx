@@ -20,7 +20,7 @@ import {
   useRef,
 } from "react";
 
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 
 import {
   FaApple,
@@ -820,6 +820,12 @@ export default function Login() {
 
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-base-200 text-base-content transition-colors duration-500">
+      <ToastContainer
+        position="top-right"
+        autoClose={3000}
+        theme="dark"
+      />
+
       <div
         className="
           absolute
@@ -907,10 +913,6 @@ export default function Login() {
           />
         )}
       </div>
-
-      {/* ================================================= */}
-      {/* TOP RIGHT CONTROLS */}
-      {/* ================================================= */}
 
       <div ref={langRef}
         className="
